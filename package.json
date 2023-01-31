@@ -13,6 +13,7 @@
     "cypress:production": "npm run build:test && start-server-and-test 'npm run start:test' 3000 'npx cypress open --config watchForFileChanges=false'"
   },
   "dependencies": {
+    "antd": "^5.1.7",
     "next": "latest",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
