@@ -1,0 +1,65 @@
+[
+  {
+    "id": 0,
+    "title": "first",
+    "link": "/first-link",
+    "sub": null
+  },
+  {
+    "id": 1,
+    "title": "second",
+    "link": null,
+    "sub": [
+      {
+        "id": 1.1,
+        "title": "sub1-1",
+        "link": "/sub1-1"
+      },
+      {
+        "id": 1.1,
+        "title": "sub1-2",
+        "link": "/sub1-2"
+      },
+      {
+        "id": 1.2,
+        "title": "sub1-3",
+        "link": "/sub1-3"
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "third",
+    "link": null,
+    "sub": [
+      {
+        "id": 2.1,
+        "title": "sub2-1",
+        "link": "/sub2-1"
+      },
+      {
+        "id": 2.1,
+        "title": "sub2-2",
+        "link": "/sub2-2"
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "fourth",
+    "link": null,
+    "sub": [
+      {
+        "id": 3.1,
+        "title": "sub3-1",
+        "link": "/sub3-1"
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "fifth",
+    "link": "/fifth-link",
+    "sub": null
+  }
+]
