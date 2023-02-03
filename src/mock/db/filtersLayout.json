@@ -1,0 +1,43 @@
+[
+  {
+    "type": "Input",
+    "label": "first input",
+    "props": {
+      "allowClear": true,
+      "size": "middle",
+      "suffix": "search icon",
+      "showCount": true
+    }
+  },
+  {
+    "type": "Select",
+    "label": "first select",
+    "props": {
+      "allowClear": true
+    }
+  },
+  {
+    "type": "Input",
+    "label": "second input",
+    "props": {
+      "allowClear": true,
+      "size": "middle",
+      "suffix": "search icon",
+      "showCount": false
+    }
+  },
+  {
+    "type": "Input",
+    "label": "third input",
+    "props": {
+      "allowClear": true,
+      "size": "middle",
+      "suffix": "search icon"
+    }
+  },
+  {
+    "type": "Input",
+    "label": "forth input",
+    "props": {}
+  }
+]

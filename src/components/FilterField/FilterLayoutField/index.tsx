@@ -8,9 +8,11 @@ export type FilterLayoutFieldProps = {
 };
 
 export function FilterLayoutField({ label, children }: FilterLayoutFieldProps) {
+  const { Text } = Typography;
+
   return (
-    <Wrapper>
-      {label && <Typography>{label}</Typography>}
+    <Wrapper width="auto">
+      {label && <Text>{label}</Text>}
       {label && <FakeDiv width={`${SPACES['space-8']}px`} />}
       {children}
     </Wrapper>
