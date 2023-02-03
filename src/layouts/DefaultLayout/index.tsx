@@ -9,7 +9,7 @@ export function DefaultLayout({ children }: DefaultLayoutProps) {
   const { Content } = Layout;
 
   return (
-    <Layout>
+    <Layout className="layout">
       <HeaderComponent />
       <Layout>
         <SidebarComponent />
