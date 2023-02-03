@@ -1,5 +1,5 @@
 import { Layout } from 'antd';
-import { HeaderComponent, SidebarComponent } from 'src/components';
+import { HeaderComponent, SidebarComponent } from '@/src/components';
 
 interface DefaultLayoutProps {
   children: JSX.Element;
