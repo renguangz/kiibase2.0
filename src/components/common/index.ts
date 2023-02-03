@@ -1,3 +1,4 @@
+import { COLORS } from '@/src/utils';
 import styled from 'styled-components';
 
 type FakeDivType = {
@@ -11,8 +12,6 @@ export const FakeDiv = styled.div<FakeDivType>`
 `;
 
 export const Wrapper = styled(FakeDiv)`
-  width: 100%;
-  height: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -23,4 +22,16 @@ export const StyledButton = styled.button`
   outline: none;
   border: none;
   background: none;
+`;
+
+type BottomBorderType = {
+  height: number;
+  borderColor?: string;
+};
+
+export const BottomBorder = styled.div<BottomBorderType>`
+  border-bottom: solid 1px ${(props) => props.borderColor ?? COLORS.lightGray};
+  width: 100%;
+  height: ${(props) => props.height}px;
+  margin-bottom: ${(props) => props.height};
 `;
