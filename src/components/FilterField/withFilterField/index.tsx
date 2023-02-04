@@ -22,8 +22,8 @@ export function withFilterField(component: FilterComponentType) {
   let Component: React.ComponentType;
   Component = getComponent(FILTER_COMPONENTS, component);
 
-  return function (componentTestId: string) {
-    return function (label: string) {
+  return function (componentTestId?: string) {
+    return function (label?: string) {
       return function (props: any) {
         return (
           <FilterLayoutField label={label}>

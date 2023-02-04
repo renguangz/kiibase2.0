@@ -11,4 +11,14 @@ describe('withFilterField', () => {
     const searchInput = screen.getByTestId('searchInput');
     expect(searchInput).toBeInTheDocument();
   });
+
+  it('should render input without label=`test label` and test-id=`test id`', () => {
+    render(withFilterField('Input')()()({}));
+
+    const label = screen.queryByText(/test label/);
+    expect(label).not.toBeInTheDocument();
+
+    const testId = screen.queryByTestId(/test id/);
+    expect(testId).not.toBeInTheDocument();
+  });
 });
