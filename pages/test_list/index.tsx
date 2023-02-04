@@ -2,6 +2,7 @@ import { Wrapper } from '@/src/components/common';
 import { ContentHeader } from '@/src/components/Content';
 import { InputField } from '@/src/components/FilterField';
 import { withFilterField } from '@/src/components/FilterField/withFilterField';
+import { TableField } from '@/src/components/Table';
 import { PageLayout } from '@/src/layouts';
 import { SPACES } from '@/src/utils';
 import styled from 'styled-components';
@@ -22,6 +23,7 @@ export default function TestListPage() {
         {withFilterField('Input')('searchInput')('enhanced')({})}
         {withFilterField('Select')('SelectField')('enhanced')({})}
       </FilterWrapper>
+      <TableField />
     </PageLayout>
   );
 }

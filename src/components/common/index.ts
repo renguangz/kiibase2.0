@@ -33,5 +33,5 @@ export const BottomBorder = styled.div<BottomBorderType>`
   border-bottom: solid 1px ${(props) => props.borderColor ?? COLORS.lightGray};
   width: 100%;
   height: ${(props) => props.height}px;
-  margin-bottom: ${(props) => props.height};
+  margin-bottom: ${(props) => props.height}px;
 `;
