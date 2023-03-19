@@ -23,6 +23,11 @@ jest.mock('../../fetch', () => {
 
 describe('useSidebar', () => {
   describe('menu items', () => {
+    it('should have 7 menu navi items', () => {
+      const { result } = renderHook(useSidebar);
+      expect(result.current.menuItemNaviData.length).toEqual(7);
+    });
+
     it('should have 6 sub menu navi items', () => {
       const { result } = renderHook(useSidebar);
       expect(result.current.subMenuItems.length).toEqual(6);
@@ -32,21 +37,8 @@ describe('useSidebar', () => {
       const { result } = renderHook(useSidebar);
       const subMenuItems = result.current.subMenuItems;
 
-      subMenuItems.forEach((item) => expect(item).toHaveProperty('label'));
+      subMenuItems.forEach((item) => expect(item).toHaveProperty('title'));
       subMenuItems.forEach((item) => expect(item).not.toHaveProperty('link'));
-    });
-
-    it('should have 7 menu without sub navi items', () => {
-      const { result } = renderHook(useSidebar);
-      expect(result.current.menuItems.length).toEqual(7);
-    });
-
-    it('should have label and link on every items', () => {
-      const { result } = renderHook(useSidebar);
-      const menuItems = result.current.menuItems;
-
-      menuItems.forEach((item) => expect(item).toHaveProperty('label'));
-      menuItems.forEach((item) => expect(item).toHaveProperty('link'));
     });
   });
 });
