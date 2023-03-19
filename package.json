@@ -7,7 +7,7 @@
     "build:test": "export NODE_ENV=\"test\" && next build",
     "start": "next start",
     "start:test": "export NODE_ENV=\"test\" && next start",
-    "test": "jest --watch",
+    "test": "jest --watchAll",
     "test:ci": "jest --ci",
     "cypress:dev": "start-server-and-test 'npm run dev:test' 3000 'npx cypress open --config watchForFileChanges=false'",
     "cypress:production": "npm run build:test && start-server-and-test 'npm run start:test' 3000 'npx cypress open --config watchForFileChanges=false'"
