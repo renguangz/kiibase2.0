@@ -11,3 +11,5 @@ export type GenericDataType<T> = {
 };
 
 export type PrimaryKey = string | number;
+
+export * from './typeGuards';

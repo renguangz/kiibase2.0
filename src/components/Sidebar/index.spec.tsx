@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { SidebarComponent } from '.';
 
 describe('Sidebar', () => {
@@ -7,6 +7,10 @@ describe('Sidebar', () => {
   });
 
   describe('sidebar menu items', () => {
+    it('should have 13 items', () => {
+      screen.debug();
+    });
+
     it.todo('should route to `/first-link` after clicking first button');
     it.todo('should focus if route is `/first-link`');
     it.todo('should expand if click second button');

@@ -1,48 +1,52 @@
 import { useSidebar } from '.';
 import { renderHook } from '@testing-library/react';
 import { fetchMockData } from '@/src/mock/db/utils/fetchMockData';
-import sidebarMockData from '@/src/mock/db/sidebar.json';
+import menuItemNavi from '@/src/mock/db/utils/sidebar/menuItemNavi.json';
+import subMenuNavi from '@/src/mock/db/utils/sidebar/subMenuNavi.json';
+
+type FetchDataUrlType = 'menuItemNavi' | 'subMenuNavi';
 
 jest.mock('../../fetch', () => {
   return {
-    async fetchData() {
-      return fetchMockData(sidebarMockData);
+    async fetchData(url: FetchDataUrlType) {
+      switch (url) {
+        case 'menuItemNavi':
+          return fetchMockData(menuItemNavi);
+        case 'subMenuNavi':
+          return fetchMockData(subMenuNavi);
+        default:
+          return null;
+      }
     },
   };
 });
 
 describe('useSidebar', () => {
   describe('menu items', () => {
-    it('should return 5 items', () => {
+    it('should have 6 sub menu navi items', () => {
       const { result } = renderHook(useSidebar);
-      expect(result.current.data).toHaveLength(5);
+      expect(result.current.subMenuItems.length).toEqual(6);
     });
 
-    it('should change data to `MenuItem` type data', () => {
+    it('should have label but no link with sub menu', () => {
       const { result } = renderHook(useSidebar);
-      const sidebarData = result.current.data;
+      const subMenuItems = result.current.subMenuItems;
 
-      expect(sidebarData[0]).toHaveProperty('key');
-      expect(sidebarData[0]).toHaveProperty('label');
-      expect(sidebarData[0]).toHaveProperty('link');
+      subMenuItems.forEach((item) => expect(item).toHaveProperty('label'));
+      subMenuItems.forEach((item) => expect(item).not.toHaveProperty('link'));
     });
 
-    it('first item should not have child but second item should have', () => {
+    it('should have 7 menu without sub navi items', () => {
       const { result } = renderHook(useSidebar);
-      const sidebarData = result.current.data;
-
-      expect(sidebarData[0]).not.toHaveProperty('children');
-      expect(sidebarData[0]).toHaveProperty('link');
-      expect(sidebarData[1]).toHaveProperty('children');
-      expect(sidebarData[1].link).toEqual(null);
+      expect(result.current.menuItems.length).toEqual(7);
     });
 
-    it('second item should have two children', () => {
+    it('should have label and link on every items', () => {
       const { result } = renderHook(useSidebar);
-      const sidebarData = result.current.data;
-      const secondData = sidebarData[1];
+      const menuItems = result.current.menuItems;
 
-      expect(secondData).toHaveProperty('children');
+      menuItems.forEach((item) => expect(item).toHaveProperty('label'));
+      menuItems.forEach((item) => expect(item).toHaveProperty('link'));
     });
   });
 });

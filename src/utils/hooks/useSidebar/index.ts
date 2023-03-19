@@ -1,39 +1,45 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import { fetchMockData } from '@/src/mock/db/utils/fetchMockData';
-import sidebarMockData from '@/src/mock/db/sidebar.json';
-import { GenericDataType, PrimaryKey } from '../..';
-import type { MenuProps } from 'antd';
+import menuItemNavi from '@/src/mock/db/utils/sidebar/menuItemNavi.json';
+import subMenuNavi from '@/src/mock/db/utils/sidebar/subMenuNavi.json';
+import { ItemType } from 'antd/es/menu/hooks/useItems';
+import { MenuProps } from 'antd';
 
-export type MenuItem = Required<MenuProps>['items'][number] & { link: string | null };
-
-function reduceSidebarData(data: SidebarDataType[], array: MenuItem[], index: number): MenuItem[] {
-  const head = data[index];
-  if (!head) return array;
-
-  if (head.sub) {
-    array.push({ key: head.id, label: head.title, link: null, children: reduceSidebarData(head.sub, [], 0) });
-  } else {
-    array.push({ key: head.id, label: head.title, link: head.link });
-  }
-
-  return reduceSidebarData(data, array, index + 1);
-}
-
-export type SidebarDataType = {
-  id: PrimaryKey;
+export type MenuItemsDataType = {
+  id: string | number;
+  name: string;
   title: string;
-  link: string | null;
-  sub: SidebarDataType[] | null;
 };
+export type SubMenuItemsDataType = Record<string, MenuItemsDataType[]>;
+export type MapMenuDataType = (data: MenuItemsDataType[]) => ItemType[];
+export type MapSubMenuDataType = (data: Record<string, MenuItemsDataType[]>) => ItemType[];
 
-export type SidebarDataResponseType = GenericDataType<SidebarDataType[]>;
+export const mapMenuData: MapMenuDataType = (data) =>
+  data.map((item) => ({
+    key: item.id,
+    label: item.title,
+    name: item.title,
+    link: item.name,
+  }));
+
+export const mapSubMenuData: MapSubMenuDataType = (data) =>
+  Object.keys(data).map((item) => ({
+    type: 'group',
+    id: `subMenu-${item}-${Math.random()}`,
+    name: item,
+    label: item,
+    children: mapMenuData(data[item]),
+  }));
 
 export function useSidebar() {
-  const data = useMemo(() => fetchMockData(sidebarMockData)?.data, []);
+  const subMenuNaviData = useMemo(() => fetchMockData(subMenuNavi) ?? {}, [fetchMockData, subMenuNavi]);
+  const menuItemNaviData = useMemo(() => fetchMockData(menuItemNavi) ?? [], [fetchMockData, menuItemNavi]);
 
-  const result = useMemo(() => reduceSidebarData(data, [], 0), [data]);
+  const subMenuItems = useMemo(() => mapSubMenuData(subMenuNaviData), [subMenuNaviData]);
+  const menuItems = useMemo(() => mapMenuData(menuItemNaviData), [menuItemNaviData]);
 
   return {
-    data: result,
+    subMenuItems,
+    menuItems,
   };
 }

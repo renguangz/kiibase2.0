@@ -4,11 +4,12 @@ import { Layout, Menu } from 'antd';
 export function SidebarComponent() {
   const { Sider } = Layout;
 
-  const { data: sidebarResponseData } = useSidebar();
+  const { menuItems, subMenuItems } = useSidebar();
 
   return (
     <Sider theme="light">
-      <Menu items={sidebarResponseData} mode="inline" />
+      <Menu items={menuItems} mode="inline" />
+      <Menu items={subMenuItems} inlineCollapsed={true} />
     </Sider>
   );
 }

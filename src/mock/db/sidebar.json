@@ -1,82 +1,450 @@
 {
   "status": 200,
   "message": "success",
-  "data": [
-    {
-      "id": 0,
-      "title": "first",
-      "link": "/first-link",
-      "sub": null
-    },
-    {
-      "id": 1,
-      "title": "second",
-      "link": null,
-      "sub": [
-        {
-          "id": 1.1,
-          "title": "sub1-1",
-          "link": null,
-          "sub": [
-            {
-              "id": 1.11,
-              "title": "sub1-1-1",
-              "link": "/sub1-1-1",
-              "sub": null
-            }
-          ]
-        },
-        {
-          "id": 1.2,
-          "title": "sub1-2",
-          "link": "/sub1-2",
-          "sub": null
-        },
-        {
-          "id": 1.3,
-          "title": "sub1-3",
-          "link": "/sub1-3",
-          "sub": null
+  "data": {
+    "權限管理": [
+      {
+        "id": 1,
+        "name": "role",
+        "title": "管理者權限設定",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-11-17 18:07:32",
+        "updated_at": "2021-11-17 18:07:32",
+        "order": 10,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 1,
+        "title_with_menu": "權限管理 - 管理者權限設定",
+        "menu_name": "權限管理",
+        "menu_order": 30,
+        "single_data_id": 1,
+        "menu": {
+          "id": 1,
+          "name": "權限管理",
+          "order": 30,
+          "created_at": "2021-11-17 18:07:32",
+          "updated_at": "2022-05-18 17:21:42"
         }
-      ]
-    },
-    {
-      "id": 2,
-      "title": "third",
-      "link": null,
-      "sub": [
-        {
-          "id": 2.1,
-          "title": "sub2-1",
-          "link": "/sub2-1",
-          "sub": null
-        },
-        {
-          "id": 2.2,
-          "title": "sub2-2",
-          "link": "/sub2-2",
-          "sub": null
+      },
+      {
+        "id": 2,
+        "name": "adminUser",
+        "title": "管理者列表",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-11-17 18:07:32",
+        "updated_at": "2021-11-17 18:07:32",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 1,
+        "title_with_menu": "權限管理 - 管理者列表",
+        "menu_name": "權限管理",
+        "menu_order": 30,
+        "single_data_id": 1,
+        "menu": {
+          "id": 1,
+          "name": "權限管理",
+          "order": 30,
+          "created_at": "2021-11-17 18:07:32",
+          "updated_at": "2022-05-18 17:21:42"
         }
-      ]
-    },
-    {
-      "id": 3,
-      "title": "fourth",
-      "link": null,
-      "sub": [
-        {
-          "id": 3.1,
-          "title": "sub3-1",
-          "link": "/sub3-1",
-          "sub": null
+      }
+    ],
+    "產品管理": [
+      {
+        "id": 13,
+        "name": "productCategory",
+        "title": "產品分類",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-01-21 16:13:07",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 8,
+        "title_with_menu": "產品管理 - 產品分類",
+        "menu_name": "產品管理",
+        "menu_order": 10,
+        "single_data_id": 1,
+        "menu": {
+          "id": 8,
+          "name": "產品管理",
+          "order": 10,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
         }
-      ]
-    },
-    {
-      "id": 4,
-      "title": "fifth",
-      "link": "/fifth-link",
-      "sub": null
-    }
-  ]
+      },
+      {
+        "id": 22,
+        "name": "product",
+        "title": "產品",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-05-06 04:04:46",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 8,
+        "title_with_menu": "產品管理 - 產品",
+        "menu_name": "產品管理",
+        "menu_order": 10,
+        "single_data_id": 346,
+        "menu": {
+          "id": 8,
+          "name": "產品管理",
+          "order": 10,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      }
+    ],
+    "商城管理": [
+      {
+        "id": 20,
+        "name": "shopBanner",
+        "title": "商城首頁底圖",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-04-25 14:40:07",
+        "updated_at": "2023-01-18 17:28:33",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 5,
+        "title_with_menu": "商城管理 - 商城首頁底圖",
+        "menu_name": "商城管理",
+        "menu_order": 9,
+        "single_data_id": 5,
+        "menu": {
+          "id": 5,
+          "name": "商城管理",
+          "order": 9,
+          "created_at": "2022-04-25 14:40:07",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 21,
+        "name": "shopProductCategory",
+        "title": "商城產品分類",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-04-26 16:03:45",
+        "updated_at": "2022-04-26 16:03:45",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 5,
+        "title_with_menu": "商城管理 - 商城產品分類",
+        "menu_name": "商城管理",
+        "menu_order": 9,
+        "single_data_id": 2,
+        "menu": {
+          "id": 5,
+          "name": "商城管理",
+          "order": 9,
+          "created_at": "2022-04-25 14:40:07",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 23,
+        "name": "shopProduct",
+        "title": "商城產品",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-05-06 04:04:46",
+        "updated_at": "2022-05-06 04:04:46",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 5,
+        "title_with_menu": "商城管理 - 商城產品",
+        "menu_name": "商城管理",
+        "menu_order": 9,
+        "single_data_id": 346,
+        "menu": {
+          "id": 5,
+          "name": "商城管理",
+          "order": 9,
+          "created_at": "2022-04-25 14:40:07",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 28,
+        "name": "order",
+        "title": "訂單",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-07-27 15:45:11",
+        "updated_at": "2022-07-27 15:45:11",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 5,
+        "title_with_menu": "商城管理 - 訂單",
+        "menu_name": "商城管理",
+        "menu_order": 9,
+        "single_data_id": 1,
+        "menu": {
+          "id": 5,
+          "name": "商城管理",
+          "order": 9,
+          "created_at": "2022-04-25 14:40:07",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      }
+    ],
+    "運費管理": [
+      {
+        "id": 17,
+        "name": "city",
+        "title": "縣市",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-03-29 01:44:53",
+        "updated_at": "2022-03-29 01:44:53",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 4,
+        "title_with_menu": "運費管理 - 縣市",
+        "menu_name": "運費管理",
+        "menu_order": 8,
+        "single_data_id": 1,
+        "menu": {
+          "id": 4,
+          "name": "運費管理",
+          "order": 8,
+          "created_at": "2022-03-29 01:44:53",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 18,
+        "name": "dist",
+        "title": "鄉鎮市區",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-03-29 01:44:53",
+        "updated_at": "2022-03-29 01:44:53",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 4,
+        "title_with_menu": "運費管理 - 鄉鎮市區",
+        "menu_name": "運費管理",
+        "menu_order": 8,
+        "single_data_id": 1,
+        "menu": {
+          "id": 4,
+          "name": "運費管理",
+          "order": 8,
+          "created_at": "2022-03-29 01:44:53",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 26,
+        "name": "cuft",
+        "title": "運費基本設定",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2022-05-24 21:43:15",
+        "updated_at": "2023-01-18 17:28:33",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 1,
+        "menu_id": 4,
+        "title_with_menu": "運費管理 - 運費基本設定",
+        "menu_name": "運費管理",
+        "menu_order": 8,
+        "single_data_id": 1,
+        "menu": {
+          "id": 4,
+          "name": "運費管理",
+          "order": 8,
+          "created_at": "2022-03-29 01:44:53",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      }
+    ],
+    "文章管理": [
+      {
+        "id": 9,
+        "name": "postCategory",
+        "title": "文章分類",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-12-15 21:12:39",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 7,
+        "title_with_menu": "文章管理 - 文章分類",
+        "menu_name": "文章管理",
+        "menu_order": 7,
+        "single_data_id": 1,
+        "menu": {
+          "id": 7,
+          "name": "文章管理",
+          "order": 7,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 10,
+        "name": "postTag",
+        "title": "文章標籤",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-12-15 21:12:39",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 7,
+        "title_with_menu": "文章管理 - 文章標籤",
+        "menu_name": "文章管理",
+        "menu_order": 7,
+        "single_data_id": 1,
+        "menu": {
+          "id": 7,
+          "name": "文章管理",
+          "order": 7,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 11,
+        "name": "post",
+        "title": "文章",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-12-15 21:12:39",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 7,
+        "title_with_menu": "文章管理 - 文章",
+        "menu_name": "文章管理",
+        "menu_order": 7,
+        "single_data_id": 7,
+        "menu": {
+          "id": 7,
+          "name": "文章管理",
+          "order": 7,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      }
+    ],
+    "最新消息管理": [
+      {
+        "id": 7,
+        "name": "newsCategory",
+        "title": "最新消息分類",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-12-15 17:12:20",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 6,
+        "title_with_menu": "最新消息管理 - 最新消息分類",
+        "menu_name": "最新消息管理",
+        "menu_order": 6,
+        "single_data_id": 1,
+        "menu": {
+          "id": 6,
+          "name": "最新消息管理",
+          "order": 6,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      },
+      {
+        "id": 8,
+        "name": "news",
+        "title": "最新消息",
+        "entity_id": null,
+        "entity_type": null,
+        "only_owned": 0,
+        "options": null,
+        "scope": null,
+        "created_at": "2021-12-15 17:12:20",
+        "updated_at": "2022-05-18 17:21:43",
+        "order": 0,
+        "navi_visible": 1,
+        "is_single_data": 0,
+        "menu_id": 6,
+        "title_with_menu": "最新消息管理 - 最新消息",
+        "menu_name": "最新消息管理",
+        "menu_order": 6,
+        "single_data_id": 1,
+        "menu": {
+          "id": 6,
+          "name": "最新消息管理",
+          "order": 6,
+          "created_at": "2022-05-18 17:21:43",
+          "updated_at": "2023-01-18 17:28:33"
+        }
+      }
+    ]
+  }
 }
