@@ -1,5 +1,4 @@
 import { SPACES } from '@/src/utils';
-import { Typography } from 'antd';
 import styled from 'styled-components';
 import { BottomBorder, Wrapper } from '../../common';
 
@@ -17,7 +16,7 @@ export function ContentHeader({ text, button }: ContentHeaderProps) {
   return (
     <ContentHeaderWrapper>
       <Wrapper>
-        <Typography>{text}</Typography>
+        <h2>{text}</h2>
         {button}
       </Wrapper>
       <BottomBorder height={SPACES['space-24']} />

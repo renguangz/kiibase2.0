@@ -1,0 +1,86 @@
+{
+  "topic": "搜尋紀錄",
+  "routes": "searchLog",
+  "canBeCreate": false,
+  "canBeDelete": false,
+  "canBeCopy": false,
+  "listExtend": false,
+  "filter": [],
+  "index_join": [],
+  "select_column": [],
+  "list": [
+    {
+      "title": "ID",
+      "name": "id",
+      "sortField": "id"
+    },
+    {
+      "title": "關鍵字",
+      "name": "keyword",
+      "sortField": "keyword"
+    },
+    {
+      "title": "會員",
+      "name": "member_name",
+      "sortField": "member_id"
+    },
+    {
+      "title": "時間",
+      "name": "created_at",
+      "sortField": "created_at"
+    },
+    {
+      "title": "IP位置",
+      "name": "ip",
+      "sortField": "ip"
+    },
+    {
+      "title": "語系",
+      "name": "lang_name",
+      "sortField": "lang"
+    }
+  ],
+  "listOrder": [
+    {
+      "field": "__component:list-input",
+      "sortField": "id",
+      "direction": "desc"
+    }
+  ],
+  "date_filter": true,
+  "date_filter_title": "時間",
+  "date_filter_column": ["created_at"],
+  "search_map": [],
+  "appends": ["member_name", "lang_name"],
+  "excel": {
+    "export": true,
+    "title": ["ID", "關鍵字", "時間", "IP位置"],
+    "join": [[]],
+    "column": ["id", "keyword", "created_at", "ip"]
+  },
+  "module": [
+    {
+      "modelName": "SearchLog",
+      "tableName": "search_logs",
+      "isSelf": true,
+      "type": "VueForm",
+      "extend": false,
+      "relation": "",
+      "with": [],
+      "appends": [],
+      "data": {
+        "keyword": "",
+        "ip": "",
+        "lang": "ZH",
+        "member_id": ""
+      },
+      "schema": {
+        "fields": []
+      },
+      "formOptions": {
+        "validateAfterLoad": true,
+        "validateAfterChanged": true
+      }
+    }
+  ]
+}

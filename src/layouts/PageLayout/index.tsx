@@ -4,7 +4,7 @@ import React from 'react';
 import styled from 'styled-components';
 
 const PageLayoutWrapper = styled(Wrapper)`
-  padding: ${SPACES['space-50']}px;
+  padding: ${SPACES['space-16']}px ${SPACES['space-50']}px;
   padding-bottom: 0;
   flex-direction: column;
   justify-content: flex-start;
