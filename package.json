@@ -17,7 +17,8 @@
     "next": "latest",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "styled-components": "^5.3.6"
+    "styled-components": "^5.3.6",
+    "swr": "^2.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.20.12",
