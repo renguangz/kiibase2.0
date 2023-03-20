@@ -1,6 +1,7 @@
 import { ContentHeader } from '@/src/components/Content';
+import { TableField } from '@/src/components/Table';
 import { PageLayout } from '@/src/layouts';
-import { useGetConfig } from '@/src/utils/hooks';
+import { useContentList, useGetConfig } from '@/src/utils/hooks';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
@@ -9,11 +10,13 @@ export default function ContentListPage() {
   const { asPath } = router;
 
   const { data } = useGetConfig(asPath);
-  console.log(data);
+  const {} = useContentList(asPath);
 
   return (
     <PageLayout>
       <ContentHeader text={`${data?.topic}列表`} button={data?.canBeCreate && <button>建立新的{data.topic}</button>} />
+      <div>filters</div>
+      <TableField columns={data?.list ?? []} dataSource={[]} />
     </PageLayout>
   );
 }

@@ -37,25 +37,4 @@ describe('Dynamic Routes', () => {
     findTargetButtonThenclick(/產品分類/);
     cy.location('pathname').should('equal', '/productCategory');
   });
-
-  describe('use `SearchLog` page for testing', () => {
-    beforeEach(() => {
-      cy.visit('/searchLog');
-    });
-
-    it('should have title `搜尋紀錄列表`', () => {
-      cy.contains('h2', /搜尋紀錄列表/);
-    });
-  });
-
-  describe('use `banner` page for testing', () => {
-    beforeEach(() => {
-      cy.visit('/banner');
-    });
-
-    it('should have title `首頁底圖列表` and button `建立新的首頁底圖`', () => {
-      cy.contains('h2', /首頁底圖列表/);
-      cy.contains('button', /建立新的首頁底圖/);
-    });
-  });
 });

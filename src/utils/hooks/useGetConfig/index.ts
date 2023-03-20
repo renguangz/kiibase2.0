@@ -53,11 +53,6 @@ export function useGetConfig(asPath: string) {
   );
 
   useEffect(() => {
-    if (!mockData) {
-      setLoading(true);
-      return;
-    }
-
     setData(mockData);
   }, [mockData]);
 
