@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { fetchPostData } from '../../fetch';
 import { GenericDataType } from '../../types';
 
@@ -25,14 +25,17 @@ export function useLogin() {
   const [password, setPassword] = useState('');
   const [data, setData] = useState<GenericDataType<ResponseDataType | null> | null>(null);
 
+  const loginDisabled = useMemo(() => account.trim() === '' || password.trim() === '', [account, password]);
+
   const handleLogin = useCallback(async () => {
     const result = await fetchPostData(url, { account, password });
     setData(result);
 
     if (result.status === 200) {
       setAccount('');
-      setPassword('');
     }
+
+    setPassword('');
   }, [account, password, fetchPostData]);
 
   return {
@@ -42,5 +45,6 @@ export function useLogin() {
     setPassword,
     handleLogin,
     data,
+    loginDisabled,
   };
 }
