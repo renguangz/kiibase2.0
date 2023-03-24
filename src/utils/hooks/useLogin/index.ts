@@ -18,7 +18,7 @@ type ResponseDataType = {
   user: UserType;
 };
 
-const url = 'https://base.jenyen-uat.kiitzu.ninja/api/login';
+export const url = 'https://base.jenyen-uat.kiitzu.ninja/api/login';
 
 export function useLogin() {
   const [account, setAccount] = useState('');

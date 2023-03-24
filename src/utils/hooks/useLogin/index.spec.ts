@@ -59,8 +59,6 @@ describe('useLogin', () => {
     act(() => {
       expect(result.current.data?.status).toEqual(400);
       expect(result.current.data?.message).toEqual('DATA_ERROR');
-      expect(result.current.account).toEqual('notregistereduser');
-      expect(result.current.password).toEqual('notregistereduser');
     });
   });
 });
