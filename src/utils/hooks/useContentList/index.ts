@@ -16,7 +16,8 @@ export function useContentList(asPath: string) {
   const { data, isLoading } = useSWR([url, queryString], fetchDataWithQueries);
 
   return {
-    data,
+    data: data?.data,
+    total: data?.total,
     isLoading,
     setQueryParams,
   };

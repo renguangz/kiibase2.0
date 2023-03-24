@@ -17,8 +17,8 @@ describe('useContentList', () => {
 
       expect(useSWR).toHaveBeenCalledTimes(1);
       expect(mockUseSwr).toHaveBeenCalledTimes(1);
-      expect(result.current.data.current_page).toBe(1);
-      expect(result.current.data.per_page).toBe(10);
+      expect(result.current.data.length).toBe(10);
+      expect(result.current.total).toBe(419);
     });
   });
 });
