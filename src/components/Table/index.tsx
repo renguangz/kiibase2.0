@@ -22,16 +22,17 @@ const tableProps: TableProps<DataType> = {
 type TableFieldProps<C> = {
   columns: Array<C>;
   dataSource: any[];
+  total: number;
 };
 
-export function TableField<C>({ columns, dataSource }: TableFieldProps<C>) {
+export function TableField<C>({ columns, dataSource, total }: TableFieldProps<C>) {
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
       <Table
         style={{ minHeight: '60vh', width: '100%' }}
         dataSource={dataSource}
         columns={columns}
-        pagination={{ position: ['bottomRight'] }}
+        pagination={{ position: ['bottomRight'], total }}
       />
     </Form>
   );
