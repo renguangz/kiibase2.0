@@ -50,7 +50,7 @@ export function useGetConfig(asPath: string) {
   const mockData = useMemo(
     () => findMockData(asPath) && fetchMockData(findMockData(asPath)),
     [asPath, findMockData, fetchMockData],
-  );
+  ) as ConfigDataType;
 
   useEffect(() => {
     setData(mockData);
