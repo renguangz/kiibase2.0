@@ -1,20 +1,28 @@
 import React from 'react';
+import { AutoCompleteField } from './AutoCompleteField';
+import { InputTextField } from './InputTextField';
 
-const mapping = [{ name: '', component: () => <div></div> }];
+const mapping = [
+  { name: 'AutoCompleteComponent', component: AutoCompleteField },
+  {
+    name: 'InputTextComponent',
+    component: InputTextField,
+  },
+];
 
 type MapStringToComponent = (name: string) => any;
 
 const mapStringToComponent: MapStringToComponent = (name) =>
-  mapping.find((item) => item.name === name)?.component ?? <div></div>;
+  mapping.find((item) => item.name === name)?.component ?? null;
 
-interface IProps {
+export interface EnhanceFilterFieldProps {
   label?: string;
 }
 
 export function enhanceFilterField(component: string) {
   const Component = mapStringToComponent(component);
 
-  return function (props: IProps) {
+  return function (props: EnhanceFilterFieldProps) {
     return (
       <div>
         {props.label && (
@@ -29,3 +37,6 @@ export function enhanceFilterField(component: string) {
     );
   };
 }
+
+export const EnhanceAutoComplete = enhanceFilterField('AutoCompleteComponent');
+export const EnhanceInputText = enhanceFilterField('InputTextComponent');
