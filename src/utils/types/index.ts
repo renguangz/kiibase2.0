@@ -17,7 +17,7 @@ export type PrimaryKey = string | number;
 export * from './typeGuards';
 
 export type FieldProps<D> = {
-  defaultValue?: D;
+  defaultValue: D;
   form: UseFormReturn<any, any>;
   required: boolean;
   name: string;

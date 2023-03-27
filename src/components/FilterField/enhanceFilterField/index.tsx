@@ -1,5 +1,6 @@
 import React from 'react';
 import { AutoCompleteField } from './AutoCompleteField';
+import { CalendarField } from './CalendarField';
 import { InputTextField } from './InputTextField';
 
 const mapping = [
@@ -8,6 +9,7 @@ const mapping = [
     name: 'InputTextComponent',
     component: InputTextField,
   },
+  { name: 'CalendarComponent', component: CalendarField },
 ];
 
 type MapStringToComponent = (name: string) => any;
@@ -15,9 +17,7 @@ type MapStringToComponent = (name: string) => any;
 const mapStringToComponent: MapStringToComponent = (name) =>
   mapping.find((item) => item.name === name)?.component ?? null;
 
-export interface EnhanceFilterFieldProps {
-  label?: string;
-}
+export type EnhanceFilterFieldProps = Record<'label' | string, any>;
 
 export function enhanceFilterField(component: string) {
   const Component = mapStringToComponent(component);
