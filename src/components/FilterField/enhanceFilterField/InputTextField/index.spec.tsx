@@ -3,6 +3,7 @@ import { act, fireEvent, render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import { InputTextField } from '.';
+import userEvent from '@testing-library/user-event';
 
 describe('InputTextField', () => {
   const setup = (props: FieldProps<string>) => {
@@ -36,5 +37,20 @@ describe('InputTextField', () => {
     });
 
     expect(result.current.getValues('testInputTextField')).toEqual('update input value');
+  });
+
+  it('should change input value', async () => {
+    const defaultValues = { testInputTextField: '' };
+    const { result } = renderHook(() => useForm({ defaultValues }));
+    const props = {
+      form: result.current,
+      required: false,
+      name: 'testInputTextField',
+    };
+    const { input } = setup(props);
+    expect(input).toHaveValue('');
+
+    await userEvent.type(input, 'input will change');
+    expect(input).toHaveValue('input will change');
   });
 });
