@@ -13,7 +13,7 @@ type ConfigDataType = {
   filter: never[];
   index_join: never[];
   select_column: never[];
-  list: any[];
+  list: { title: string; name: string; sortField: string }[];
   listOrder: {
     field: string;
     sortField: string;
@@ -52,12 +52,15 @@ export function useGetConfig(asPath: string) {
     [asPath, findMockData, fetchMockData],
   ) as ConfigDataType;
 
+  const columns = useMemo(() => data?.list.map((item) => ({ field: item.name, header: item.title })), [data]);
+
   useEffect(() => {
     setData(mockData);
   }, [mockData]);
 
   return {
     data,
+    columns,
     loading,
   };
 }

@@ -1,25 +1,9 @@
 import { SPACES } from '@/src/utils';
-import { Form, Table } from 'antd';
+import { Form } from 'antd';
+import { DataTable } from 'primereact/datatable';
+import { Column } from 'primereact/column';
 
-/*
-const tableProps: TableProps<DataType> = {
-  bordered,
-  loading,
-  size,
-  expandable,
-  title: showTitle ? defaultTitle : undefined,
-  showHeader,
-  footer: showfooter ? defaultFooter : undefined,
-  rowSelection,
-  scroll,
-  tableLayout,
-  dataSource={[]}
-  columns={[]}
-  pagination={{ position: ['bottomRight'] }}
-};
-*/
-
-type TableFieldProps<C> = {
+export type TableFieldProps<C> = {
   columns: Array<C>;
   dataSource: any[];
   total: number;
@@ -28,12 +12,11 @@ type TableFieldProps<C> = {
 export function TableField<C>({ columns, dataSource, total }: TableFieldProps<C>) {
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
-      <Table
-        style={{ minHeight: '60vh', width: '100%' }}
-        dataSource={dataSource}
-        columns={columns}
-        pagination={{ position: ['bottomRight'], total }}
-      />
+      <DataTable value={dataSource} rows={10} rowsPerPageOptions={[10, 20, 50]} paginator>
+        {columns.map((column: any) => (
+          <Column key={`column-${Math.random()}`} {...column} />
+        ))}
+      </DataTable>
     </Form>
   );
 }

@@ -1,7 +1,8 @@
 import { ContentHeader } from '@/src/components/Content';
+import { FilterField } from '@/src/components/FilterField';
 import { TableField } from '@/src/components/Table';
 import { PageLayout } from '@/src/layouts';
-import { useContentList, useGetConfig } from '@/src/utils/hooks';
+import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 
@@ -9,14 +10,17 @@ export default function ContentListPage() {
   const router = useRouter();
   const { asPath } = router;
 
-  const { data } = useGetConfig(asPath);
+  const { form, data: filterData } = useFilterField(asPath);
+  const { data, columns } = useGetConfig(asPath);
   const { data: contentData, total: contentDataTotal } = useContentList(asPath);
 
   return (
     <PageLayout>
       <ContentHeader text={`${data?.topic}列表`} button={data?.canBeCreate && <button>建立新的{data.topic}</button>} />
-      <div>filters</div>
-      <TableField columns={data?.list ?? []} dataSource={contentData ?? []} total={contentDataTotal ?? 0} />
+      <div>
+        <FilterField form={form} onSubmit={() => {}} filters={filterData} />
+      </div>
+      <TableField columns={columns ?? []} dataSource={contentData ?? []} total={contentDataTotal ?? 0} />
     </PageLayout>
   );
 }
