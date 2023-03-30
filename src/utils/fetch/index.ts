@@ -1,12 +1,32 @@
+export const getClientCookie = (name: string) => {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop()?.split(';').shift();
+};
+
 export const fetchData = async (url: string) => {
-  const res = await fetch(url);
+  const token = getClientCookie('token');
+  const options = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(url, options);
   const json = await res.json();
 
   return json ?? null;
 };
 
 export const fetchDataWithQueries = async (url: string, query: string) => {
-  const res = await fetch(`${url}${query ?? ''}`);
+  const token = getClientCookie('token');
+  const options = {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+  const res = await fetch(`${url}${query ?? ''}`, options);
   const json = await res.json();
 
   if (res.status !== 200) {
@@ -17,8 +37,13 @@ export const fetchDataWithQueries = async (url: string, query: string) => {
 };
 
 export const fetchPostData = async <B>(url: string, body: B) => {
+  const token = getClientCookie('token');
   const options = {
     method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
     body: JSON.stringify(body),
   };
   const res = await fetch(url, options);

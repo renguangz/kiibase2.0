@@ -1,6 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { fetchPostData } from '../../fetch';
 import { GenericDataType } from '../../types';
+import Cookies from 'js-cookie';
 
 type UserType = {
   id: number;
@@ -32,6 +33,8 @@ export function useLogin() {
     setData(result);
 
     if (result.status === 200) {
+      const token = result.data.token;
+      Cookies.set('token', token, { expires: 7 });
       setAccount('');
     }
 
