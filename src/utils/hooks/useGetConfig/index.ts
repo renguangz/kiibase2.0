@@ -1,7 +1,7 @@
-import { fetchMockData } from '@/src/mock/db/utils/fetchMockData';
-import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog.json';
-import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import useSWR from 'swr';
+import { environments } from '../../environments';
+import { fetchData } from '../../fetch';
 
 type ConfigDataType = {
   topic: string;
@@ -33,34 +33,16 @@ type ConfigDataType = {
   module: any;
 } | null;
 
-const mockMapping = [
-  { mockUrl: '/searchLog', mockData: searchLogConfig },
-  {
-    mockUrl: '/banner',
-    mockData: bannerConfig,
-  },
-];
-
-const findMockData = (url: string) => mockMapping.find((item) => item.mockUrl === url)?.mockData ?? null;
-
 export function useGetConfig(asPath: string) {
-  const [data, setData] = useState<ConfigDataType>(null);
-  const [loading, setLoading] = useState(true);
+  const url = useMemo(() => `${environments.API_HOST}${asPath}/getConfig`, [environments, asPath]);
 
-  const mockData = useMemo(
-    () => findMockData(asPath) && fetchMockData(findMockData(asPath)),
-    [asPath, findMockData, fetchMockData],
-  ) as ConfigDataType;
+  const { data: swrData, isLoading } = useSWR<ConfigDataType>(url, fetchData);
 
-  const columns = useMemo(() => data?.list.map((item) => ({ field: item.name, header: item.title })), [data]);
-
-  useEffect(() => {
-    setData(mockData);
-  }, [mockData]);
+  const columns = useMemo(() => swrData?.list.map((item) => ({ field: item.name, header: item.title })), [swrData]);
 
   return {
-    data,
+    data: swrData,
     columns,
-    loading,
+    isLoading,
   };
 }
