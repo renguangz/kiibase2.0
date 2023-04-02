@@ -34,7 +34,7 @@ export function useFilterField(asPath: string) {
   );
 
   const filters = useMemo(
-    () => (configData ? [...configData.filter, ...basicFilters] : []),
+    () => (configData && configData.filter ? [...configData.filter, ...basicFilters] : []),
     [configData, basicFilters],
   );
 
