@@ -38,7 +38,7 @@ export function useGetConfig(asPath: string) {
 
   const { data: swrData, isLoading } = useSWR<ConfigDataType>(url, fetchData);
 
-  const columns = useMemo(() => swrData?.list.map((item) => ({ field: item.name, header: item.title })), [swrData]);
+  const columns = useMemo(() => swrData?.list?.map((item) => ({ field: item.name, header: item.title })), [swrData]);
 
   return {
     data: swrData,

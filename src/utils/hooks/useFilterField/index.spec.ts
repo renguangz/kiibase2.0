@@ -1,18 +1,27 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useFilterField } from '.';
+import { useGetConfig } from '../useGetConfig';
 
 jest.mock('react-hook-form', () => ({
   useForm: jest.fn(),
 }));
+
+jest.mock('../useGetConfig/');
 
 describe('useFilterField', () => {
   const setup = (asPath: string) => {
     const { result } = renderHook(() => useFilterField(asPath));
     return result.current;
   };
+  const mockUseGetConfig = useGetConfig as jest.MockedFunction<typeof useGetConfig>;
 
   describe('banner', () => {
     it('should return search input filter', async () => {
+      mockUseGetConfig.mockReturnValue({
+        data: {
+          filter: [],
+        },
+      });
       const filters = setup('/banner');
       expect(filters.data).toHaveLength(1);
 
@@ -23,6 +32,12 @@ describe('useFilterField', () => {
 
   describe('search log', () => {
     it('should return search input and date range filters', async () => {
+      mockUseGetConfig.mockReturnValue({
+        data: {
+          filter: [],
+          date_filter: true,
+        },
+      });
       const filters = setup('/searchLog');
       expect(filters.data).toHaveLength(3);
 
