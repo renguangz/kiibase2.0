@@ -18,7 +18,7 @@ export const fetchData = async (url: string) => {
   return json ?? null;
 };
 
-export const fetchDataWithQueries = async (url: string, query: string) => {
+export const fetchDataWithQueries = async (url: string[], query: string) => {
   const token = getClientCookie('token');
   const options = {
     method: 'GET',
@@ -26,7 +26,7 @@ export const fetchDataWithQueries = async (url: string, query: string) => {
       Authorization: `Bearer ${token}`,
     },
   };
-  const res = await fetch(`${url}${query ?? ''}`, options);
+  const res = await fetch(url.join(''), options);
   const json = await res.json();
 
   if (res.status !== 200) {
