@@ -1,0 +1,108 @@
+{
+  "topic": "首頁底圖",
+  "routes": "banner",
+  "canBeCreate": true,
+  "canBeDelete": true,
+  "canBeCopy": false,
+  "listExtend": false,
+  "filter": [],
+  "index_join": [],
+  "select_column": [],
+  "list": [
+    {
+      "name": "__checkbox",
+      "titleClass": "center aligned",
+      "dataClass": "center aligned"
+    },
+    {
+      "title": "ID",
+      "name": "id",
+      "sortField": "id"
+    },
+    {
+      "title": "標題",
+      "name": "title",
+      "sortField": "title"
+    },
+    {
+      "title": "封面圖",
+      "name": "__component:list-image",
+      "sortField": "pic",
+      "dataClass": "center aligned"
+    },
+    {
+      "title": "所在位置",
+      "name": "device_name",
+      "sortField": "device"
+    },
+    {
+      "title": "狀態",
+      "name": "__component:list-select",
+      "sortField": "status",
+      "options": ["ONLINE", "OFFLINE"]
+    },
+    {
+      "title": "權重",
+      "name": "__component:list-input",
+      "sortField": "order"
+    },
+    {
+      "title": "操作",
+      "name": "__slot:actions",
+      "dataClass": "center aligned"
+    }
+  ],
+  "listOrder": [
+    {
+      "field": "__component:list-input",
+      "sortField": "id",
+      "direction": "desc"
+    }
+  ],
+  "date_filter": false,
+  "date_filter_column": [],
+  "search_map": {
+    "桌機版": "PC",
+    "手機版": "MOBILE"
+  },
+  "appends": ["device_name"],
+  "excel": {
+    "export": false,
+    "title": ["id", "title", "pic", "status", "order", "created_at", "updated_at"],
+    "join": [[]],
+    "column": ["id", "title", "pic", "status", "order", "created_at", "updated_at"]
+  },
+  "module": [
+    {
+      "modelName": "Banner",
+      "tableName": "banners",
+      "isSelf": true,
+      "type": "VueForm",
+      "extend": false,
+      "relation": "",
+      "with": [],
+      "appends": [],
+      "data": {
+        "title": "",
+        "pic": "",
+        "device": "PC",
+        "status": "ONLINE",
+        "order": 0
+      },
+      "schema": {
+        "fields": []
+      },
+      "formOptions": {
+        "validateAfterLoad": true,
+        "validateAfterChanged": true
+      },
+      "defaultData": {
+        "title": "",
+        "pic": "",
+        "device": "PC",
+        "status": "ONLINE",
+        "order": 0
+      }
+    }
+  ]
+}
