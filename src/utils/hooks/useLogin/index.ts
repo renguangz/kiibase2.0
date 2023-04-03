@@ -28,6 +28,8 @@ export function useLogin() {
 
   const loginDisabled = useMemo(() => account.trim() === '' || password.trim() === '', [account, password]);
 
+  const hasLoginTokenInCookie = Cookies.get('token') !== undefined;
+
   const handleLogin = useCallback(async () => {
     const result = await fetchPostData(url, { account, password });
     setData(result);
@@ -42,6 +44,7 @@ export function useLogin() {
   }, [account, password, fetchPostData]);
 
   return {
+    hasLoginTokenInCookie,
     account,
     setAccount,
     password,
