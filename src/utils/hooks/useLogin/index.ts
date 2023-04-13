@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState } from 'react';
 import { fetchPostData } from '../../fetch';
 import { GenericDataType } from '../../types';
 import Cookies from 'js-cookie';
-import { environments } from '../../environments';
 
 type UserType = {
   id: number;
@@ -21,7 +20,6 @@ type ResponseDataType = {
 };
 
 export const url = 'https://base.jenyen-uat.kiitzu.ninja/api/login';
-// export const url = `${environments.DOCKER_HOST}/login`;
 
 export function useLogin() {
   const [account, setAccount] = useState('');
