@@ -1,3 +1,8 @@
+import { pipe } from 'fp-ts/lib/function';
+import * as A from 'fp-ts/Array';
+import * as O from 'fp-ts/Option';
+import { environments } from '../environments';
+
 export const isArray = (data: any): boolean => Array.isArray(data);
 
 export const isEvery = (rule: Function) => (data: Array<any>) => data.every((item) => rule(item));
@@ -10,3 +15,24 @@ export const reduceQueryParams = (object: Record<string, string>): string =>
   Object.keys(object).reduce((acc, cur) => (object[cur] ? (acc += `&${cur}=${object[cur]}`) : acc), '');
 
 export const replaceFirstQuery = (data: string) => data.replace('&', '?');
+
+export type StringSplitType = (splitTarget: string) => (path: string) => string[];
+export const stringSplit: StringSplitType = (splitTarget) => (path) => path.split(splitTarget);
+
+export const splitSlash = stringSplit('/');
+
+export type GetContentPathType = (path: string) => string;
+export const getContentPath: GetContentPathType = (path) =>
+  pipe(
+    path,
+    splitSlash,
+    A.lookup(1),
+    O.map((s) => `/${s}`),
+    O.getOrElse(() => '/'),
+  );
+
+type CombineApiUrl = (path: string) => string;
+export const combineApiUrl: CombineApiUrl = (path) => `${environments.DOCKER_HOST}${path}`;
+
+export type IsNotContentDynamicRouteYet = (asPath: string) => boolean;
+export const isNotContentDynamicRouteYet: IsNotContentDynamicRouteYet = (asPath) => asPath.includes('[content]');

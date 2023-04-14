@@ -2,7 +2,11 @@ import { Controller } from 'react-hook-form';
 import { AutoComplete } from 'primereact/autocomplete';
 import { FieldProps } from '@/src/utils';
 
-export function AutoCompleteField({ form, options }: FieldProps<any>) {
+interface AutoCompleteFieldProps extends FieldProps<any> {
+  options: any[];
+}
+
+export function AutoCompleteField({ form, options }: AutoCompleteFieldProps) {
   return (
     <div>
       <Controller

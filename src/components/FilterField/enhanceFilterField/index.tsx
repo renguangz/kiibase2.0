@@ -1,7 +1,9 @@
 import React from 'react';
 import { AutoCompleteField } from './AutoCompleteField';
 import { CalendarField } from './CalendarField';
+import { DropdownField } from './DropDownField';
 import { InputTextField } from './InputTextField';
+import { NotFoundField } from './NotFoundField';
 
 const mapping = [
   { name: 'AutoCompleteComponent', component: AutoCompleteField },
@@ -10,12 +12,13 @@ const mapping = [
     component: InputTextField,
   },
   { name: 'CalendarComponent', component: CalendarField },
+  { name: 'SingleSelectComponent', component: DropdownField },
 ];
 
 type MapStringToComponent = (name: string) => any;
 
 const mapStringToComponent: MapStringToComponent = (name) =>
-  mapping.find((item) => item.name === name)?.component ?? null;
+  mapping.find((item) => item.name === name)?.component ?? NotFoundField;
 
 export type EnhanceFilterFieldProps = Record<'label' | string, any>;
 
