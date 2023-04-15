@@ -1,9 +1,9 @@
 import { FieldProps } from '@/src/utils';
 import { Controller } from 'react-hook-form';
-import { Dropdown } from 'primereact/dropdown';
+import { Select } from 'antd';
 
 interface DropdownFieldProps extends FieldProps<any> {
-  options: { code: string; name: string }[];
+  options: { value: string; label: string }[];
 }
 
 export function DropdownField({ form, options, name, hint, placeholder }: DropdownFieldProps) {
@@ -15,13 +15,11 @@ export function DropdownField({ form, options, name, hint, placeholder }: Dropdo
         control={control}
         rules={{ required: hint }}
         render={({ field }) => (
-          <Dropdown
-            value={field.value}
-            optionLabel={name}
+          <Select
             placeholder={placeholder}
-            name={name}
-            options={options}
-            onChange={field.onChange}
+            onChange={(e) => field.onChange(e)}
+            value={field.value}
+            options={options ?? []}
           />
         )}
       />

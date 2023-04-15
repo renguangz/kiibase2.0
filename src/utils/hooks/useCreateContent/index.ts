@@ -68,9 +68,9 @@ const mapNameToComponent: MapNameToComponent = (data) =>
     })),
   );
 
-type FormatOptions = (options: Array<{ id: string; name: string }>) => Array<{ code: string; name: string }>;
+type FormatOptions = (options: Array<{ id: string; name: string }>) => Array<{ value: string; label: string }>;
 export const formatOptions: FormatOptions = (options) =>
-  options.map((option) => ({ code: option.id, name: option.name }));
+  options.map((option) => ({ value: option.id, label: option.name }));
 
 type FormatSelectData = (data: any[]) => any[];
 export const formatSelectData: FormatSelectData = (data) =>
