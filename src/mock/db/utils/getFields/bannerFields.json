@@ -25,12 +25,12 @@
     "hint": "此欄位必填",
     "options": [
       {
-        "code": "PC",
-        "name": "桌機版"
+        "value": "PC",
+        "label": "桌機版"
       },
       {
-        "code": "MOBILE",
-        "name": "手機版"
+        "value": "MOBILE",
+        "label": "手機版"
       }
     ]
   },
@@ -43,12 +43,12 @@
     "hint": "此欄位必填",
     "options": [
       {
-        "code": "online",
-        "name": "上架"
+        "value": "online",
+        "label": "上架"
       },
       {
-        "code": "offline",
-        "name": "下架"
+        "value": "offline",
+        "label": "下架"
       }
     ]
   },
