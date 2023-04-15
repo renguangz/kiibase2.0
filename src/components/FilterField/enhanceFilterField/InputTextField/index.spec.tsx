@@ -27,16 +27,16 @@ describe('InputTextField', () => {
     expect(input.value).toBe('');
 
     await act(async () => {
-      fireEvent.change(input, { target: { value: 'test new value' } });
+      await userEvent.type(input, 'test new value');
     });
 
-    expect(result.current.getValues('testInputTextField')).toEqual('test new value');
+    expect(input).toHaveValue('test new value');
 
     await act(async () => {
-      fireEvent.change(input, { target: { value: 'update input value' } });
+      await userEvent.type(input, ' update input value');
     });
 
-    expect(result.current.getValues('testInputTextField')).toEqual('update input value');
+    expect(input).toHaveValue('test new value update input value');
   });
 
   it('should change input value', async () => {
