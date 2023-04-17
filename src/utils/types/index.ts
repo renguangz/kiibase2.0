@@ -1,4 +1,4 @@
-import { UseFormReturn } from 'react-hook-form';
+import { Control, FieldValues, UseFormReturn } from 'react-hook-form';
 
 export type ComponentTypes = {
   children: JSX.Element | string;
@@ -23,4 +23,5 @@ export type FieldProps<D> = {
   name: string;
   hint?: string;
   placeholder?: string;
+  control?: Control<FieldValues, any>;
 };

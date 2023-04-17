@@ -1,11 +1,12 @@
 import { pipe } from 'fp-ts/lib/function';
-import { useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import useSWR from 'swr';
 import { fetchData } from '../../fetch';
 import { combineApiUrl, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import { toLowerCase } from 'fp-ts/lib/string';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 
 type ConfigDataType = {
   topic: string;
@@ -79,9 +80,11 @@ export const formatSelectData: FormatSelectData = (data) =>
 const isFieldsApiData = (data: unknown): data is any[] =>
   !!data && Array.isArray(data) && data.every((item) => 'type' in item);
 
-export function useCreateContent(asPath: string) {
-  const [isSubmitButtonDisabled, setIsSubmitButtonDisabled] = useState(true);
+type ShouldCheckDocumentValue = (field: { type: string }) => boolean;
+const shouldCheckDocumentValue: ShouldCheckDocumentValue = (field) =>
+  field.type === 'InputTextComponent' || field.type === 'NotFound';
 
+export function useCreateContent(asPath: string, form: UseFormReturn<FieldValues, any>) {
   const url = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : combineApiUrl(asPath)),
     [isNotContentDynamicRouteYet, combineApiUrl, asPath],
@@ -100,10 +103,20 @@ export function useCreateContent(asPath: string) {
     [isFieldsApiData, getFieldsData, mapNameToComponent, pipe, formatSelectData],
   );
 
+  const requiredFields = useMemo(() => fieldsData?.filter((field) => field.required) ?? [], [fieldsData]);
+
+  const isSubmitButtonDisabled: boolean = useMemo(
+    () => {
+      return false;
+    },
+    // () => requiredFields.every((field) => shouldCheckDocumentValue(field)),
+    [requiredFields, shouldCheckDocumentValue, form],
+  );
+
   return {
     data,
     fieldsData,
+    requiredFields,
     isSubmitButtonDisabled,
-    setIsSubmitButtonDisabled,
   };
 }

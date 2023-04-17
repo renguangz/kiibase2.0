@@ -10,7 +10,7 @@ export function InputTextField({ form, name }: FieldProps<string>) {
         control={form.control}
         render={({ field }) => (
           <div>
-            <InputText id={field.name} />
+            <InputText id={field.name} value={field.value} onChange={(e) => field.onChange(e.target.value)} />
           </div>
         )}
       />

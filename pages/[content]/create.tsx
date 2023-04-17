@@ -8,10 +8,9 @@ import { useForm } from 'react-hook-form';
 export default function CreateContentPage() {
   const router = useRouter();
   const { asPath } = router;
-
   const form = useForm();
 
-  const { data: createConfigData, fieldsData, isSubmitButtonDisabled } = useCreateContent(asPath);
+  const { data: createConfigData, fieldsData, isSubmitButtonDisabled } = useCreateContent(asPath, form);
 
   return (
     <div>
