@@ -3,6 +3,7 @@ import { renderHook } from '@testing-library/react';
 import { fetchMockData } from '@/src/mock/db/utils/fetchMockData';
 import menuItemNavi from '@/src/mock/db/utils/sidebar/menuItemNavi.json';
 import subMenuNavi from '@/src/mock/db/utils/sidebar/subMenuNavi.json';
+import useSWR from 'swr';
 
 type FetchDataUrlType = 'menuItemNavi' | 'subMenuNavi';
 
@@ -21,9 +22,14 @@ jest.mock('../../fetch', () => {
   };
 });
 
+jest.mock('swr');
+
 describe('useSidebar', () => {
   describe('menu items', () => {
     it('should have 7 menu navi items', () => {
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('menuItemNavi') ? menuItemNavi : subMenuNavi,
+      }));
       const { result } = renderHook(useSidebar);
       expect(result.current.menuItemNaviData.length).toEqual(7);
     });
