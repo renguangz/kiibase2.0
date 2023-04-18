@@ -3,14 +3,12 @@ import { ContentHeader } from '@/src/components/Content';
 import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useForm } from 'react-hook-form';
 
 export default function CreateContentPage() {
   const router = useRouter();
   const { asPath } = router;
-  const form = useForm();
 
-  const { data: createConfigData, fieldsData, isSubmitButtonDisabled } = useCreateContent(asPath, form);
+  const { data: createConfigData, form, fieldsData, isSubmitButtonDisabled, handleSubmit } = useCreateContent(asPath);
 
   return (
     <div>
@@ -19,7 +17,7 @@ export default function CreateContentPage() {
         button={<Link href={`/${createConfigData?.routes}`}>{createConfigData?.topic}列表</Link>}
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
-      <button type="button" disabled={isSubmitButtonDisabled}>
+      <button type="button" disabled={isSubmitButtonDisabled} onClick={handleSubmit}>
         確定
       </button>
     </div>

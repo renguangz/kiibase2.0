@@ -16,7 +16,7 @@ export function DropdownField({ form, options, name, hint, placeholder }: Dropdo
         rules={{ required: hint }}
         render={({ field }) => (
           <Select
-            placeholder={placeholder}
+            placeholder={placeholder ?? '請選擇'}
             onChange={(e) => field.onChange(e)}
             value={field.value}
             options={options ?? []}

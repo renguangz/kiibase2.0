@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/lib/function';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo } from 'react';
 import useSWR from 'swr';
-import { fetchData } from '../../fetch';
+import { fetchData, fetchPostData } from '../../fetch';
 import { combineApiUrl, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import { toLowerCase } from 'fp-ts/lib/string';
-import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 
 type ConfigDataType = {
   topic: string;
@@ -84,7 +84,7 @@ type ShouldCheckDocumentValue = (field: { type: string }) => boolean;
 const shouldCheckDocumentValue: ShouldCheckDocumentValue = (field) =>
   field.type === 'InputTextComponent' || field.type === 'NotFound';
 
-export function useCreateContent(asPath: string, form: UseFormReturn<FieldValues, any>) {
+export function useCreateContent(asPath: string) {
   const url = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : combineApiUrl(asPath)),
     [isNotContentDynamicRouteYet, combineApiUrl, asPath],
@@ -97,6 +97,10 @@ export function useCreateContent(asPath: string, form: UseFormReturn<FieldValues
 
   const { data } = useSWR<ConfigDataType>(url, fetchData);
   const { data: getFieldsData } = useSWR(getFieldsUrl, fetchData);
+
+  const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
+  // @TODO: form 在 browser 吃不到 defaultValues
+  const form = useForm({ defaultValues });
 
   const fieldsData = useMemo(
     () => (isFieldsApiData(getFieldsData) ? pipe(getFieldsData, mapNameToComponent, formatSelectData) : undefined),
@@ -113,10 +117,36 @@ export function useCreateContent(asPath: string, form: UseFormReturn<FieldValues
     [requiredFields, shouldCheckDocumentValue, form],
   );
 
+  const handleSubmit = useCallback(() => {
+    const numberForm = pipe(
+      fieldsData,
+      O.fromNullable,
+      O.getOrElse(() => []),
+      A.filter((field: { inputType: string }) => field.inputType === 'number'),
+      A.reduce({}, (acc, cur: { name: string }) => ({ ...acc, [cur.name]: parseInt(form.getValues(cur.name ?? 0)) })),
+    );
+
+    fetchPostData(url, {
+      ...data,
+      module: [
+        {
+          ...data?.module[0],
+          data: {
+            ...data?.module[0]?.data,
+            ...form.watch(),
+            ...numberForm,
+          },
+        },
+      ],
+    });
+  }, [fetchPostData, form, fieldsData, data]);
+
   return {
+    form,
     data,
     fieldsData,
     requiredFields,
     isSubmitButtonDisabled,
+    handleSubmit,
   };
 }

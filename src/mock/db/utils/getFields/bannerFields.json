@@ -43,11 +43,11 @@
     "hint": "此欄位必填",
     "options": [
       {
-        "value": "online",
+        "value": "ONLINE",
         "label": "上架"
       },
       {
-        "value": "offline",
+        "value": "OFFLINE",
         "label": "下架"
       }
     ]
