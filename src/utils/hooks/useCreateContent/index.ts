@@ -99,7 +99,6 @@ export function useCreateContent(asPath: string) {
   const { data: getFieldsData } = useSWR(getFieldsUrl, fetchData);
 
   const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
-  // @TODO: form 在 browser 吃不到 defaultValues
   const form = useForm();
 
   const fieldsData = useMemo(
