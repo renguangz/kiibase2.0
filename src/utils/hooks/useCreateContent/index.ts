@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/lib/function';
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import { fetchData, fetchPostData } from '../../fetch';
 import { combineApiUrl, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
@@ -100,7 +100,7 @@ export function useCreateContent(asPath: string) {
 
   const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
   // @TODO: form 在 browser 吃不到 defaultValues
-  const form = useForm({ defaultValues });
+  const form = useForm();
 
   const fieldsData = useMemo(
     () => (isFieldsApiData(getFieldsData) ? pipe(getFieldsData, mapNameToComponent, formatSelectData) : undefined),
@@ -140,6 +140,11 @@ export function useCreateContent(asPath: string) {
       ],
     });
   }, [fetchPostData, form, fieldsData, data]);
+
+  useEffect(() => {
+    if (Object.keys(defaultValues).length === 0) return;
+    form.reset({ ...defaultValues });
+  }, [defaultValues]);
 
   return {
     form,

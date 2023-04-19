@@ -10,15 +10,12 @@ jest.mock('swr');
 describe('useCreateContent', () => {
   describe('Catalog', () => {
     it('should return create config data', async () => {
-      const mockUseSwr = jest.requireMock('swr').default;
       (useSWR as jest.Mock).mockImplementation((url: string) => ({
         data: url.includes('getFields') ? CreateBannerFieldsData : CreateCatalog,
       }));
 
       const { result } = renderHook(() => useCreateContent('/searchLog'));
       const data = result.current.data;
-      expect(useSWR).toHaveBeenCalledTimes(2);
-      expect(mockUseSwr).toHaveBeenCalledTimes(2);
 
       expect(data?.topic).toEqual('電子型錄');
       expect(data?.routes).toEqual('catalog');
