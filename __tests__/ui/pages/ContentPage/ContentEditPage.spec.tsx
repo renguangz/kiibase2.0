@@ -37,8 +37,8 @@ describe('ContentEditPage', () => {
     expect(titleInput).toHaveValue(expectDefaultValue.title);
     const comboboxes = screen.queryAllByRole('combobox');
     expect(comboboxes).toHaveLength(2);
-    // expect(comboboxes[0]).toHaveValue(expectDefaultValue.device);
-    expect(comboboxes[1]).toHaveValue(expectDefaultValue.status);
+    expect(screen.queryByText('桌機版')).toBeInTheDocument();
+    expect(screen.queryByText('下架')).toBeInTheDocument();
     const orderInput = screen.queryByRole('spinbutton');
     expect(orderInput).toHaveValue(expectDefaultValue.order);
   });
