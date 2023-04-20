@@ -1,7 +1,8 @@
-import { useMemo, useState } from 'react';
+import { pipe } from 'fp-ts/lib/function';
+import { useMemo } from 'react';
 import useSWR from 'swr';
-import { environments } from '../../environments';
 import { fetchData } from '../../fetch';
+import { combineApiUrl, isNotContentDynamicRouteYet } from '../../functions';
 
 type ConfigDataType = {
   topic: string;
@@ -33,8 +34,14 @@ type ConfigDataType = {
   module: any;
 } | null;
 
+type AddGetConfig = (route: string) => string;
+const addGetConfig: AddGetConfig = (route) => `${route}/getConfig`;
+
 export function useGetConfig(asPath: string) {
-  const url = useMemo(() => `${environments.API_HOST}${asPath}/getConfig`, [environments, asPath]);
+  const url = useMemo(
+    () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, combineApiUrl, addGetConfig)),
+    [isNotContentDynamicRouteYet, combineApiUrl, asPath, pipe, addGetConfig],
+  );
 
   const { data: swrData, isLoading } = useSWR<ConfigDataType>(url, fetchData);
 

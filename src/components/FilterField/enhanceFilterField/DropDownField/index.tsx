@@ -8,6 +8,7 @@ interface DropdownFieldProps extends FieldProps<any> {
 
 export function DropdownField({ form, options, name, hint, placeholder }: DropdownFieldProps) {
   const { control } = form;
+
   return (
     <div>
       <Controller

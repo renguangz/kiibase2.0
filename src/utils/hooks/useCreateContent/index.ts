@@ -90,10 +90,12 @@ export function useCreateContent(asPath: string) {
     [isNotContentDynamicRouteYet, combineApiUrl, asPath],
   );
 
-  const getFieldsUrl = useMemo(
-    () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, getContentPath, combineApiUrl, addGetFields)),
-    [isNotContentDynamicRouteYet, pipe, asPath, getContentPath, combineApiUrl, addGetFields],
+  const rootUrl = useMemo(
+    () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, getContentPath, combineApiUrl)),
+    [isNotContentDynamicRouteYet, asPath, pipe, getContentPath, combineApiUrl],
   );
+
+  const getFieldsUrl = useMemo(() => (rootUrl === '' ? '' : addGetFields(rootUrl)), [rootUrl, addGetFields]);
 
   const { data } = useSWR<ConfigDataType>(url, fetchData);
   const { data: getFieldsData } = useSWR(getFieldsUrl, fetchData);
@@ -125,7 +127,7 @@ export function useCreateContent(asPath: string) {
       A.reduce({}, (acc, cur: { name: string }) => ({ ...acc, [cur.name]: parseInt(form.getValues(cur.name ?? 0)) })),
     );
 
-    fetchPostData(url, {
+    fetchPostData(rootUrl, {
       ...data,
       module: [
         {

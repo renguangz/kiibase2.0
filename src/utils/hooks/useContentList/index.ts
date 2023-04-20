@@ -1,7 +1,6 @@
 import { useMemo, useState } from 'react';
-import { reduceQueryParams, replaceFirstQuery } from '../../functions';
+import { combineApiUrl, isNotContentDynamicRouteYet, reduceQueryParams, replaceFirstQuery } from '../../functions';
 import useSWR from 'swr';
-import { environments } from '../../environments';
 import { fetchDataWithQueries } from '../../fetch';
 
 export function useContentList(asPath: string) {
@@ -11,7 +10,10 @@ export function useContentList(asPath: string) {
     sort: 'id%7Cdesc',
   });
 
-  const url = useMemo(() => `${environments.API_HOST}${asPath}`, [environments, asPath]);
+  const url = useMemo(
+    () => (isNotContentDynamicRouteYet(asPath) ? '' : combineApiUrl(asPath)),
+    [isNotContentDynamicRouteYet, combineApiUrl, asPath],
+  );
   const queryString = useMemo(
     () => replaceFirstQuery(reduceQueryParams(queryParams)),
     [replaceFirstQuery, reduceQueryParams, queryParams],
