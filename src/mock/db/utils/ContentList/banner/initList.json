@@ -1,0 +1,75 @@
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 9,
+      "type": "HOMEPAGE",
+      "title": "Cloud Storage 圖片上傳測試",
+      "pic": "banner/20221110-cDmX4dq30QJIXxQImXbiI0MuKoaN08dOsFHt208m-file_example_JPG_100kB.jpg",
+      "device": "PC",
+      "status": "OFFLINE",
+      "order": 0,
+      "created_at": "2022-11-10 19:12:28",
+      "updated_at": "2022-11-10 19:27:39",
+      "device_name": "桌機版"
+    },
+    {
+      "id": 7,
+      "type": "HOMEPAGE",
+      "title": "科技",
+      "pic": "banner/20220621-PinzJHAeOq2WmcnkHsMSey9HSPD2OOt11o3GV33Z.jpg",
+      "device": "MOBILE",
+      "status": "ONLINE",
+      "order": 0,
+      "created_at": "2022-06-21 13:41:08",
+      "updated_at": "2022-09-13 14:02:55",
+      "device_name": "手機版"
+    },
+    {
+      "id": 4,
+      "type": "HOMEPAGE",
+      "title": "kitchen",
+      "pic": "banner/20220510-bOx9jBL50ocG3h1CwmbW1w0ueSNFPk5PYU72TTg2.png",
+      "device": "PC",
+      "status": "ONLINE",
+      "order": 100,
+      "created_at": "2022-04-14 10:52:51",
+      "updated_at": "2022-10-04 10:00:01",
+      "device_name": "桌機版"
+    },
+    {
+      "id": 3,
+      "type": "HOMEPAGE",
+      "title": "標題3",
+      "pic": "banner/20220621-rUWTxZHW1Cl7q80Ri7rjOeAUtDCuFC7E81cHYDpT.jpg",
+      "device": "MOBILE",
+      "status": "ONLINE",
+      "order": 0,
+      "created_at": "2021-12-02 14:11:34",
+      "updated_at": "2022-06-21 13:42:05",
+      "device_name": "手機版"
+    },
+    {
+      "id": 2,
+      "type": "HOMEPAGE",
+      "title": "標題2",
+      "pic": "banner/20220621-D5noX0EM7C2Dhw854ApiEa9cWkYz8l2A9wkXzDLL.jpg",
+      "device": "PC",
+      "status": "ONLINE",
+      "order": 0,
+      "created_at": "2021-12-02 14:11:21",
+      "updated_at": "2022-10-04 08:32:20",
+      "device_name": "桌機版"
+    }
+  ],
+  "first_page_url": "http://localhost:2108/api/banner?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://localhost:2108/api/banner?page=1",
+  "next_page_url": null,
+  "path": "http://localhost:2108/api/banner",
+  "per_page": 15,
+  "prev_page_url": null,
+  "to": 5,
+  "total": 5
+}
