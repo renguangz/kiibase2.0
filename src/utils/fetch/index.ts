@@ -50,3 +50,18 @@ export const fetchPostData = async <B>(url: string, body: B) => {
   const json = await res.json();
   return json ?? null;
 };
+
+type FetchDeleteData = (url: string) => Promise<any>;
+export const fetchDeleteData: FetchDeleteData = async (url) => {
+  const token = getClientCookie('token');
+  const options = {
+    method: 'DELETE',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+  };
+  const res = await fetch(url, options);
+  const json = await res.json();
+  return json ?? null;
+};

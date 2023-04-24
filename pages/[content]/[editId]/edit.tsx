@@ -1,30 +1,43 @@
 import { ContentUpdateField } from '@/src/components';
+import { AlertModal } from '@/src/components/AlertModal';
 import { ContentHeader } from '@/src/components/Content';
 import { useEditContent } from '@/src/utils/hooks';
 import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useMemo } from 'react';
 
-const faketitle = '首頁底圖';
 export default function EditContentPage() {
   const router = useRouter();
-  const { asPath } = router;
+  const { asPath, push, query } = router;
+  const { editId } = query;
+
+  const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
   const { fieldsData } = useCreateContent(asPath);
-  const { form } = useEditContent(asPath);
+  const { form, data, handleOpenConfirmModal, openModal, setOpenModal, deleteContent } = useEditContent(
+    asPath,
+    push,
+    newEditId,
+  );
+
+  const title = useMemo(() => data?.topic ?? '', [data]);
 
   return (
     <div>
       <ContentHeader
-        text={`${faketitle}修改`}
+        text={`${title}修改`}
         button={
           <div>
-            <Link href="/">{faketitle}列表</Link>
-            <button type="button">刪除{faketitle}</button>
+            <Link href="/">{title}列表</Link>
+            <button type="button" onClick={handleOpenConfirmModal}>
+              刪除{title}
+            </button>
           </div>
         }
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
+      {openModal && <AlertModal setModalDisplay={setOpenModal} confirmFunction={deleteContent} />}
     </div>
   );
 }

@@ -29,16 +29,20 @@ describe('TableField', () => {
     render(<TableField {...props} />);
   };
 
-  it('should have 3 columns and 10 rows', () => {
+  it('should have 4 columns and 10 rows', () => {
     const expectTheads = ['col1', 'col2', 'col3'];
     const columns = expectTheads.map((thead) => ({ field: `field-${thead}`, name: '', header: thead }));
     const dataSource = generateDataSource(11, columns, []);
     setup({ columns, dataSource, total: 0 });
 
     const theads = document.querySelectorAll('.p-column-title');
-    expect(theads).toHaveLength(3);
+    expect(theads).toHaveLength(4);
     theads.forEach((thead, index) => {
-      expect(thead.innerHTML).toEqual(expectTheads[index]);
+      if (index === 0) {
+        expect(thead.innerHTML).toEqual('');
+      } else {
+        expect(thead.innerHTML).toEqual(expectTheads[index - 1]);
+      }
     });
 
     const bodyTr = document.querySelectorAll('tbody tr');

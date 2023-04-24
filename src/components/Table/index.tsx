@@ -42,7 +42,15 @@ export function TableField({ columns, dataSource, total }: TableFieldProps) {
 
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
-      <DataTable value={dataSource} rows={10} rowsPerPageOptions={[10, 20, 50]} paginator selectionMode="checkbox">
+      <DataTable
+        value={dataSource}
+        rows={10}
+        rowsPerPageOptions={[10, 20, 50]}
+        dataKey="id"
+        paginator
+        selectionMode="checkbox"
+      >
+        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />
         {displayColumns.map((column: any) => (
           <Column key={`column-${Math.random()}`} {...column} />
         ))}

@@ -55,8 +55,8 @@ describe('ContentListPage', () => {
       expect(title).toBeInTheDocument();
     });
 
-    it('should have table with columns `ID`, `關鍵字`, `會員`, `時間`, `IP位置`, `語系`', async () => {
-      const expectColumns = ['ID', '關鍵字', '會員', '時間', 'IP位置', '語系'];
+    it('should have table with columns checkbox, `ID`, `關鍵字`, `會員`, `時間`, `IP位置`, `語系`', async () => {
+      const expectColumns = ['', 'ID', '關鍵字', '會員', '時間', 'IP位置', '語系'];
       const columns = document.querySelectorAll('.p-column-title');
       expect(columns.length).toBe(expectColumns.length);
 
@@ -85,6 +85,13 @@ describe('ContentListPage', () => {
 
     it('should update table by filter', async () => {
       // @TODO: 要測試 rerender
+    });
+
+    it('should have delete button for deleting multiple table data', async () => {
+      const deleteButton = screen.queryByRole('button', { name: '刪除' });
+      expect(deleteButton).toBeInTheDocument();
+      expect(deleteButton).toBeDisabled();
+      // @TODO: 可以刪除多個資料
     });
   });
 });

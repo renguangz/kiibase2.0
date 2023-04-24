@@ -1,19 +1,35 @@
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import { fetchData } from '../../fetch';
+import { fetchData, fetchDeleteData } from '../../fetch';
 import { combineApiUrl, isNotContentDynamicRouteYet } from '../../functions';
 
-export function useEditContent(asPath: string) {
+export function useEditContent(asPath: string, push: (route: string) => void, editId: string) {
+  const [openModal, setOpenModal] = useState(false);
+
   const url = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : combineApiUrl(asPath)),
     [isNotContentDynamicRouteYet, combineApiUrl, asPath],
+  );
+
+  const editUrl = useMemo(() => url.replace('/edit', ''), [url]);
+
+  const listPageUrl = useMemo(
+    () => (isNotContentDynamicRouteYet(asPath) ? '' : asPath.split(editId)[0]),
+    [isNotContentDynamicRouteYet, asPath, editId],
   );
 
   const { data } = useSWR(url, fetchData);
 
   const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
   const form = useForm();
+
+  const handleOpenConfirmModal = useCallback(() => setOpenModal(true), [setOpenModal]);
+
+  const deleteContent = useCallback(async () => {
+    await fetchDeleteData(editUrl);
+    push(listPageUrl);
+  }, [fetchDeleteData, editUrl, listPageUrl]);
 
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;
@@ -22,6 +38,10 @@ export function useEditContent(asPath: string) {
 
   return {
     data,
+    deleteContent,
+    handleOpenConfirmModal,
+    openModal,
+    setOpenModal,
     form,
   };
 }

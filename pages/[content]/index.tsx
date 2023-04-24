@@ -19,6 +19,9 @@ export default function ContentListPage() {
       <ContentHeader text={`${data?.topic}列表`} button={data?.canBeCreate && <button>建立新的{data.topic}</button>} />
       <div>
         <FilterField form={form} onSubmit={() => {}} filters={filterData} />
+        <button type="button" disabled>
+          刪除
+        </button>
       </div>
       <TableField columns={columns ?? []} dataSource={contentData ?? []} total={contentDataTotal ?? 0} />
     </PageLayout>
