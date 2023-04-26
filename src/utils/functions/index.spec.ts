@@ -1,4 +1,7 @@
+import { renderHook } from '@testing-library/react-hooks';
+import { useForm } from 'react-hook-form';
 import {
+  formatNumberForm,
   formatObjectValueWithPlus,
   getContentPath,
   isNotContentDynamicRouteYet,
@@ -99,6 +102,72 @@ describe('Functions', () => {
         test2: 'test2+1+3',
       };
       expect(formatObjectValueWithPlus(target)).toStrictEqual(expectResult);
+    });
+  });
+
+  describe('FormatNumberForm', () => {
+    it('should format number form', async () => {
+      const target = [
+        {
+          type: 'InputTextComponent',
+          label: '標題',
+          model: 'title',
+          required: true,
+          readonly: false,
+          hint: '此欄位必填',
+          name: 'title',
+        },
+        {
+          type: 'NotFound',
+          label: '封面圖',
+          model: 'pic',
+          required: true,
+          readonly: false,
+          hint: '此欄位必填',
+          help: '<p>檔案類型：.jpg</p><p>桌機版上傳尺寸：1920 x 500px</p><p>手機版上傳尺寸：414 x 460px</p>',
+          name: 'pic',
+        },
+        {
+          type: 'SingleSelectComponent',
+          label: '所在位置',
+          model: 'device',
+          required: true,
+          readonly: false,
+          hint: '此欄位必填',
+          options: [[Object], [Object]],
+          name: 'device',
+        },
+        {
+          type: 'SingleSelectComponent',
+          label: '狀態',
+          model: 'status',
+          required: true,
+          readonly: false,
+          hint: '此欄位必填',
+          options: [[Object], [Object]],
+          name: 'status',
+        },
+        {
+          type: 'InputTextComponent',
+          inputType: 'number',
+          label: '權重',
+          model: 'order',
+          required: true,
+          readonly: false,
+          hint: '此欄位必填',
+          name: 'order',
+        },
+      ];
+      const defaultValues = {
+        title: 'test title',
+        pic: '',
+        device: 'PC',
+        status: 'online',
+        order: '1',
+      };
+      const { result } = renderHook(() => useForm({ defaultValues }));
+      const expectResult = { order: 1 };
+      expect(formatNumberForm(target, result.current.getValues)).toStrictEqual(expectResult);
     });
   });
 });

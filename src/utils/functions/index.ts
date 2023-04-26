@@ -44,3 +44,16 @@ export const replaceSpacesWithPlus: ReplaceSpacesWithPlus = (value) => value.rep
 export type FormatObjectValueWithPlus = (obj: Record<string, string | undefined>) => Record<string, string>;
 export const formatObjectValueWithPlus: FormatObjectValueWithPlus = (obj) =>
   pipe(obj, R.filterMap(O.fromNullable), R.map(replaceSpacesWithPlus));
+
+export type FormatNumberForm = (
+  fields: Array<Record<string | 'inputType', any>> | undefined,
+  getFormValue: any,
+) => Record<string, number>;
+export const formatNumberForm: FormatNumberForm = (fields, getFormValue) =>
+  pipe(
+    fields,
+    O.fromNullable,
+    O.getOrElse(() => [] as Record<string, any>[]),
+    A.filter((field) => field.inputType === 'number'),
+    A.reduce({}, (acc, cur: any) => ({ ...acc, [cur.name]: parseInt(getFormValue(cur.name ?? 0)) })),
+  );

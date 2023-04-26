@@ -2,7 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import { useCallback, useEffect, useMemo } from 'react';
 import useSWR from 'swr';
 import { fetchData, fetchPostData } from '../../fetch';
-import { combineApiUrl, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
+import { combineApiUrl, formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import { toLowerCase } from 'fp-ts/lib/string';
@@ -77,7 +77,7 @@ type FormatSelectData = (data: any[]) => any[];
 export const formatSelectData: FormatSelectData = (data) =>
   data.map((item) => (item.options ? { ...item, options: formatOptions(item.options) } : item));
 
-const isFieldsApiData = (data: unknown): data is any[] =>
+export const isFieldsApiData = (data: unknown): data is any[] =>
   !!data && Array.isArray(data) && data.every((item) => 'type' in item);
 
 type ShouldCheckDocumentValue = (field: { type: string }) => boolean;
@@ -119,13 +119,7 @@ export function useCreateContent(asPath: string) {
   );
 
   const handleSubmit = useCallback(() => {
-    const numberForm = pipe(
-      fieldsData,
-      O.fromNullable,
-      O.getOrElse(() => []),
-      A.filter((field: { inputType: string }) => field.inputType === 'number'),
-      A.reduce({}, (acc, cur: { name: string }) => ({ ...acc, [cur.name]: parseInt(form.getValues(cur.name ?? 0)) })),
-    );
+    const numberForm = formatNumberForm(fieldsData, form.getValues);
 
     fetchPostData(rootUrl, {
       ...data,
@@ -140,7 +134,7 @@ export function useCreateContent(asPath: string) {
         },
       ],
     });
-  }, [fetchPostData, form, fieldsData, data]);
+  }, [fetchPostData, form, fieldsData, data, formatNumberForm]);
 
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;

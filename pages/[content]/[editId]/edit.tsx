@@ -15,11 +15,8 @@ export default function EditContentPage() {
   const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
   const { fieldsData } = useCreateContent(asPath);
-  const { form, data, handleOpenConfirmModal, openModal, setOpenModal, deleteContent } = useEditContent(
-    asPath,
-    push,
-    newEditId,
-  );
+  const { form, data, handleOpenConfirmModal, openModal, setOpenModal, deleteContent, handleSubmitUpdate } =
+    useEditContent(asPath, push, newEditId);
 
   const title = useMemo(() => data?.topic ?? '', [data]);
 
@@ -37,6 +34,9 @@ export default function EditContentPage() {
         }
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
+      <button type="button" onClick={handleSubmitUpdate}>
+        確定
+      </button>
       {openModal && <AlertModal setModalDisplay={setOpenModal} confirmFunction={deleteContent} />}
     </div>
   );

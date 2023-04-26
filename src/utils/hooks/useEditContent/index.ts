@@ -1,8 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import { fetchData, fetchDeleteData } from '../../fetch';
-import { combineApiUrl, isNotContentDynamicRouteYet } from '../../functions';
+import { fetchData, fetchDeleteData, fetchPutData } from '../../fetch';
+import { combineApiUrl, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
+import { useCreateContent } from '../useCreateContent';
 
 export function useEditContent(asPath: string, push: (route: string) => void, editId: string) {
   const [openModal, setOpenModal] = useState(false);
@@ -18,6 +19,7 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
     () => (isNotContentDynamicRouteYet(asPath) ? '' : asPath.split(editId)[0]),
     [isNotContentDynamicRouteYet, asPath, editId],
   );
+  const { fieldsData } = useCreateContent(listPageUrl);
 
   const { data } = useSWR(url, fetchData);
 
@@ -31,6 +33,23 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
     push(listPageUrl);
   }, [fetchDeleteData, editUrl, listPageUrl]);
 
+  const handleSubmitUpdate = useCallback(async () => {
+    const numberForm = formatNumberForm(fieldsData, form.getValues);
+    fetchPutData(editUrl, {
+      ...data,
+      module: [
+        {
+          ...data?.module[0],
+          data: {
+            ...data?.module[0]?.data,
+            ...form.watch(),
+            ...numberForm,
+          },
+        },
+      ],
+    });
+  }, [fetchPutData, editUrl, data, form, formatNumberForm, fieldsData]);
+
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;
     form.reset({ ...defaultValues });
@@ -42,6 +61,7 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
     handleOpenConfirmModal,
     openModal,
     setOpenModal,
+    handleSubmitUpdate,
     form,
   };
 }

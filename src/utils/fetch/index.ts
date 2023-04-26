@@ -18,7 +18,7 @@ export const fetchData = async (url: string) => {
   return json ?? null;
 };
 
-export const fetchDataWithQueries = async (url: string[], query: string) => {
+export const fetchDataWithQueries = async (url: string[]) => {
   const token = getClientCookie('token');
   const options = {
     method: 'GET',
@@ -60,6 +60,22 @@ export const fetchDeleteData: FetchDeleteData = async (url) => {
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
+  };
+  const res = await fetch(url, options);
+  const json = await res.json();
+  return json ?? null;
+};
+
+type FetchPutData = <B>(url: string, body: B) => Promise<any>;
+export const fetchPutData: FetchPutData = async (url, body) => {
+  const token = getClientCookie('token');
+  const options = {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(body),
   };
   const res = await fetch(url, options);
   const json = await res.json();

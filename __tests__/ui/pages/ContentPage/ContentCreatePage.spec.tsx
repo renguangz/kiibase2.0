@@ -1,9 +1,9 @@
 import { render, screen } from '@testing-library/react';
 import ContentCreatePage from '@/pages/[content]/create';
 import userEvent from '@testing-library/user-event';
-import CreateCatalog from '@/src/mock/db/utils/CreateContent/CreateCatalog';
-import CreateBanner from '@/src/mock/db/utils/CreateContent/CreateBanner';
-import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsApi';
+import CreateCatalog from '@/src/mock/db/utils/CreateContent/CreateCatalog.json';
+import CreateBanner from '@/src/mock/db/utils/CreateContent/CreateBanner.json';
+import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';
