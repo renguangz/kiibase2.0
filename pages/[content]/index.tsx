@@ -4,24 +4,35 @@ import { TableField } from '@/src/components/Table';
 import { PageLayout } from '@/src/layouts';
 import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks';
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function ContentListPage() {
   const router = useRouter();
   const { asPath } = router;
 
-  const { form, data: filterData } = useFilterField(asPath);
   const { data, columns } = useGetConfig(asPath);
-  const { data: contentData, total: contentDataTotal } = useContentList(asPath);
+  const { data: contentData, total: contentDataTotal, setQueryParams } = useContentList(asPath);
+  const { form, data: filterData, handleSearch } = useFilterField(asPath, setQueryParams);
+
+  useEffect(() => {
+    form.reset();
+  }, [form]);
 
   return (
     <PageLayout>
-      <ContentHeader text={`${data?.topic}列表`} button={data?.canBeCreate && <button>建立新的{data.topic}</button>} />
+      <ContentHeader
+        text={`${data?.topic}列表`}
+        button={data?.canBeCreate && <Link href={`${asPath}/create`}>建立新的{data.topic}</Link>}
+      />
       <div>
-        <FilterField form={form} onSubmit={() => {}} filters={filterData} />
-        <button type="button" disabled>
-          刪除
-        </button>
+        <FilterField form={form} onSubmit={handleSearch} filters={filterData} />
+        {data?.canBeDelete && (
+          <button type="button" disabled>
+            刪除
+          </button>
+        )}
       </div>
       <TableField columns={columns ?? []} dataSource={contentData ?? []} total={contentDataTotal ?? 0} />
     </PageLayout>

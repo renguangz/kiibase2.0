@@ -2,6 +2,7 @@ import { pipe } from 'fp-ts/lib/function';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import { environments } from '../environments';
+import * as R from 'fp-ts/Record';
 
 export const isArray = (data: any): boolean => Array.isArray(data);
 
@@ -36,3 +37,10 @@ export const combineApiUrl: CombineApiUrl = (path) => `${environments.DOCKER_HOS
 
 export type IsNotContentDynamicRouteYet = (asPath: string) => boolean;
 export const isNotContentDynamicRouteYet: IsNotContentDynamicRouteYet = (asPath) => asPath.includes('[content]');
+
+export type ReplaceSpacesWithPlus = (value: string) => string;
+export const replaceSpacesWithPlus: ReplaceSpacesWithPlus = (value) => value.replaceAll(' ', '+');
+
+export type FormatObjectValueWithPlus = (obj: Record<string, string | undefined>) => Record<string, string>;
+export const formatObjectValueWithPlus: FormatObjectValueWithPlus = (obj) =>
+  pipe(obj, R.filterMap(O.fromNullable), R.map(replaceSpacesWithPlus));

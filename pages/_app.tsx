@@ -15,7 +15,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
   }, [hasLoginTokenInCookie, router]);
   return (
     <DefaultLayout>
-      <Component {...pageProps} />
+      <Component {...pageProps} key={router.asPath} />
     </DefaultLayout>
   );
 }

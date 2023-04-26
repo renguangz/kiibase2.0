@@ -1,55 +1,44 @@
 import ContentListPage from '@/pages/[content]';
-import { render, renderHook, screen } from '@testing-library/react';
+import useSWR from 'swr';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { useForm } from 'react-hook-form';
-import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog';
-import searchListData from '@/src/mock/db/utils/ContentList/searchLog/initList';
-
-window.matchMedia = jest.fn().mockImplementation(() => {
-  return {
-    matches: false,
-    addListener: jest.fn(),
-    removeListener: jest.fn(),
-  };
-});
+import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog.json';
+import searchListData from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
+import searchListEmptyData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_empty.json';
+import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
+import { useRouter } from 'next/router';
+import * as fetchUtils from '@/src/utils/fetch';
 
 jest.mock('next/router', () => ({
-  useRouter: () => ({
-    asPath: '/searchLog',
-  }),
+  useRouter: jest.fn(),
 }));
 
-const { result } = renderHook(() => useForm({ defaultValues: { tableSearch: '' } }));
+jest.mock('swr');
 
-const mockUseFilterField = jest.fn(() => ({
-  form: result.current,
-  data: [
-    { component: 'InputTextComponent', props: { lable: 'table search title', name: 'tableSearch', required: false } },
-  ],
-}));
-
-const mockUseContentList = jest.fn(() => ({
-  data: searchListData.data,
-}));
-
-const mockUseGetConfig = jest.fn(() => ({
-  data: searchLogConfig,
-  columns: searchLogConfig.list.map((item: any) => ({ field: item.name, header: item.title })),
-  total: 10,
-}));
-
-jest.mock('@/src/utils/hooks', () => ({
-  useContentList: () => mockUseContentList(),
-  useFilterField: () => mockUseFilterField(),
-  useGetConfig: () => mockUseGetConfig(),
-}));
+jest.mock('@/src/utils/fetch');
 
 describe('ContentListPage', () => {
-  beforeEach(() => {
-    render(<ContentListPage />);
-  });
-
   describe('SearchLog Page', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig')
+          ? searchLogConfig
+          : url.includes('no_content')
+          ? searchListEmptyData
+          : url.includes('haha')
+          ? searchListFilterData
+          : searchListData,
+      }));
+
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/searchLog',
+      });
+
+      render(<ContentListPage />);
+    });
+
     it('should have title `搜尋紀錄列表` and subtitle `檢視全部搜尋紀錄`', async () => {
       const title = screen.getByRole('heading', { name: /搜尋紀錄列表/ });
       expect(title).toBeInTheDocument();
@@ -65,9 +54,9 @@ describe('ContentListPage', () => {
       });
     });
 
-    it('should have table', async () => {
+    it('should have table with not value after filtering', async () => {
       const submitButton = screen.getByRole('button', { name: '送出' });
-      const searchInput = document.getElementById('tableSearch') as HTMLInputElement;
+      const searchInput = document.getElementById('filter') as HTMLInputElement;
       expect(searchInput).toHaveValue('');
 
       const rows = screen.getAllByRole('row');
@@ -76,21 +65,42 @@ describe('ContentListPage', () => {
       await userEvent.type(searchInput, 'no content');
       expect(searchInput).toHaveValue('no content');
 
-      userEvent.click(submitButton);
-
-      mockUseContentList.mockReturnValueOnce({
-        data: [],
-      });
+      await userEvent.click(submitButton);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('searchLog'), expect.stringContaining('filter=no+content')],
+        fetchUtils.fetchDataWithQueries,
+      );
     });
 
     it('should update table by filter', async () => {
-      // @TODO: 要測試 rerender
+      const submitButton = screen.getByRole('button', { name: '送出' });
+      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      expect(searchInput).toHaveValue('');
+
+      await userEvent.type(searchInput, 'haha');
+      await userEvent.click(submitButton);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('searchLog'), expect.stringContaining('filter=haha')],
+        fetchUtils.fetchDataWithQueries,
+      );
+    });
+
+    it('should call useSWR after clicking submit button', async () => {
+      const submitButton = screen.getByRole('button', { name: '送出' });
+      await userEvent.click(submitButton);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('searchLog'), expect.not.stringContaining('filter=')],
+        fetchUtils.fetchDataWithQueries,
+      );
     });
 
     it('should have delete button for deleting multiple table data', async () => {
       const deleteButton = screen.queryByRole('button', { name: '刪除' });
-      expect(deleteButton).toBeInTheDocument();
-      expect(deleteButton).toBeDisabled();
+      expect(deleteButton).not.toBeInTheDocument();
+      // expect(deleteButton).toBeDisabled();
       // @TODO: 可以刪除多個資料
     });
   });

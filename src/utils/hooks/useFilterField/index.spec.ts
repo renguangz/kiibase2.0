@@ -2,10 +2,6 @@ import { renderHook } from '@testing-library/react-hooks';
 import { useFilterField } from '.';
 import { useGetConfig } from '../useGetConfig';
 
-jest.mock('react-hook-form', () => ({
-  useForm: jest.fn(),
-}));
-
 jest.mock('../useGetConfig/');
 
 describe('useFilterField', () => {
@@ -41,13 +37,17 @@ describe('useFilterField', () => {
       const filters = setup('/searchLog');
       expect(filters.data).toHaveLength(3);
 
-      const expectFilterName = ['start_date', 'end_date', 'tableSearch'];
+      const expectFilterName = ['start_date', 'end_date', 'filter'];
       const expectFilterComponent = ['CalendarComponent', 'CalendarComponent', 'InputTextComponent'];
 
       filters.data.forEach((filter, index) => {
         expect(filter.props.name).toEqual(expectFilterName[index]);
         expect(filter.component).toEqual(expectFilterComponent[index]);
       });
+    });
+
+    it('should ', async () => {
+      const result = setup('/searchLog');
     });
   });
 });

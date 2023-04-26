@@ -1,8 +1,9 @@
-import { useMemo } from 'react';
+import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { formatObjectValueWithPlus } from '../../functions';
 import { useGetConfig } from '../useGetConfig';
 
-export function useFilterField(asPath: string) {
+export function useFilterField(asPath: string, setQueryParams: Dispatch<SetStateAction<Record<string, any>>>) {
   const form = useForm();
 
   const { data: configData } = useGetConfig(asPath);
@@ -12,7 +13,7 @@ export function useFilterField(asPath: string) {
       component: 'InputTextComponent',
       props: {
         label: 'table search title',
-        name: 'tableSearch',
+        name: 'filter',
         required: false,
       },
     }),
@@ -38,8 +39,14 @@ export function useFilterField(asPath: string) {
     [configData, basicFilters],
   );
 
+  const handleSearch = useCallback(() => {
+    const formFields = formatObjectValueWithPlus(form.control._formValues);
+    setQueryParams((query) => ({ ...query, ...formFields }));
+  }, [form, setQueryParams, formatObjectValueWithPlus]);
+
   return {
     form,
     data: filters,
+    handleSearch,
   };
 }
