@@ -151,6 +151,16 @@ describe('Functions', () => {
           type: 'InputTextComponent',
           inputType: 'number',
           label: '權重',
+          model: 'testNumber',
+          required: true,
+          readonly: false,
+          hint: '此欄位必填',
+          name: 'testNumber',
+        },
+        {
+          type: 'InputTextComponent',
+          inputType: 'number',
+          label: '權重',
           model: 'order',
           required: true,
           readonly: false,
@@ -163,10 +173,11 @@ describe('Functions', () => {
         pic: '',
         device: 'PC',
         status: 'online',
+        testNumber: '123',
         order: '1',
       };
       const { result } = renderHook(() => useForm({ defaultValues }));
-      const expectResult = { order: 1 };
+      const expectResult = { order: 1, testNumber: 123 };
       expect(formatNumberForm(target, result.current.getValues)).toStrictEqual(expectResult);
     });
   });

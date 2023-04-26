@@ -55,5 +55,5 @@ export const formatNumberForm: FormatNumberForm = (fields, getFormValue) =>
     O.fromNullable,
     O.getOrElse(() => [] as Record<string, any>[]),
     A.filter((field) => field.inputType === 'number'),
-    A.reduce({}, (acc, cur: any) => ({ ...acc, [cur.name]: parseInt(getFormValue(cur.name ?? 0)) })),
+    A.reduce({}, (acc, cur: any) => ({ ...acc, [cur.model]: parseInt(getFormValue(cur.model ?? 0)) })),
   );

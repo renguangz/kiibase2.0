@@ -1,9 +1,10 @@
+import { pipe } from 'fp-ts/lib/function';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import { fetchData, fetchDeleteData, fetchPutData } from '../../fetch';
 import { combineApiUrl, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
-import { useCreateContent } from '../useCreateContent';
+import { addGetFields, removeEndingSlash } from '../useCreateContent';
 
 export function useEditContent(asPath: string, push: (route: string) => void, editId: string) {
   const [openModal, setOpenModal] = useState(false);
@@ -19,8 +20,13 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
     () => (isNotContentDynamicRouteYet(asPath) ? '' : asPath.split(editId)[0]),
     [isNotContentDynamicRouteYet, asPath, editId],
   );
-  const { fieldsData } = useCreateContent(listPageUrl);
 
+  const getFieldsUrl = useMemo(
+    () => (listPageUrl === '' ? '' : pipe(listPageUrl, removeEndingSlash, addGetFields, combineApiUrl)),
+    [listPageUrl, addGetFields, pipe, combineApiUrl, removeEndingSlash],
+  );
+
+  const { data: fieldsData } = useSWR(getFieldsUrl, fetchData);
   const { data } = useSWR(url, fetchData);
 
   const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);

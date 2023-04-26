@@ -38,8 +38,12 @@ type ConfigDataType = {
   module: any;
 } | null;
 
+type RemoveEndingSlash = (route: string) => string;
+export const removeEndingSlash: RemoveEndingSlash = (route) =>
+  route[route.length - 1] === '/' ? route.substring(0, route.length - 1) : route;
+
 type AddGetFields = (route: string) => string;
-const addGetFields: AddGetFields = (route) => `${route}/getFields`;
+export const addGetFields: AddGetFields = (route) => `${route}/getFields`;
 
 type MappingType = { name: string; component: string };
 const mapping: MappingType[] = [
