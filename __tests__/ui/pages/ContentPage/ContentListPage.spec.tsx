@@ -1,6 +1,6 @@
 import ContentListPage from '@/pages/[content]';
 import useSWR from 'swr';
-import { render, screen } from '@testing-library/react';
+import { act, render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog.json';
 import searchListData from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
@@ -18,6 +18,13 @@ jest.mock('swr');
 jest.mock('@/src/utils/fetch');
 
 describe('ContentListPage', () => {
+  const dateNowSpy = jest.spyOn(Date, 'now');
+  const dateNow = new Date('2023-04-28T00:00:00.000Z');
+
+  dateNowSpy.mockImplementation(() => dateNow.valueOf());
+
+  afterAll(() => dateNowSpy.mockRestore());
+
   describe('SearchLog Page', () => {
     beforeEach(() => {
       jest.resetAllMocks();
@@ -83,6 +90,48 @@ describe('ContentListPage', () => {
       expect(useSWR).toHaveBeenNthCalledWith(
         8,
         [expect.stringContaining('searchLog'), expect.stringContaining('filter=haha')],
+        fetchUtils.fetchDataWithQueries,
+      );
+    });
+
+    it('should update table by calendar `start_date` and `tableSearch` filter', async () => {
+      const submitButton = screen.getByRole('button', { name: '送出' });
+      const startDateInput = document.getElementById('start_date') as HTMLInputElement;
+      const endDateInput = document.getElementById('end_date') as HTMLInputElement;
+      expect(startDateInput).toBeInTheDocument();
+      expect(endDateInput).toBeInTheDocument();
+
+      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      await userEvent.type(searchInput, 'haha');
+      await userEvent.click(startDateInput);
+      const chosenStartDate = screen.queryAllByText('26')[1] as HTMLSpanElement;
+      await userEvent.click(chosenStartDate);
+      await userEvent.click(submitButton);
+
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('searchLog'), expect.stringContaining('start_date=2023-04-26&filter=haha')],
+        fetchUtils.fetchDataWithQueries,
+      );
+    });
+
+    it('should update table by calendar `end_date` and `tableSearch` filter', async () => {
+      const submitButton = screen.getByRole('button', { name: '送出' });
+      const startDateInput = document.getElementById('start_date') as HTMLInputElement;
+      const endDateInput = document.getElementById('end_date') as HTMLInputElement;
+      expect(startDateInput).toBeInTheDocument();
+      expect(endDateInput).toBeInTheDocument();
+
+      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      await userEvent.type(searchInput, 'no content');
+      await userEvent.click(endDateInput);
+      const chosenStartDate = screen.queryAllByText('28')[1] as HTMLSpanElement;
+      await userEvent.click(chosenStartDate);
+      await userEvent.click(submitButton);
+
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('searchLog'), expect.stringContaining('end_date=2023-04-28&filter=no+content')],
         fetchUtils.fetchDataWithQueries,
       );
     });

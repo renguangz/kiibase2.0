@@ -1,10 +1,13 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import {
+  formatDateString,
   formatNumberForm,
+  formatObjectDateToString,
   formatObjectValueWithPlus,
   getContentPath,
   isNotContentDynamicRouteYet,
+  pipeFormatObject,
   reduceQueryParams,
   replaceFirstQuery,
   replaceSpacesWithPlus,
@@ -179,6 +182,71 @@ describe('Functions', () => {
       const { result } = renderHook(() => useForm({ defaultValues }));
       const expectResult = { order: 1, testNumber: 123 };
       expect(formatNumberForm(target, result.current.getValues)).toStrictEqual(expectResult);
+    });
+  });
+
+  describe('FormaObjectDateToString', () => {
+    const testDate = new Date('2023/04/26');
+    describe('FormatDateString', () => {
+      it('should return format date with string type', async () => {
+        const target = testDate;
+        const expectResult = '2023-04-26';
+        expect(formatDateString(target)).toEqual(expectResult);
+      });
+
+      it('should return `2020-01-01`', () => {
+        const target = new Date('2020/1/1');
+        expect(formatDateString(target)).toEqual('2020-01-01');
+      });
+    });
+
+    it('should return to correct object', async () => {
+      const target = {
+        test1: 'test 1 2 3',
+        test2: testDate,
+        test3: 23,
+        test4: undefined,
+      };
+      const expectResult = {
+        test1: 'test 1 2 3',
+        test2: '2023-04-26',
+        test3: 23,
+        test4: undefined,
+      };
+      expect(formatObjectDateToString(target)).toStrictEqual(expectResult);
+    });
+
+    it('should return same target if no date types in object', async () => {
+      const target = {
+        test1: 'test 1 2 3',
+        test2: '2023-04-26',
+        test3: 23,
+        test4: undefined,
+      };
+      expect(formatObjectDateToString(target)).toStrictEqual(target);
+    });
+  });
+
+  describe('Final Record Format', () => {
+    const testDate = new Date('2023/4/6');
+    const resultDate = '2023-04-06';
+    const testDate2 = new Date('2023/12/24');
+    const resultDate2 = '2023-12-24';
+    it('should return correct formatted object', async () => {
+      const target = {
+        test1: 'test 1 2 3',
+        test2: testDate,
+        test3: testDate2,
+        test4: undefined,
+        test5: 'test',
+      };
+      const expectResult = {
+        test1: 'test+1+2+3',
+        test2: resultDate,
+        test3: resultDate2,
+        test5: 'test',
+      };
+      expect(pipeFormatObject(target)).toStrictEqual(expectResult);
     });
   });
 });

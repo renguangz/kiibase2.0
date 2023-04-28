@@ -41,9 +41,15 @@ export const isNotContentDynamicRouteYet: IsNotContentDynamicRouteYet = (asPath)
 export type ReplaceSpacesWithPlus = (value: string) => string;
 export const replaceSpacesWithPlus: ReplaceSpacesWithPlus = (value) => value.replaceAll(' ', '+');
 
-export type FormatObjectValueWithPlus = (obj: Record<string, string | undefined>) => Record<string, string>;
+export type FormatObjectValueWithPlus = (
+  obj: Record<string, string | number | undefined>,
+) => Record<string, string | number>;
 export const formatObjectValueWithPlus: FormatObjectValueWithPlus = (obj) =>
-  pipe(obj, R.filterMap(O.fromNullable), R.map(replaceSpacesWithPlus));
+  pipe(
+    obj,
+    R.filterMap(O.fromNullable),
+    R.mapWithIndex((_k, v) => (typeof v === 'string' ? replaceSpacesWithPlus(v) : v)),
+  );
 
 export type FormatNumberForm = (
   fields: Array<Record<string | 'inputType', any>> | undefined,
@@ -57,3 +63,32 @@ export const formatNumberForm: FormatNumberForm = (fields, getFormValue) =>
     A.filter((field) => field.inputType === 'number'),
     A.reduce({}, (acc, cur: any) => ({ ...acc, [cur.model]: parseInt(getFormValue(cur.model ?? 0)) })),
   );
+
+export const isDate = (value: unknown): value is Date => value instanceof Date;
+
+export type PadZero = (n: number) => string;
+export const padZero: PadZero = (n) => (n < 10 ? `0${n}` : `${n}`);
+
+export type FormatDateString = (date: Date) => string;
+export const formatDateString: FormatDateString = (date) =>
+  pipe(
+    {
+      year: date.getFullYear(),
+      month: date.getMonth() + 1,
+      day: date.getDate(),
+    },
+    ({ year, month, day }) => `${year}-${padZero(month)}-${padZero(day)}`,
+  );
+
+export type FormatObjectDateToString = (
+  obj: Record<string, string | number | Date | undefined>,
+) => Record<string, string | number | undefined>;
+export const formatObjectDateToString: FormatObjectDateToString = (obj) =>
+  pipe(
+    obj,
+    R.mapWithIndex((_k, v) => (isDate(v) ? formatDateString(v) : v)),
+  );
+
+export type PipeFormatObject = (obj: Record<string, any | Date>) => Record<string, any | Date>;
+export const pipeFormatObject: PipeFormatObject = (obj) =>
+  pipe(obj, formatObjectDateToString, formatObjectValueWithPlus);

@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction, useCallback, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import { formatObjectValueWithPlus } from '../../functions';
+import { pipeFormatObject } from '../../functions';
 import { useGetConfig } from '../useGetConfig';
 
 export function useFilterField(asPath: string, setQueryParams: Dispatch<SetStateAction<Record<string, any>>>) {
@@ -40,9 +40,9 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
   );
 
   const handleSearch = useCallback(() => {
-    const formFields = formatObjectValueWithPlus(form.control._formValues);
+    const formFields = pipeFormatObject(form.control._formValues);
     setQueryParams((query) => ({ ...query, ...formFields }));
-  }, [form, setQueryParams, formatObjectValueWithPlus]);
+  }, [form, setQueryParams, pipeFormatObject]);
 
   return {
     form,

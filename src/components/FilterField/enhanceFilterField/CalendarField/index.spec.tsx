@@ -1,30 +1,24 @@
-import { FieldProps } from '@/src/utils';
-import { act, fireEvent, render, renderHook } from '@testing-library/react';
+import { render, renderHook, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 import { CalendarField } from '.';
 
 describe('CalendarField', () => {
-  const setup = (props: FieldProps<string>) => {
-    render(<CalendarField {...props} />);
-    const input = document.getElementById(props.name) as HTMLInputElement;
-    return { input };
-  };
-  it('should select date', async () => {
-    const defaultValues = {
-      testCalendar: '',
-    };
-    const { result } = renderHook(() => useForm({ defaultValues }));
+  const mockDate = new Date('2023-04-27T00:00:00');
+  const spy = jest.spyOn(global, 'Date').mockImplementation(() => mockDate);
+  afterAll(() => spy.mockRestore());
+
+  it('should change display value to chosen date', async () => {
+    const { result } = renderHook(() => useForm());
     const props = {
       form: result.current,
-      required: true,
       name: 'testCalendar',
     };
-    const { input } = setup(props);
-
-    expect(input.value).toBe('');
-
-    await act(async () => {
-      fireEvent.click(input);
-    });
+    render(<CalendarField defaultValue={undefined} required={false} {...props} />);
+    const input = screen.getByRole('textbox');
+    await userEvent.click(input);
+    const chosenDate = screen.queryAllByText('27')[1] as HTMLSpanElement;
+    await userEvent.click(chosenDate);
+    expect(screen.getByRole('textbox')).toHaveValue('');
   });
 });

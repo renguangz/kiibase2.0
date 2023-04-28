@@ -4,6 +4,8 @@ import '@/styles/global.css';
 import type { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
+import 'primereact/resources/themes/saga-blue/theme.css';
+import 'primereact/resources/primereact.min.css';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
