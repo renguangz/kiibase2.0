@@ -29,20 +29,22 @@ describe('TableField', () => {
     render(<TableField {...props} />);
   };
 
-  it('should have 4 columns and 10 rows', () => {
+  it('should have 3 columns and 10 rows', () => {
     const expectTheads = ['col1', 'col2', 'col3'];
     const columns = expectTheads.map((thead) => ({ field: `field-${thead}`, name: '', header: thead }));
     const dataSource = generateDataSource(11, columns, []);
-    setup({ columns, dataSource, total: 0 });
+    setup({
+      columns,
+      dataSource,
+      total: 0,
+      selectedRow: undefined,
+      setSeletedRow: undefined,
+    });
 
     const theads = document.querySelectorAll('.p-column-title');
-    expect(theads).toHaveLength(4);
+    expect(theads).toHaveLength(3);
     theads.forEach((thead, index) => {
-      if (index === 0) {
-        expect(thead.innerHTML).toEqual('');
-      } else {
-        expect(thead.innerHTML).toEqual(expectTheads[index - 1]);
-      }
+      expect(thead.innerHTML).toEqual(expectTheads[index]);
     });
 
     const bodyTr = document.querySelectorAll('tbody tr');
@@ -63,6 +65,8 @@ describe('TableField', () => {
       ],
       dataSource: bannerList.data,
       total: bannerList.total,
+      selectedRow: undefined,
+      setSeletedRow: undefined,
     };
 
     beforeEach(() => render(<TableField {...props} />));

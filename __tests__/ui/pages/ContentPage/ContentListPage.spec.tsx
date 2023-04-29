@@ -1,9 +1,11 @@
 import ContentListPage from '@/pages/[content]';
 import useSWR from 'swr';
-import { act, render, screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog.json';
+import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
 import searchListData from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
+import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import searchListEmptyData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_empty.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
 import { useRouter } from 'next/router';
@@ -51,8 +53,8 @@ describe('ContentListPage', () => {
       expect(title).toBeInTheDocument();
     });
 
-    it('should have table with columns checkbox, `ID`, `關鍵字`, `會員`, `時間`, `IP位置`, `語系`', async () => {
-      const expectColumns = ['', 'ID', '關鍵字', '會員', '時間', 'IP位置', '語系'];
+    it('should have table with columns `ID`, `關鍵字`, `會員`, `時間`, `IP位置`, `語系`', async () => {
+      const expectColumns = ['ID', '關鍵字', '會員', '時間', 'IP位置', '語系'];
       const columns = document.querySelectorAll('.p-column-title');
       expect(columns.length).toBe(expectColumns.length);
 
@@ -146,11 +148,42 @@ describe('ContentListPage', () => {
       );
     });
 
-    it('should have delete button for deleting multiple table data', async () => {
+    it('should not have delete button and checkboxes', () => {
       const deleteButton = screen.queryByRole('button', { name: '刪除' });
       expect(deleteButton).not.toBeInTheDocument();
-      // expect(deleteButton).toBeDisabled();
-      // @TODO: 可以刪除多個資料
+      const checkboxes = screen.queryAllByRole('checkbox');
+      expect(checkboxes).toHaveLength(0);
+    });
+  });
+
+  describe('Banner Page', () => {
+    beforeEach(() => {
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig') ? bannerConfig : bannerListData,
+      }));
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/banner',
+      });
+
+      render(<ContentListPage />);
+    });
+
+    it('should have delete button for deleting multiple table data', async () => {
+      const deleteButton = screen.queryByRole('button', { name: '刪除' }) as HTMLButtonElement;
+      expect(deleteButton).toBeInTheDocument();
+      expect(deleteButton).toBeDisabled();
+
+      const checkboxes = screen.queryAllByRole('checkbox');
+      expect(checkboxes).toHaveLength(bannerListData.data.length + 1);
+
+      await userEvent.click(checkboxes[1]);
+      await userEvent.click(checkboxes[2]);
+
+      expect(deleteButton).toBeEnabled();
+      await userEvent.click(deleteButton);
+      expect(fetchUtils.fetchPostData).toHaveBeenCalledWith(expect.stringContaining('/banner/deleteAll'), [9, 7]);
     });
   });
 });

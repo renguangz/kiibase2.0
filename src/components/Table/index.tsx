@@ -12,6 +12,9 @@ type Field = {
   header?: string;
 };
 
+type IsCheckboxColumn = (field: Field) => boolean;
+const isCheckboxColumn: IsCheckboxColumn = (field) => field.name === '__checkbox';
+
 type IsImageColumn = (field: Field) => boolean;
 const isImageColumn: IsImageColumn = (field) => field.name === '__component:list-image';
 
@@ -22,9 +25,11 @@ export type TableFieldProps = {
   columns: Array<Field>;
   dataSource: any[];
   total: number;
+  selectedRow: any;
+  setSeletedRow: any;
 };
 
-export function TableField({ columns, dataSource, total }: TableFieldProps) {
+export function TableField({ columns, dataSource, total, selectedRow, setSeletedRow }: TableFieldProps) {
   const displayColumns = useMemo(
     () =>
       columns.map((column) =>
@@ -49,14 +54,19 @@ export function TableField({ columns, dataSource, total }: TableFieldProps) {
         dataKey="id"
         paginator
         selectionMode="checkbox"
+        selection={selectedRow}
+        onSelectionChange={(e) => setSeletedRow(e.value)}
       >
-        <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />
-        {displayColumns.map((column: any) => (
-          <Column key={`column-${Math.random()}`} {...column} />
-        ))}
+        {displayColumns.map((column) =>
+          isCheckboxColumn(column) ? checkboxColumnTemplate() : <Column key={`column-${Math.random()}`} {...column} />,
+        )}
       </DataTable>
     </Form>
   );
+}
+
+function checkboxColumnTemplate() {
+  return <Column selectionMode="multiple" headerStyle={{ width: '3rem' }} />;
 }
 
 function fullImageColumnTemplate(data: { pic: string }) {

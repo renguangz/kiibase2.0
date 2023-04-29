@@ -14,7 +14,15 @@ export default function ContentListPage() {
 
   const { data, columns } = useGetConfig(asPath);
   const { data: contentData, total: contentDataTotal, setQueryParams } = useContentList(asPath);
-  const { form, data: filterData, handleSearch } = useFilterField(asPath, setQueryParams);
+  const {
+    form,
+    data: filterData,
+    handleSearch,
+    selectedRow,
+    setSelectedRow,
+    disableListDeleteButton,
+    handleDeleteAll,
+  } = useFilterField(asPath, setQueryParams);
 
   useEffect(() => {
     form.reset();
@@ -29,12 +37,18 @@ export default function ContentListPage() {
       <div>
         <FilterField form={form} onSubmit={handleSearch} filters={filterData} />
         {data?.canBeDelete && (
-          <button type="button" disabled>
+          <button type="button" disabled={disableListDeleteButton} onClick={handleDeleteAll}>
             刪除
           </button>
         )}
       </div>
-      <TableField columns={columns ?? []} dataSource={contentData ?? []} total={contentDataTotal ?? 0} />
+      <TableField
+        selectedRow={selectedRow}
+        setSeletedRow={setSelectedRow}
+        columns={columns ?? []}
+        dataSource={contentData ?? []}
+        total={contentDataTotal ?? 0}
+      />
     </PageLayout>
   );
 }
