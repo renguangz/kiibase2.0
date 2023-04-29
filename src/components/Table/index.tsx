@@ -1,4 +1,4 @@
-import { combineApiUrl, SPACES } from '@/src/utils';
+import { combineStorageUrl, SPACES } from '@/src/utils';
 import { Form } from 'antd';
 import { DataTable } from 'primereact/datatable';
 import { Column } from 'primereact/column';
@@ -70,7 +70,7 @@ function checkboxColumnTemplate() {
 }
 
 function fullImageColumnTemplate(data: { pic: string }) {
-  const srcUrl = useMemo(() => `http://localhost:2108/storage/${data.pic}`, [combineApiUrl, data]);
+  const srcUrl = useMemo(() => `${combineStorageUrl('')}/${data.pic}`, [combineStorageUrl, data]);
   return (
     <div>
       <img src={srcUrl} alt={srcUrl} role="img" width={200} height={150} />

@@ -20,7 +20,6 @@ type ResponseDataType = {
   user: UserType;
 };
 
-// export const url = 'https://base.jenyen-uat.kiitzu.ninja/api/login';
 export const url = `${environments.DOCKER_HOST}/login`;
 
 export function useLogin() {
