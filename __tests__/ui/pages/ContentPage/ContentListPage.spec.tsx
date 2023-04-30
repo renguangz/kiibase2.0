@@ -20,15 +20,10 @@ jest.mock('swr');
 jest.mock('@/src/utils/fetch');
 
 describe('ContentListPage', () => {
-  const dateNowSpy = jest.spyOn(Date, 'now');
-  const dateNow = new Date('2023-04-28T00:00:00.000Z');
-
-  dateNowSpy.mockImplementation(() => dateNow.valueOf());
-
-  afterAll(() => dateNowSpy.mockRestore());
-
+  const mockDateNow = new Date('2023-04-28T00:00:00.000Z');
   describe('SearchLog Page', () => {
     beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(mockDateNow);
       jest.resetAllMocks();
 
       (useSWR as jest.Mock).mockImplementation((url: string) => ({
@@ -46,6 +41,7 @@ describe('ContentListPage', () => {
       });
 
       render(<ContentListPage />);
+      jest.useRealTimers();
     });
 
     it('should have title `搜尋紀錄列表` and subtitle `檢視全部搜尋紀錄`', async () => {
@@ -106,13 +102,14 @@ describe('ContentListPage', () => {
       const searchInput = document.getElementById('filter') as HTMLInputElement;
       await userEvent.type(searchInput, 'haha');
       await userEvent.click(startDateInput);
-      const chosenStartDate = screen.queryAllByText('26')[1] as HTMLSpanElement;
+      const chosenStartDate = screen.queryByText('15') as HTMLSpanElement;
+      expect(chosenStartDate).toBeInTheDocument();
       await userEvent.click(chosenStartDate);
       await userEvent.click(submitButton);
 
       expect(useSWR).toHaveBeenNthCalledWith(
         8,
-        [expect.stringContaining('searchLog'), expect.stringContaining('start_date=2023-04-26&filter=haha')],
+        [expect.stringContaining('searchLog'), expect.stringContaining('start_date=2023-04-15&filter=haha')],
         fetchUtils.fetchDataWithQueries,
       );
     });
@@ -128,6 +125,7 @@ describe('ContentListPage', () => {
       await userEvent.type(searchInput, 'no content');
       await userEvent.click(endDateInput);
       const chosenStartDate = screen.queryAllByText('28')[1] as HTMLSpanElement;
+      expect(chosenStartDate).toBeInTheDocument();
       await userEvent.click(chosenStartDate);
       await userEvent.click(submitButton);
 
@@ -153,6 +151,65 @@ describe('ContentListPage', () => {
       expect(deleteButton).not.toBeInTheDocument();
       const checkboxes = screen.queryAllByRole('checkbox');
       expect(checkboxes).toHaveLength(0);
+    });
+
+    it('should call useSWR after changing pages', async () => {
+      const page4 = screen.queryByRole('button', { name: '4' }) as HTMLButtonElement;
+      expect(page4).toBeInTheDocument();
+      await userEvent.click(page4);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('api/searchLog'), expect.stringContaining('page=4')],
+        fetchUtils.fetchDataWithQueries,
+      );
+    });
+
+    it('should call useSWR after changing `per_page', async () => {
+      const dropdown = document.querySelector('.p-dropdown-label') as HTMLDivElement;
+      expect(dropdown).toBeInTheDocument();
+      await userEvent.click(dropdown);
+      const option20 = screen.queryByText(20) as HTMLOptionElement;
+      expect(option20).toBeInTheDocument();
+      await userEvent.click(option20);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        8,
+        [expect.stringContaining('api/searchLog'), expect.stringContaining('page=1&per_page=20')],
+        fetchUtils.fetchDataWithQueries,
+      );
+    });
+
+    it('should call useSWR when changing pages and will call useSWR with page=1 after search filter', async () => {
+      const page4 = screen.queryByRole('button', { name: '4' }) as HTMLButtonElement;
+      expect(page4).toBeInTheDocument();
+      await userEvent.click(page4);
+
+      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      await userEvent.type(searchInput, 'haha');
+      const submitButton = screen.getByRole('button', { name: '送出' });
+      await userEvent.click(submitButton);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        11,
+        [expect.stringContaining('searchLog'), '?page=1&per_page=10&sort=id%7Cdesc&filter=haha'],
+        fetchUtils.fetchDataWithQueries,
+      );
+    });
+
+    it('should call useSWR with `page=1` after changing per_page', async () => {
+      const page4 = screen.queryByRole('button', { name: '4' }) as HTMLButtonElement;
+      expect(page4).toBeInTheDocument();
+      await userEvent.click(page4);
+
+      const dropdown = document.querySelector('.p-dropdown-label') as HTMLDivElement;
+      expect(dropdown).toBeInTheDocument();
+      await userEvent.click(dropdown);
+      const option20 = screen.queryByText(20) as HTMLOptionElement;
+      expect(option20).toBeInTheDocument();
+      await userEvent.click(option20);
+      expect(useSWR).toHaveBeenNthCalledWith(
+        11,
+        [expect.stringContaining('searchLog'), expect.stringContaining('page=1&per_page=20')],
+        fetchUtils.fetchDataWithQueries,
+      );
     });
   });
 

@@ -26,7 +26,7 @@ describe('useContentList', () => {
 
     describe('filter data', () => {
       it('should add `filter=haha` to swr queries after fire handleSearch', async () => {
-        const initSwr = [expect.stringContaining('/searchLog'), '?page=1&perPage=10&sort=id%7Cdesc'];
+        const initSwr = [expect.stringContaining('/searchLog'), '?page=1&per_page=10&sort=id%7Cdesc'];
         expect(useSWR).toHaveBeenCalledWith(initSwr, fetchUtils.fetchDataWithQueries);
       });
     });

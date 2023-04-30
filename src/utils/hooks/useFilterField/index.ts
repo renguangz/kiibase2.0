@@ -47,7 +47,7 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
 
   const handleSearch = useCallback(() => {
     const formFields = pipeFormatObject(form.control._formValues);
-    setQueryParams((query) => ({ ...query, ...formFields }));
+    setQueryParams((query) => ({ ...query, page: 1, ...formFields }));
   }, [form, setQueryParams, pipeFormatObject]);
 
   const handleDeleteAll = useCallback(async () => {

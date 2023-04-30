@@ -13,7 +13,14 @@ export default function ContentListPage() {
   const { asPath } = router;
 
   const { data, columns } = useGetConfig(asPath);
-  const { data: contentData, total: contentDataTotal, setQueryParams } = useContentList(asPath);
+  const {
+    data: contentData,
+    total: contentDataTotal,
+    queryParams,
+    setQueryParams,
+    handleChangePage,
+    handleChangePerPage,
+  } = useContentList(asPath);
   const {
     form,
     data: filterData,
@@ -43,6 +50,9 @@ export default function ContentListPage() {
         )}
       </div>
       <TableField
+        handleChangePage={handleChangePage}
+        handleChangePerPage={handleChangePerPage}
+        perPage={queryParams['per_page']}
         selectedRow={selectedRow}
         setSeletedRow={setSelectedRow}
         columns={columns ?? []}
