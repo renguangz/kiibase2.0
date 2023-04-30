@@ -69,5 +69,6 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
     setOpenModal,
     handleSubmitUpdate,
     form,
+    listPageUrl,
   };
 }

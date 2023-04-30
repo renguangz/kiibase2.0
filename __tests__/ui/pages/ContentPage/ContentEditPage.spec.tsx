@@ -40,6 +40,7 @@ describe('ContentEditPage', () => {
     expect(title).toBeInTheDocument();
 
     const linkButton = screen.queryByRole('link', { name: '首頁底圖列表' });
+    expect(linkButton).toHaveAttribute('href', '/testrouter');
     expect(linkButton).toBeInTheDocument();
   });
 

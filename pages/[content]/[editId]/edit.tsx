@@ -15,8 +15,16 @@ export default function EditContentPage() {
   const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
   const { fieldsData } = useCreateContent(asPath);
-  const { form, data, handleOpenConfirmModal, openModal, setOpenModal, deleteContent, handleSubmitUpdate } =
-    useEditContent(asPath, push, newEditId);
+  const {
+    listPageUrl,
+    form,
+    data,
+    handleOpenConfirmModal,
+    openModal,
+    setOpenModal,
+    deleteContent,
+    handleSubmitUpdate,
+  } = useEditContent(asPath, push, newEditId);
 
   const title = useMemo(() => data?.topic ?? '', [data]);
 
@@ -26,7 +34,7 @@ export default function EditContentPage() {
         text={`${title}修改`}
         button={
           <div>
-            <Link href="/">{title}列表</Link>
+            <Link href={listPageUrl}>{title}列表</Link>
             <button type="button" onClick={handleOpenConfirmModal}>
               刪除{title}
             </button>
