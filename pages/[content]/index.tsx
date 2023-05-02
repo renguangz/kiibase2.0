@@ -50,6 +50,7 @@ export default function ContentListPage() {
         )}
       </div>
       <TableField
+        currentPage={queryParams['page']}
         handleChangePage={handleChangePage}
         handleChangePerPage={handleChangePerPage}
         perPage={queryParams['per_page']}

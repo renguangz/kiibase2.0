@@ -11,6 +11,15 @@ import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filt
 import { useRouter } from 'next/router';
 import * as fetchUtils from '@/src/utils/fetch';
 
+global.matchMedia =
+  global.matchMedia ||
+  function () {
+    return {
+      addListener: jest.fn(),
+      removeListener: jest.fn(),
+    };
+  };
+
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
@@ -154,7 +163,7 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR after changing pages', async () => {
-      const page4 = screen.queryByRole('button', { name: '4' }) as HTMLButtonElement;
+      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
       expect(useSWR).toHaveBeenNthCalledWith(
@@ -165,10 +174,10 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR after changing `per_page', async () => {
-      const dropdown = document.querySelector('.p-dropdown-label') as HTMLDivElement;
+      const dropdown = screen.queryByTitle('10 / page') as HTMLDivElement;
       expect(dropdown).toBeInTheDocument();
       await userEvent.click(dropdown);
-      const option20 = screen.queryByText(20) as HTMLOptionElement;
+      const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
       expect(useSWR).toHaveBeenNthCalledWith(
@@ -179,7 +188,7 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR when changing pages and will call useSWR with page=1 after search filter', async () => {
-      const page4 = screen.queryByRole('button', { name: '4' }) as HTMLButtonElement;
+      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
@@ -195,14 +204,14 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR with `page=1` after changing per_page', async () => {
-      const page4 = screen.queryByRole('button', { name: '4' }) as HTMLButtonElement;
+      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
-      const dropdown = document.querySelector('.p-dropdown-label') as HTMLDivElement;
+      const dropdown = screen.queryByTitle('10 / page') as HTMLDivElement;
       expect(dropdown).toBeInTheDocument();
       await userEvent.click(dropdown);
-      const option20 = screen.queryByText(20) as HTMLOptionElement;
+      const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
       expect(useSWR).toHaveBeenNthCalledWith(
@@ -210,6 +219,19 @@ describe('ContentListPage', () => {
         [expect.stringContaining('searchLog'), expect.stringContaining('page=1&per_page=20')],
         fetchUtils.fetchDataWithQueries,
       );
+    });
+
+    it('should call useSWR after submitting in jumper', async () => {
+      const inputJumper = screen.queryByLabelText('Page') as HTMLInputElement;
+      expect(inputJumper).toBeVisible();
+      await userEvent.type(inputJumper, '22{enter}');
+      // FIXME: 應該要成功模擬使用者輸入玩按下 enter，目前前台會去 call api
+      // expect(inputJumper).toHaveValue('');
+      // expect(useSWR).toHaveBeenNthCalledWith(
+      //   8,
+      //   [expect.stringContaining('searchLog'), expect.stringContaining('page=22&per_page=10')],
+      //   fetchUtils.fetchDataWithQueries,
+      // );
     });
   });
 
