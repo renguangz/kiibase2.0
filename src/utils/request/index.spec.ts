@@ -14,6 +14,7 @@ describe('Request', () => {
     global.fetch = mockFetch;
     mockFetch.mockReturnValue(
       Promise.resolve({
+        ok: true,
         json: () => Promise.resolve({ status: 200, message: 'success' }),
       }),
     );
@@ -26,6 +27,7 @@ describe('Request', () => {
     global.fetch = mockFetch;
     mockFetch.mockImplementation((url: string) =>
       Promise.resolve({
+        ok: true,
         json: () =>
           url.includes('?age=25&name=John')
             ? Promise.resolve({ status: 200, message: 'success with queries' })
@@ -66,6 +68,7 @@ describe('Request', () => {
     mockFetch.mockImplementation((_url: string, options: Record<'method' | 'body', any>) =>
       options.method === 'POST' && options.body === successOptions.body
         ? Promise.resolve({
+            ok: true,
             json: () => ({ status: 200, message: 'success post' }),
           })
         : Promise.reject({
@@ -91,7 +94,7 @@ describe('Request', () => {
     const promiseResolve = { status: 200, message: 'success' };
     mockFetch.mockImplementation((url: string, options: Record<'method' | 'body', any>) => {
       if (!url.includes('testid') || !options.body) return Promise.reject(promiseReject);
-      return Promise.resolve({ json: () => promiseResolve });
+      return Promise.resolve({ ok: true, json: () => promiseResolve });
     });
 
     const rejectResult1 = await request('testput', options);
@@ -112,7 +115,7 @@ describe('Request', () => {
     const promiseResolve = { status: 200, message: 'success' };
     mockFetch.mockImplementation((url: string, options: Record<'method' | 'body', any>) => {
       if (!url.includes('testid') || options.method !== 'DELETE') return Promise.reject(promiseReject);
-      return Promise.resolve({ json: () => promiseResolve });
+      return Promise.resolve({ ok: true, json: () => promiseResolve });
     });
 
     const rejectResult1 = await request('testdelete', options);
