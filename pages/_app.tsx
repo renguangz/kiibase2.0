@@ -6,6 +6,8 @@ import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
+import { SWRConfig } from 'swr';
+import { request } from '@/src/utils/request';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -16,8 +18,10 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     if (!hasLoginTokenInCookie) router.push('/auth/login');
   }, [hasLoginTokenInCookie, router]);
   return (
-    <DefaultLayout>
-      <Component {...pageProps} key={router.asPath} />
-    </DefaultLayout>
+    <SWRConfig value={{ refreshInterval: 0, fetcher: request }}>
+      <DefaultLayout>
+        <Component {...pageProps} key={router.asPath} />
+      </DefaultLayout>
+    </SWRConfig>
   );
 }
