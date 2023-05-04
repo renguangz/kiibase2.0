@@ -40,17 +40,20 @@ export const stringifyParams: StringifyParams = (params) =>
     S.replace('&', ''),
   );
 
-const catchError = (error: any) => {
-  if (error.status === 401) return { status: 401, message: 'unauthorized' };
-  return error;
-};
-
 type RequestType = (endpoint: string, requestOptions: RequestInit & RequestOptions) => any;
 export const request: RequestType = (endpoint, requestOptions) => {
   const token = getClientCookie('token');
   const paramsString = stringifyParams(requestOptions?.params ?? {});
   const search = paramsString === '' ? paramsString : `?${paramsString}`;
-  const responseParser = requestOptions?.responseParser ?? ((res: any) => res.json());
+  const responseParser =
+    requestOptions?.responseParser ??
+    ((res: any) => {
+      if (!res.ok) {
+        if (res.status === 401) return res.statusText;
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    });
   delete requestOptions?.responseParser;
   const url = `${environments.DOCKER_HOST}${endpoint}${search}`;
 
@@ -63,5 +66,5 @@ export const request: RequestType = (endpoint, requestOptions) => {
     },
   })
     .then(responseParser)
-    .catch(catchError);
+    .catch((err) => err);
 };
