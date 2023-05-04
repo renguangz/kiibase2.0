@@ -1,7 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import { combineApiUrl, isNotContentDynamicRouteYet, reduceQueryParams, replaceFirstQuery } from '../../functions';
+import { isNotContentDynamicRouteYet } from '../../functions';
 import useSWR from 'swr';
-import { fetchDataWithQueries } from '../../fetch';
 
 export function useContentList(asPath: string) {
   const [queryParams, setQueryParams] = useState<Record<string, any>>({
@@ -10,16 +9,12 @@ export function useContentList(asPath: string) {
     sort: 'id%7Cdesc',
   });
 
-  const url = useMemo(
-    () => (isNotContentDynamicRouteYet(asPath) ? '' : combineApiUrl(asPath)),
-    [isNotContentDynamicRouteYet, combineApiUrl, asPath],
-  );
-  const queryString = useMemo(
-    () => replaceFirstQuery(reduceQueryParams(queryParams)),
-    [replaceFirstQuery, reduceQueryParams, queryParams],
+  const endpoint = useMemo(
+    () => (isNotContentDynamicRouteYet(asPath) ? '' : asPath),
+    [isNotContentDynamicRouteYet, asPath],
   );
 
-  const { data, isLoading } = useSWR([url, queryString], fetchDataWithQueries);
+  const { data } = useSWR([endpoint, { params: queryParams }]);
 
   const handleChangePage = useCallback(
     (currentPage: number) => {
@@ -38,7 +33,6 @@ export function useContentList(asPath: string) {
   return {
     data: data?.data,
     total: data?.total,
-    isLoading,
     setQueryParams,
     queryParams,
     handleChangePage,

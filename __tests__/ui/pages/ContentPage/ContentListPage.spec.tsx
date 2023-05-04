@@ -68,7 +68,7 @@ describe('ContentListPage', () => {
       });
     });
 
-    it('should have table with not value after filtering', async () => {
+    it('should have table with no value after filtering', async () => {
       const submitButton = screen.getByRole('button', { name: '送出' });
       const searchInput = document.getElementById('filter') as HTMLInputElement;
       expect(searchInput).toHaveValue('');
@@ -80,11 +80,13 @@ describe('ContentListPage', () => {
       expect(searchInput).toHaveValue('no content');
 
       await userEvent.click(submitButton);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('searchLog'), expect.stringContaining('filter=no+content')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        filter: 'no+content',
+        page: 1,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+      };
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should update table by filter', async () => {
@@ -94,11 +96,13 @@ describe('ContentListPage', () => {
 
       await userEvent.type(searchInput, 'haha');
       await userEvent.click(submitButton);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('searchLog'), expect.stringContaining('filter=haha')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        filter: 'haha',
+        page: 1,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+      };
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should update table by calendar `start_date` and `tableSearch` filter', async () => {
@@ -116,11 +120,15 @@ describe('ContentListPage', () => {
       await userEvent.click(chosenStartDate);
       await userEvent.click(submitButton);
 
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('searchLog'), expect.stringContaining('start_date=2023-04-15&filter=haha')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        filter: 'haha',
+        page: 1,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+        start_date: '2023-04-15',
+      };
+
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should update table by calendar `end_date` and `tableSearch` filter', async () => {
@@ -138,21 +146,28 @@ describe('ContentListPage', () => {
       await userEvent.click(chosenStartDate);
       await userEvent.click(submitButton);
 
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('searchLog'), expect.stringContaining('end_date=2023-04-28&filter=no+content')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        filter: 'no+content',
+        page: 1,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+        end_date: '2023-04-28',
+      };
+
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should call useSWR after clicking submit button', async () => {
       const submitButton = screen.getByRole('button', { name: '送出' });
       await userEvent.click(submitButton);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('searchLog'), expect.not.stringContaining('filter=')],
-        fetchUtils.fetchDataWithQueries,
-      );
+
+      const params = {
+        page: 1,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+      };
+
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should not have delete button and checkboxes', () => {
@@ -166,11 +181,12 @@ describe('ContentListPage', () => {
       const page4 = screen.queryByTitle('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('api/searchLog'), expect.stringContaining('page=4')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        page: 4,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+      };
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should call useSWR after changing `per_page', async () => {
@@ -180,11 +196,12 @@ describe('ContentListPage', () => {
       const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        8,
-        [expect.stringContaining('api/searchLog'), expect.stringContaining('page=1&per_page=20')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        page: 1,
+        per_page: 20,
+        sort: 'id%7Cdesc',
+      };
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
     });
 
     it('should call useSWR when changing pages and will call useSWR with page=1 after search filter', async () => {
@@ -196,11 +213,13 @@ describe('ContentListPage', () => {
       await userEvent.type(searchInput, 'haha');
       const submitButton = screen.getByRole('button', { name: '送出' });
       await userEvent.click(submitButton);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        11,
-        [expect.stringContaining('searchLog'), '?page=1&per_page=10&sort=id%7Cdesc&filter=haha'],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        filter: 'haha',
+        page: 1,
+        per_page: 10,
+        sort: 'id%7Cdesc',
+      };
+      expect(useSWR).toHaveBeenNthCalledWith(11, ['/searchLog', { params }]);
     });
 
     it('should call useSWR with `page=1` after changing per_page', async () => {
@@ -214,11 +233,12 @@ describe('ContentListPage', () => {
       const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
-      expect(useSWR).toHaveBeenNthCalledWith(
-        11,
-        [expect.stringContaining('searchLog'), expect.stringContaining('page=1&per_page=20')],
-        fetchUtils.fetchDataWithQueries,
-      );
+      const params = {
+        page: 1,
+        per_page: 20,
+        sort: 'id%7Cdesc',
+      };
+      expect(useSWR).toHaveBeenNthCalledWith(11, ['/searchLog', { params }]);
     });
 
     it('should call useSWR after submitting in jumper', async () => {

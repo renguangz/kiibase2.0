@@ -1,8 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
 import { ItemType } from 'antd/es/menu/hooks/useItems';
 import useSWR from 'swr';
-import { environments } from '../../environments';
-import { fetchData } from '../../fetch';
 
 export type MenuItemsDataType = {
   id: string;
@@ -34,15 +32,12 @@ export const mapSubMenuData: MapSubMenuDataType = (data) =>
 export function useSidebar() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-  const menuUrl = useMemo(() => `${environments.DOCKER_HOST}/menuItemNavi`, [environments]);
-  const subMenuUrl = useMemo(() => `${environments.DOCKER_HOST}/subMenuNavi`, [environments]);
-
-  const { data: menuItemNaviData } = useSWR(menuUrl, fetchData);
-  const { data: subMenuNaviData } = useSWR(subMenuUrl, fetchData);
+  const { data: menuItemNaviData } = useSWR('/menuItemNavi');
+  const { data: subMenuNaviData } = useSWR('/subMenuNavi');
 
   const subMenuItems = useMemo(() => mapSubMenuData(subMenuNaviData ?? []) ?? [], [subMenuNaviData]);
 
-  const onOpenChange = useCallback((keys) => setOpenKeys(keys), []);
+  const onOpenChange = useCallback((keys: any) => setOpenKeys(keys), []);
 
   return {
     menuItemNaviData,

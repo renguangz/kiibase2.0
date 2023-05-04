@@ -1,26 +1,8 @@
 import { useSidebar } from '.';
 import { renderHook } from '@testing-library/react';
-import { fetchMockData } from '@/src/mock/db/utils/fetchMockData';
 import menuItemNavi from '@/src/mock/db/utils/sidebar/menuItemNavi.json';
 import subMenuNavi from '@/src/mock/db/utils/sidebar/subMenuNavi.json';
 import useSWR from 'swr';
-
-type FetchDataUrlType = 'menuItemNavi' | 'subMenuNavi';
-
-jest.mock('../../fetch', () => {
-  return {
-    async fetchData(url: FetchDataUrlType) {
-      switch (url) {
-        case 'menuItemNavi':
-          return fetchMockData(menuItemNavi);
-        case 'subMenuNavi':
-          return fetchMockData(subMenuNavi);
-        default:
-          return null;
-      }
-    },
-  };
-});
 
 jest.mock('swr');
 
