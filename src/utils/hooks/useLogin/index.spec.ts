@@ -3,16 +3,22 @@ import { useLogin } from '.';
 import authAccounts from '@/src/mock/db/utils/auth/accounts.json';
 import successfullLogin from '@/src/mock/db/utils/auth/successLogin.json';
 import failLogin from '@/src/mock/db/utils/auth/failLogin.json';
+import * as requestUtils from '@/src/utils/request';
+
+jest.mock('@/src/utils/request', () => ({
+  ...jest.requireActual('@/src/utils/request'),
+  request: jest.fn(),
+}));
 
 const ACCOUNTS = authAccounts.data;
 
 describe('useLogin', () => {
+  afterEach(() => jest.resetAllMocks());
+
   it('should successfull login then clear account and password', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(successfullLogin),
-      }),
-    );
+    (requestUtils.request as jest.Mock).mockResolvedValue({
+      ...successfullLogin,
+    });
 
     const { result } = renderHook(() => useLogin());
 
@@ -26,7 +32,12 @@ describe('useLogin', () => {
       await result.current.handleLogin();
     });
 
-    expect(fetch).toHaveBeenCalled();
+    expect(requestUtils.request).toHaveBeenCalledTimes(1);
+    const body = JSON.stringify({
+      account: ACCOUNTS[0].account,
+      password: ACCOUNTS[0].password,
+    });
+    expect(requestUtils.request).toHaveBeenCalledWith('/login', { method: 'POST', body });
 
     act(() => {
       expect(result.current.data?.status).toEqual(200);
@@ -37,11 +48,7 @@ describe('useLogin', () => {
   });
 
   it('should fail login and do not clear account and password', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(failLogin),
-      }),
-    );
+    (requestUtils.request as jest.Mock).mockResolvedValue({ ...failLogin });
 
     const { result } = renderHook(() => useLogin());
 
@@ -54,7 +61,12 @@ describe('useLogin', () => {
       await result.current.handleLogin();
     });
 
-    expect(fetch).toHaveBeenCalled();
+    expect(requestUtils.request).toHaveBeenCalledTimes(1);
+    const body = JSON.stringify({
+      account: 'notregistereduser',
+      password: 'notregistereduser',
+    });
+    expect(requestUtils.request).toHaveBeenCalledWith('/login', { method: 'POST', body });
 
     act(() => {
       expect(result.current.data?.status).toEqual(400);

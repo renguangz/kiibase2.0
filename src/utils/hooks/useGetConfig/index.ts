@@ -1,8 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { fetchData } from '../../fetch';
-import { combineApiUrl, isNotContentDynamicRouteYet } from '../../functions';
+import { isNotContentDynamicRouteYet } from '../../functions';
 
 type ConfigDataType = {
   topic: string;
@@ -39,11 +38,11 @@ const addGetConfig: AddGetConfig = (route) => `${route}/getConfig`;
 
 export function useGetConfig(asPath: string) {
   const url = useMemo(
-    () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, combineApiUrl, addGetConfig)),
-    [isNotContentDynamicRouteYet, combineApiUrl, asPath, pipe, addGetConfig],
+    () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, addGetConfig)),
+    [isNotContentDynamicRouteYet, asPath, pipe, addGetConfig],
   );
 
-  const { data: swrData, isLoading } = useSWR<ConfigDataType>(url, fetchData);
+  const { data: swrData } = useSWR<ConfigDataType>(url);
 
   const columns = useMemo(
     () => swrData?.list?.map((item) => ({ field: item.sortField, name: item.name, header: item.title })),
@@ -53,6 +52,5 @@ export function useGetConfig(asPath: string) {
   return {
     data: swrData,
     columns,
-    isLoading,
   };
 }

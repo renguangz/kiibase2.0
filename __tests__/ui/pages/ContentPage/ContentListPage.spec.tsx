@@ -9,7 +9,7 @@ import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json
 import searchListEmptyData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_empty.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
 import { useRouter } from 'next/router';
-import * as fetchUtils from '@/src/utils/fetch';
+import * as requestUtils from '@/src/utils/request';
 
 global.matchMedia =
   global.matchMedia ||
@@ -26,7 +26,10 @@ jest.mock('next/router', () => ({
 
 jest.mock('swr');
 
-jest.mock('@/src/utils/fetch');
+jest.mock('@/src/utils/request', () => ({
+  ...jest.requireActual('@/src/utils/request'),
+  request: jest.fn(),
+}));
 
 describe('ContentListPage', () => {
   const mockDateNow = new Date('2023-04-28T00:00:00.000Z');
@@ -282,7 +285,12 @@ describe('ContentListPage', () => {
 
       expect(deleteButton).toBeEnabled();
       await userEvent.click(deleteButton);
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledWith(expect.stringContaining('/banner/deleteAll'), [9, 7]);
+      const body = JSON.stringify([9, 7]);
+      expect(requestUtils.request).toHaveBeenCalledTimes(1);
+      expect(requestUtils.request).toHaveBeenCalledWith('/banner/deleteAll', {
+        method: 'POST',
+        body,
+      });
     });
   });
 });

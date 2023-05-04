@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { fetchPostData } from '../../fetch';
 import { combineApiUrl, pipeFormatObject } from '../../functions';
+import { request, requestOptionsTemplate } from '../../request';
 import { useGetConfig } from '../useGetConfig';
 
 export function useFilterField(asPath: string, setQueryParams: Dispatch<SetStateAction<Record<string, any>>>) {
@@ -10,7 +10,7 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
 
   const { data: configData } = useGetConfig(asPath);
 
-  const deleteAllUrl = useMemo(() => `${combineApiUrl(asPath)}/deleteAll`, [asPath, combineApiUrl]);
+  const deleteAllUrl = useMemo(() => `${asPath}/deleteAll`, [asPath, combineApiUrl]);
 
   const disableListDeleteButton = useMemo(() => selectedRow === null || selectedRow.length === 0, [selectedRow]);
 
@@ -53,8 +53,8 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
   const handleDeleteAll = useCallback(async () => {
     if (!selectedRow) return;
     const payload = selectedRow.map((row) => row.id);
-    return await fetchPostData(deleteAllUrl, payload);
-  }, [selectedRow, deleteAllUrl]);
+    return await request(deleteAllUrl, requestOptionsTemplate('POST', payload));
+  }, [request, requestOptionsTemplate, selectedRow, deleteAllUrl]);
 
   return {
     form,

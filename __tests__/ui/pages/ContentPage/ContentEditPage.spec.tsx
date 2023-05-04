@@ -4,7 +4,7 @@ import EditBanner4 from '@/src/mock/db/utils/EditContent/EditBanner4.json';
 import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
-import * as mockFetch from '@/src/utils/fetch';
+import * as requestUtils from '@/src/utils/request';
 
 jest.mock('swr');
 
@@ -17,7 +17,10 @@ jest.mock('next/router', () => ({
   }),
 }));
 
-jest.mock('../../../../src/utils/fetch');
+jest.mock('@/src/utils/request', () => ({
+  ...jest.requireActual('@/src/utils/request'),
+  request: jest.fn(),
+}));
 
 describe('ContentEditPage', () => {
   const expectDefaultValue = EditBanner4.module[0].data;
@@ -80,8 +83,8 @@ describe('ContentEditPage', () => {
     const confirmButton = screen.getByRole('button', { name: '確認刪除' });
     await userEvent.click(confirmButton);
 
-    expect(mockFetch.fetchDeleteData).toHaveBeenCalled();
-    expect(mockFetch.fetchDeleteData).toHaveBeenCalledWith(expect.stringContaining('api/testrouter/15'));
+    expect(requestUtils.request).toHaveBeenCalledTimes(1);
+    expect(requestUtils.request).toHaveBeenCalledWith('/testrouter/15', { method: 'DELETE' });
 
     expect(routerPush).toHaveBeenCalled();
     expect(routerPush).toHaveBeenCalledWith('/testrouter/');
@@ -109,8 +112,8 @@ describe('ContentEditPage', () => {
     expect(numberInput).toHaveValue(90);
 
     await userEvent.click(submitButton);
-    expect(mockFetch.fetchPutData).toHaveBeenCalledTimes(1);
-    expect(mockFetch.fetchPutData).toHaveBeenCalledWith(expect.stringContaining('/testrouter/15'), {
+    expect(requestUtils.request).toHaveBeenCalledTimes(1);
+    const body = JSON.stringify({
       ...EditBanner4,
       module: [
         {
@@ -125,6 +128,10 @@ describe('ContentEditPage', () => {
           },
         },
       ],
+    });
+    expect(requestUtils.request).toHaveBeenCalledWith('/testrouter/15', {
+      method: 'PUT',
+      body,
     });
   });
 });

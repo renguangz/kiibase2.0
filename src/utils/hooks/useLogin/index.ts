@@ -1,8 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { fetchPostData } from '../../fetch';
 import { GenericDataType } from '../../types';
 import Cookies from 'js-cookie';
-import { environments } from '../../environments';
+import { request, requestOptionsTemplate } from '../../request';
 
 type UserType = {
   id: number;
@@ -20,8 +19,6 @@ type ResponseDataType = {
   user: UserType;
 };
 
-export const url = `${environments.DOCKER_HOST}/login`;
-
 export function useLogin() {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
@@ -32,7 +29,7 @@ export function useLogin() {
   const hasLoginTokenInCookie = Cookies.get('token') !== undefined;
 
   const handleLogin = useCallback(async () => {
-    const result = await fetchPostData(url, { account, password });
+    const result = await request('/login', requestOptionsTemplate('POST', { account, password }));
     setData(result);
 
     if (result.status === 200) {
@@ -42,7 +39,7 @@ export function useLogin() {
     }
 
     setPassword('');
-  }, [account, password, fetchPostData]);
+  }, [account, password]);
 
   return {
     hasLoginTokenInCookie,

@@ -1,8 +1,14 @@
-import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Loginform } from '.';
 import authAccounts from '@/src/mock/db/utils/auth/accounts.json';
 import successfullLogin from '@/src/mock/db/utils/auth/successLogin.json';
 import failLogin from '@/src/mock/db/utils/auth/failLogin.json';
+import * as requestUtils from '@/src/utils/request';
+
+jest.mock('@/src/utils/request', () => ({
+  ...jest.requireActual('@/src/utils/request'),
+  request: jest.fn(),
+}));
 
 const ACCOUNTS = authAccounts.data;
 
@@ -27,11 +33,7 @@ describe('LoginForm', () => {
   });
 
   it('should clean up account and password after successfully login', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(successfullLogin),
-      }),
-    );
+    (requestUtils.request as jest.Mock).mockResolvedValue({ ...successfullLogin });
 
     const { account, password, submitButton } = setup();
 
@@ -49,11 +51,7 @@ describe('LoginForm', () => {
   });
 
   it('should not clean up account if failed login', async () => {
-    global.fetch = jest.fn(() =>
-      Promise.resolve({
-        json: () => Promise.resolve(failLogin),
-      }),
-    );
+    (requestUtils.request as jest.Mock).mockResolvedValue({ ...failLogin });
 
     const { account, password, submitButton } = setup();
 

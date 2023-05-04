@@ -2,17 +2,14 @@ import { pipe } from 'fp-ts/lib/function';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import { fetchData, fetchDeleteData, fetchPutData } from '../../fetch';
 import { combineApiUrl, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
+import { request, requestOptionsTemplate } from '../../request';
 import { addGetFields, removeEndingSlash } from '../useCreateContent';
 
 export function useEditContent(asPath: string, push: (route: string) => void, editId: string) {
   const [openModal, setOpenModal] = useState(false);
 
-  const url = useMemo(
-    () => (isNotContentDynamicRouteYet(asPath) ? '' : combineApiUrl(asPath)),
-    [isNotContentDynamicRouteYet, combineApiUrl, asPath],
-  );
+  const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
 
   const editUrl = useMemo(() => url.replace('/edit', ''), [url]);
 
@@ -22,12 +19,12 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
   );
 
   const getFieldsUrl = useMemo(
-    () => (listPageUrl === '' ? '' : pipe(listPageUrl, removeEndingSlash, addGetFields, combineApiUrl)),
+    () => (listPageUrl === '' ? '' : pipe(listPageUrl, removeEndingSlash, addGetFields)),
     [listPageUrl, addGetFields, pipe, combineApiUrl, removeEndingSlash],
   );
 
-  const { data: fieldsData } = useSWR(getFieldsUrl, fetchData);
-  const { data } = useSWR(url, fetchData);
+  const { data: fieldsData } = useSWR(getFieldsUrl);
+  const { data } = useSWR(url);
 
   const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
   const form = useForm();
@@ -35,13 +32,13 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
   const handleOpenConfirmModal = useCallback(() => setOpenModal(true), [setOpenModal]);
 
   const deleteContent = useCallback(async () => {
-    await fetchDeleteData(editUrl);
+    await request(editUrl, requestOptionsTemplate('DELETE'));
     push(listPageUrl);
-  }, [fetchDeleteData, editUrl, listPageUrl]);
+  }, [request, requestOptionsTemplate, editUrl, listPageUrl]);
 
   const handleSubmitUpdate = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
-    fetchPutData(editUrl, {
+    const payload = {
       ...data,
       module: [
         {
@@ -53,8 +50,9 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
           },
         },
       ],
-    });
-  }, [fetchPutData, editUrl, data, form, formatNumberForm, fieldsData]);
+    };
+    request(editUrl, requestOptionsTemplate('PUT', payload));
+  }, [request, requestOptionsTemplate, editUrl, data, form, formatNumberForm, fieldsData]);
 
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;
