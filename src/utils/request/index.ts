@@ -16,6 +16,8 @@ type RequestOptions = {
   responseParser?: (res: any) => any;
 };
 
+export type RequestMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
+
 type CheckParamType = (item: unknown) => boolean;
 const checkParamType: CheckParamType = (item) => {
   if (isArray(item)) return true;
@@ -30,6 +32,16 @@ const checkParamType: CheckParamType = (item) => {
       return false;
   }
 };
+
+type RequestOptionsTemplate = (method: RequestMethod, payload?: any) => Record<'method' | 'body', any>;
+export const requestOptionsTemplate: RequestOptionsTemplate = (method, payload) =>
+  pipe(
+    {
+      method,
+      body: JSON.stringify(payload),
+    },
+    R.filter((v) => checkParamType(v)),
+  );
 
 type StringifyParams = (params: Record<string, any>) => string;
 export const stringifyParams: StringifyParams = (params) =>

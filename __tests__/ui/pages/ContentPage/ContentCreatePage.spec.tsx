@@ -7,7 +7,7 @@ import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsAp
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';
-import * as fetchUtils from '@/src/utils/fetch';
+import * as requestUtils from '@/src/utils/request';
 
 window.watchMedia = jest.fn().mockImplementation(() => {
   return {
@@ -25,8 +25,9 @@ jest.mock('next/router', () => ({
 
 jest.mock('swr', () => jest.fn());
 
-jest.mock('@/src/utils/fetch', () => ({
-  fetchPostData: jest.fn(),
+jest.mock('@/src/utils/request', () => ({
+  ...jest.requireActual('@/src/utils/request'),
+  request: jest.fn(),
 }));
 
 describe('ContentCreatePage', () => {
@@ -148,24 +149,28 @@ describe('ContentCreatePage', () => {
       await userEvent.click(screen.queryByRole('option', { name: '桌機版' }) as HTMLDivElement);
       await userEvent.click(comboBoxes[1]);
       await userEvent.click(screen.queryByText('上架') as HTMLDivElement);
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledTimes(0);
+      expect(requestUtils.request).toHaveBeenCalledTimes(0);
 
       await userEvent.click(submitButton);
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledTimes(1);
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledWith(expect.anything(), {
+      expect(requestUtils.request).toHaveBeenCalledTimes(1);
+      const body = JSON.stringify({
         ...CreateBanner,
         module: [
           {
             ...CreateBanner.module[0],
             data: {
               title: 'test title',
+              pic: '',
               device: 'PC',
               status: 'online',
               order: 1,
-              pic: '',
             },
           },
         ],
+      });
+      expect(requestUtils.request).toHaveBeenCalledWith('/testrouter', {
+        body,
+        method: 'POST',
       });
     });
 
@@ -173,24 +178,28 @@ describe('ContentCreatePage', () => {
       const { submitButton } = result;
       const inputs = screen.getAllByRole('textbox') as HTMLInputElement[];
       await userEvent.type(inputs[0], 'not default title');
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledTimes(0);
+      expect(requestUtils.request).toHaveBeenCalledTimes(0);
 
       await userEvent.click(submitButton);
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledTimes(1);
-      expect(fetchUtils.fetchPostData).toHaveBeenCalledWith(expect.anything(), {
+      expect(requestUtils.request).toHaveBeenCalledTimes(1);
+      const body = JSON.stringify({
         ...CreateBanner,
         module: [
           {
             ...CreateBanner.module[0],
             data: {
               title: 'not default title',
-              device: 'PC',
               pic: '',
+              device: 'PC',
               status: 'ONLINE',
               order: 0,
             },
           },
         ],
+      });
+      expect(requestUtils.request).toHaveBeenCalledWith('/testrouter', {
+        method: 'POST',
+        body,
       });
     });
 

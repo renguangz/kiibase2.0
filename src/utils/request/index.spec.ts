@@ -1,4 +1,4 @@
-import { request, stringifyParams } from '.';
+import { request, requestOptionsTemplate, stringifyParams } from '.';
 
 describe('Request', () => {
   it('should route to `login page` if get status 401', async () => {
@@ -140,6 +140,26 @@ describe('Request', () => {
     it('should ignore null, undefined and empty string properties', () => {
       const params = { name: 'John', age: null, job: undefined, hobby: '' };
       expect(stringifyParams(params)).toEqual('name=John');
+    });
+  });
+
+  describe('RequestOptionsTemplate', () => {
+    it('should return method and body', () => {
+      const method = 'POST';
+      const payload = { name: 'John', age: 25 };
+      const result = {
+        method,
+        body: JSON.stringify(payload),
+      };
+
+      expect(requestOptionsTemplate(method, payload)).toStrictEqual(result);
+    });
+
+    it('should return method `DELETE` without body', () => {
+      const method = 'DELETE';
+      const result = { method };
+
+      expect(requestOptionsTemplate(method)).toStrictEqual(result);
     });
   });
 });
