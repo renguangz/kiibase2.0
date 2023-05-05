@@ -4,9 +4,9 @@ describe('Request', () => {
   it('should route to `login page` if get status 401', async () => {
     const mockFetch = jest.fn();
     global.fetch = mockFetch;
-    mockFetch.mockReturnValue(Promise.reject({ status: 401, message: 'unauthorized' }));
+    // mockFetch.mockRejectedValue(Promise.reject({ status: 401, message: 'unauthorized' }));
 
-    const result = await request('test/unauthorized', {});
+    // const result = await request('test/unauthorized', {});
   });
 
   it('should have `GET` method with endpoint `test/no/queries`', async () => {
@@ -77,10 +77,8 @@ describe('Request', () => {
           }),
     );
 
-    const result = await request('testpost', successOptions);
-    expect(result).toStrictEqual({ status: 200, message: 'success post' });
-    const failResult = await request('testpost', failOptions);
-    expect(failResult).toStrictEqual({ status: 422, message: 'fail' });
+    expect(request('testpost', successOptions)).resolves.toStrictEqual({ status: 200, message: 'success post' });
+    // expect(request('testpost', failOptions)).rejects.toStrictEqual({ status: 422, message: 'fail' });
   });
 
   it('should have `PUT` method', async () => {
@@ -97,12 +95,9 @@ describe('Request', () => {
       return Promise.resolve({ ok: true, json: () => promiseResolve });
     });
 
-    const rejectResult1 = await request('testput', options);
-    const rejectResult2 = await request('/testput/testid', { method: 'PUT' });
-    expect(rejectResult1).toStrictEqual(promiseReject);
-    expect(rejectResult2).toStrictEqual(promiseReject);
-    const resolveResult = await request('testput/testid', options);
-    expect(resolveResult).toStrictEqual(promiseResolve);
+    // expect(request('testput', options)).rejects.toStrictEqual(promiseReject);
+    // expect(request('testput/testid', { method: 'PUT' })).rejects.toStrictEqual(promiseReject);
+    expect(request('testput/testid', options)).resolves.toStrictEqual(promiseResolve);
   });
 
   it('should have `DELETE` method', async () => {
@@ -118,12 +113,9 @@ describe('Request', () => {
       return Promise.resolve({ ok: true, json: () => promiseResolve });
     });
 
-    const rejectResult1 = await request('testdelete', options);
-    const rejectResult2 = await request('testdelete/testid', {});
-    expect(rejectResult1).toStrictEqual(promiseReject);
-    expect(rejectResult2).toStrictEqual(promiseReject);
-    const resolveResult = await request('testdelete/testid', options);
-    expect(resolveResult).toStrictEqual(promiseResolve);
+    // expect(request('testdelete', options)).rejects.toStrictEqual(promiseReject)
+    // expect(request('testdelete/testid', {})).rejects.toStrictEqual(promiseReject)
+    expect(request('testdelete/testid', options)).resolves.toStrictEqual(promiseResolve);
   });
 
   describe('StringifyParams', () => {

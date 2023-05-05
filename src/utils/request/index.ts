@@ -69,14 +69,22 @@ export const request: RequestType = (endpoint, requestOptions) => {
   delete requestOptions?.responseParser;
   const url = `${environments.DOCKER_HOST}${endpoint}${search}`;
 
-  return fetch(url, {
-    ...requestOptions,
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then(responseParser)
-    .catch((err) => err);
+  const promise = new Promise((resolve, reject) => {
+    fetch(url, {
+      ...requestOptions,
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
+      },
+    }).then((res) => {
+      if (!res.ok) {
+        reject(res.statusText);
+      } else {
+        resolve(res.json());
+      }
+    });
+  });
+
+  return promise;
 };

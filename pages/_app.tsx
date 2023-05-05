@@ -14,10 +14,9 @@ export default function MyApp({ Component, pageProps }: AppProps) {
     <SWRConfig
       value={{
         refreshInterval: 0,
+        shouldRetryOnError: false,
         fetcher: request,
-        onSuccess: (data) => {
-          if (data === 'Unauthorized') router.push('/auth/login');
-        },
+        onError: () => router.push('/auth/login'),
       }}
     >
       <DefaultLayout>
