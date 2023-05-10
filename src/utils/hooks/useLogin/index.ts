@@ -2,6 +2,7 @@ import { useCallback, useMemo, useState } from 'react';
 import { GenericDataType } from '../../types';
 import Cookies from 'js-cookie';
 import { request, requestOptionsTemplate } from '../../request';
+import { useRouter } from 'next/router';
 
 type UserType = {
   id: number;
@@ -20,6 +21,9 @@ type ResponseDataType = {
 };
 
 export function useLogin() {
+  const router = useRouter();
+  const { push } = router;
+
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [data, setData] = useState<GenericDataType<ResponseDataType | null> | null>(null);
@@ -35,11 +39,12 @@ export function useLogin() {
     if (result.status === 200) {
       const token = result.data.token;
       Cookies.set('token', token, { expires: 7 });
+      push('/');
       setAccount('');
     }
 
     setPassword('');
-  }, [account, password]);
+  }, [account, password, push]);
 
   return {
     hasLoginTokenInCookie,

@@ -10,6 +10,14 @@ jest.mock('@/src/utils/request', () => ({
   request: jest.fn(),
 }));
 
+const mockRouterPush = jest.fn();
+
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush,
+  }),
+}));
+
 const ACCOUNTS = authAccounts.data;
 
 describe('LoginForm', () => {
@@ -32,7 +40,7 @@ describe('LoginForm', () => {
     expect(submitButton.disabled).not.toBeTruthy();
   });
 
-  it('should clean up account and password after successfully login', async () => {
+  it('should route to home page after successfully login', async () => {
     (requestUtils.request as jest.Mock).mockResolvedValue({ ...successfullLogin });
 
     const { account, password, submitButton } = setup();
@@ -45,6 +53,8 @@ describe('LoginForm', () => {
     });
 
     act(() => {
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/');
       expect(account.value).toBe('');
       expect(password.value).toBe('');
     });

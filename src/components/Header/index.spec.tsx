@@ -3,9 +3,11 @@ import userEvent from '@testing-library/user-event';
 import Cookies from 'js-cookie';
 import { HeaderComponent } from '.';
 
+const mockRouterPush = jest.fn();
+
 jest.mock('next/router', () => ({
   useRouter: () => ({
-    push: jest.fn(),
+    push: mockRouterPush,
   }),
 }));
 
@@ -49,7 +51,7 @@ describe('Header component', () => {
       expect(changePasswordButton).not.toBeInTheDocument();
     });
 
-    it('should logout after clicking `登出` and close the list', async () => {
+    it('should logout after clicking `登出` and close the list and route to login page', async () => {
       const authButton = screen.queryByTitle('auth') as HTMLButtonElement;
       await userEvent.click(authButton);
 
@@ -59,6 +61,8 @@ describe('Header component', () => {
       expect(logoutButton).not.toBeInTheDocument();
       expect(document.cookie).not.toMatch('token=logintoken');
       expect(document.cookie).toMatch('others=othercookies');
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/auth/login');
     });
   });
 });

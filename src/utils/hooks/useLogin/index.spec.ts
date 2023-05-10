@@ -10,12 +10,20 @@ jest.mock('@/src/utils/request', () => ({
   request: jest.fn(),
 }));
 
+const mockRouterPush = jest.fn();
+
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush,
+  }),
+}));
+
 const ACCOUNTS = authAccounts.data;
 
 describe('useLogin', () => {
   afterEach(() => jest.resetAllMocks());
 
-  it('should successfull login then clear account and password', async () => {
+  it('should successfull login then clear account and password and router push to home page', async () => {
     (requestUtils.request as jest.Mock).mockResolvedValue({
       ...successfullLogin,
     });
@@ -42,6 +50,8 @@ describe('useLogin', () => {
     act(() => {
       expect(result.current.data?.status).toEqual(200);
       expect(result.current.data?.message).toEqual('success');
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/');
       expect(result.current.account).toEqual('');
       expect(result.current.password).toEqual('');
     });
