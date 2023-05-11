@@ -2,7 +2,7 @@ import React from 'react';
 import { AutoCompleteField } from './AutoCompleteField';
 import { CalendarField } from './CalendarField';
 import { DropdownField } from './DropDownField';
-import { ImageUploadField } from './ImageUpdloadField';
+import { ImageUploadField } from './ImageUploadField';
 import { InputTextField } from './InputTextField';
 import { NotFoundField } from './NotFoundField';
 

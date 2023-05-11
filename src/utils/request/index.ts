@@ -52,8 +52,8 @@ export const stringifyParams: StringifyParams = (params) =>
     S.replace('&', ''),
   );
 
-type RequestType = (endpoint: string, requestOptions: RequestInit & RequestOptions) => any;
-export const request: RequestType = (endpoint, requestOptions) => {
+type RequestType = (endpoint: string, requestOptions: RequestInit & RequestOptions, isFormData?: boolean) => any;
+export const request: RequestType = (endpoint, requestOptions, isFormData) => {
   const token = getClientCookie('token');
   const paramsString = stringifyParams(requestOptions?.params ?? {});
   const search = paramsString === '' ? paramsString : `?${paramsString}`;
@@ -72,11 +72,15 @@ export const request: RequestType = (endpoint, requestOptions) => {
   const promise = new Promise((resolve, reject) => {
     fetch(url, {
       ...requestOptions,
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${token}`,
-      },
+      headers: isFormData
+        ? {
+            Authorization: `Bearer ${token}`,
+          }
+        : {
+            Accept: 'application/json',
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${token}`,
+          },
     }).then((res) => {
       if (!res.ok) {
         reject(res.statusText);
