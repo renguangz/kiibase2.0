@@ -9,11 +9,11 @@ const DisplayImageWrapper = styled.div`
 `;
 
 interface ImageUploadFieldProps extends FieldProps<any> {
-  folderRoute: string;
+  folder: string;
 }
 
-export function ImageUploadField({ form, name, folderRoute }: ImageUploadFieldProps) {
-  const { displayImage, onImageChange } = useImageUpload(folderRoute, form, name);
+export function ImageUploadField({ form, name, folder }: ImageUploadFieldProps) {
+  const { displayImage, onImageChange } = useImageUpload(folder, form, name);
 
   return (
     <div>

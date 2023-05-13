@@ -47,7 +47,7 @@ describe('useImageUplaod', () => {
       status: 200,
     });
     const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
-    const { result } = renderHook(() => useImageUpload('testroute/create'));
+    const { result } = renderHook(() => useImageUpload('testroute'));
     await act(async () => {
       await result.current.onImageChange({ target: { files: [file] } });
     });
