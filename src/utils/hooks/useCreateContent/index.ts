@@ -7,6 +7,8 @@ import * as O from 'fp-ts/Option';
 import { toLowerCase } from 'fp-ts/lib/string';
 import { useForm } from 'react-hook-form';
 import { request, requestOptionsTemplate } from '../../request';
+import { GenericDataType } from '../../types';
+import { useRouter } from 'next/router';
 
 type ConfigDataType = {
   topic: string;
@@ -90,6 +92,9 @@ const shouldCheckDocumentValue: ShouldCheckDocumentValue = (field) =>
   field.type === 'InputTextComponent' || field.type === 'NotFound';
 
 export function useCreateContent(asPath: string) {
+  const router = useRouter();
+  const { push } = router;
+
   const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
 
   const rootUrl = useMemo(
@@ -120,7 +125,7 @@ export function useCreateContent(asPath: string) {
     [requiredFields, shouldCheckDocumentValue, form],
   );
 
-  const handleSubmit = useCallback(() => {
+  const handleSubmit = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
 
     const payload = {
@@ -136,8 +141,11 @@ export function useCreateContent(asPath: string) {
         },
       ],
     };
-    request(rootUrl, requestOptionsTemplate('POST', payload));
-  }, [request, rootUrl, requestOptionsTemplate, form, fieldsData, data, formatNumberForm]);
+
+    const result: GenericDataType<null> = await request(rootUrl, requestOptionsTemplate('POST', payload));
+
+    if (result.status === 200) push(rootUrl);
+  }, [request, rootUrl, requestOptionsTemplate, form, fieldsData, data, formatNumberForm, push]);
 
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;

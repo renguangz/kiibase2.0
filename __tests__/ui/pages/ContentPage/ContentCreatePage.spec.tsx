@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import CreateCatalog from '@/src/mock/db/utils/CreateContent/CreateCatalog.json';
 import CreateBanner from '@/src/mock/db/utils/CreateContent/CreateBanner.json';
 import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
+import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import UploadImageData from '@/src/mock/db/utils/uploadFile/uploadImage.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
@@ -21,6 +22,7 @@ window.watchMedia = jest.fn().mockImplementation(() => {
 jest.mock('next/router', () => ({
   useRouter: () => ({
     asPath: '/testrouter/create',
+    push: jest.fn(),
   }),
 }));
 
@@ -142,6 +144,7 @@ describe('ContentCreatePage', () => {
     // });
 
     it('should submit with create data and change module[0].data to `{ title: "test title", pic: "testPic", device: "PC", status: "ONLINE", order: 0 }`', async () => {
+      (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
       global.URL.createObjectURL = jest.fn(() => 'imageURL');
       const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
 
@@ -191,6 +194,8 @@ describe('ContentCreatePage', () => {
     });
 
     it('should submit with default value `{ title: "not default title", device: "PC", status: "online", order: "0" }`', async () => {
+      (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
+
       const { submitButton } = result;
       const inputs = screen.getAllByRole('textbox') as HTMLInputElement[];
       await userEvent.type(inputs[0], 'not default title');
@@ -218,12 +223,6 @@ describe('ContentCreatePage', () => {
         body,
       });
     });
-
-    // it('should have default value display `桌機版`, `上架` `0`', async () => {
-    //   expect(screen.getByText('桌機版')).toBeVisible();
-    //   expect(screen.getByText('上架')).toBeVisible();
-    //   expect(screen.getByText('0')).toBeVisible();
-    // });
   });
 
   describe('Catalog', () => {

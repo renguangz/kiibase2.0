@@ -1,11 +1,22 @@
-import { renderHook } from '@testing-library/react-hooks';
+import { act, renderHook } from '@testing-library/react-hooks';
 import { formatOptions, formatSelectData, useCreateContent } from '.';
 import useSWR from 'swr';
+import * as requestUtils from '../../request';
 import CreateCatalog from '@/src/mock/db/utils/CreateContent/CreateCatalog.json';
 import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFields.json';
 import CreateBannerFieldsDataApi from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
+import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 
 jest.mock('swr');
+
+jest.mock('../../request');
+
+const mockRouterPush = jest.fn();
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    push: mockRouterPush,
+  }),
+}));
 
 describe('useCreateContent', () => {
   describe('Catalog', () => {
@@ -20,12 +31,16 @@ describe('useCreateContent', () => {
       expect(data?.topic).toEqual('電子型錄');
       expect(data?.routes).toEqual('catalog');
     });
+  });
+
+  describe('Banner', () => {
+    beforeEach(() => jest.resetAllMocks());
 
     it('should have options with value and label in third and forth item', () => {
       (useSWR as jest.Mock).mockImplementation((url: string) => ({
         data: url.includes('getFields') ? CreateBannerFieldsDataApi : CreateCatalog,
       }));
-      const { result } = renderHook(() => useCreateContent('/banner'));
+      const { result } = renderHook(() => useCreateContent('/banner/create'));
       const fieldsData = result.current.fieldsData;
       const thirdItemOptions = fieldsData?.[2]?.options;
       const forthItemOptions = fieldsData?.[3]?.options;
@@ -35,6 +50,39 @@ describe('useCreateContent', () => {
       forthItemOptions.forEach((option: any) => {
         expect(option).toHaveProperty('value');
       });
+    });
+
+    it('should route to `banner list` page after create successfully', async () => {
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getFields') ? CreateBannerFieldsDataApi : CreateCatalog,
+      }));
+
+      (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
+
+      const { result } = renderHook(() => useCreateContent('/banner/create'));
+
+      await act(async () => {
+        await result.current.handleSubmit();
+      });
+
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/banner');
+    });
+
+    it('should not route to `banner list` page if api response error', async () => {
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getFields') ? CreateBannerFieldsDataApi : CreateCatalog,
+      }));
+
+      (requestUtils.request as jest.Mock).mockResolvedValue({ ...CreateBannerSuccess, status: 400 });
+
+      const { result } = renderHook(() => useCreateContent('/banner/create'));
+
+      await act(async () => {
+        await result.current.handleSubmit();
+      });
+
+      expect(mockRouterPush).toHaveBeenCalledTimes(0);
     });
   });
 
