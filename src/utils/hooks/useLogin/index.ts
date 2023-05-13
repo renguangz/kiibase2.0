@@ -3,6 +3,7 @@ import { GenericDataType } from '../../types';
 import Cookies from 'js-cookie';
 import { request, requestOptionsTemplate } from '../../request';
 import { useRouter } from 'next/router';
+import { useSWRConfig } from 'swr';
 
 type UserType = {
   id: number;
@@ -24,6 +25,8 @@ export function useLogin() {
   const router = useRouter();
   const { push } = router;
 
+  const { mutate } = useSWRConfig();
+
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [data, setData] = useState<GenericDataType<ResponseDataType | null> | null>(null);
@@ -41,6 +44,8 @@ export function useLogin() {
       Cookies.set('token', token, { expires: 7 });
       push('/');
       setAccount('');
+      mutate('/menuItemNavi');
+      mutate('/subMenuNavi');
     }
 
     setPassword('');

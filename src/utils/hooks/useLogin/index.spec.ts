@@ -10,6 +10,14 @@ jest.mock('@/src/utils/request', () => ({
   request: jest.fn(),
 }));
 
+const mockSWRMutate = jest.fn();
+
+jest.mock('swr', () => ({
+  useSWRConfig: () => ({
+    mutate: mockSWRMutate,
+  }),
+}));
+
 const mockRouterPush = jest.fn();
 
 jest.mock('next/router', () => ({
@@ -55,6 +63,24 @@ describe('useLogin', () => {
       expect(result.current.account).toEqual('');
       expect(result.current.password).toEqual('');
     });
+  });
+
+  it('should call mutate for sidebar api after successfull login', async () => {
+    (requestUtils.request as jest.Mock).mockResolvedValue({
+      ...successfullLogin,
+    });
+
+    const { result } = renderHook(() => useLogin());
+    act(() => {
+      result.current.setAccount(ACCOUNTS[0].account);
+      result.current.setPassword(ACCOUNTS[0].password);
+    });
+
+    await act(async () => {
+      await result.current.handleLogin();
+    });
+
+    expect(mockSWRMutate).toHaveBeenCalledTimes(2);
   });
 
   it('should fail login and do not clear account and password', async () => {
