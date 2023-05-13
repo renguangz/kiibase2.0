@@ -1,7 +1,19 @@
 import { ChangeEvent, useCallback, useState } from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { request } from '../../request';
 
-export function useImageUpload() {
+type UploadImageResponseType = {
+  filename: string;
+  original_filename: string;
+  url: string;
+};
+
+const isUploadFileResponse = (object: unknown): object is UploadImageResponseType => {
+  if (object && typeof object === 'object') return 'filename' in object;
+  return false;
+};
+
+export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldValues, any>, name: string) {
   const [displayImage, setDisplayImage] = useState<string | undefined>(undefined);
 
   const onImageChange = useCallback(
@@ -11,9 +23,9 @@ export function useImageUpload() {
 
       const formData = new FormData();
       formData.append('file', img);
-      formData.append('folder', 'banner');
+      formData.append('folder', folderRoute);
 
-      await request(
+      const result = await request(
         '/upload/file',
         {
           method: 'POST',
@@ -22,9 +34,12 @@ export function useImageUpload() {
         true,
       );
 
-      setDisplayImage(() => URL.createObjectURL(img));
+      if (isUploadFileResponse(result)) {
+        form.setValue(name, result.filename);
+        setDisplayImage(() => URL.createObjectURL(img));
+      }
     },
-    [setDisplayImage, request, URL],
+    [setDisplayImage, request, URL, isUploadFileResponse, form, name],
   );
 
   return {

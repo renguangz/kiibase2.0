@@ -64,7 +64,7 @@ const getComponentFromMapping: GetComponentFromMapping = (name, mapping) =>
   );
 
 type MapNameToComponent = (data: any[]) => any[];
-const mapNameToComponent: MapNameToComponent = (data) =>
+export const mapNameToComponent: MapNameToComponent = (data) =>
   pipe(
     data,
     A.map((d) => ({

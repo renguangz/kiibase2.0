@@ -1,9 +1,9 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { formatOptions, formatSelectData, useCreateContent } from '.';
 import useSWR from 'swr';
-import CreateCatalog from '@/src/mock/db/utils/CreateContent/CreateCatalog';
-import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFields';
-import CreateBannerFieldsDataApi from '@/src/mock/db/utils/getFields/bannerFieldsApi';
+import CreateCatalog from '@/src/mock/db/utils/CreateContent/CreateCatalog.json';
+import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFields.json';
+import CreateBannerFieldsDataApi from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
 
 jest.mock('swr');
 

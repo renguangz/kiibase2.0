@@ -19,7 +19,7 @@ const mapping = [
 
 type MapStringToComponent = (name: string) => any;
 
-const mapStringToComponent: MapStringToComponent = (name) =>
+export const mapStringToComponent: MapStringToComponent = (name) =>
   mapping.find((item) => item.name === name)?.component ?? NotFoundField;
 
 export type EnhanceFilterFieldProps = Record<'label' | string, any>;

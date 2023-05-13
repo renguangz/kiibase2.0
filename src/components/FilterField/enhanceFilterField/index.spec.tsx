@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
-import { enhanceFilterField, EnhanceFilterFieldProps } from '.';
+import { enhanceFilterField, EnhanceFilterFieldProps, mapStringToComponent } from '.';
+import BannerFields from '@/src/mock/db/utils/getFields/bannerFields.json';
 
 describe('enhanceFilterField', () => {
   const setup = (component: string, props: EnhanceFilterFieldProps) => render(enhanceFilterField(component)(props));
@@ -32,6 +33,8 @@ describe('enhanceFilterField', () => {
       name: 'testInputField',
     };
 
-    setup('InputTextComponent', props);
+    it('should have input with labels and name', async () => {
+      setup('InputTextComponent', props);
+    });
   });
 });

@@ -1,3 +1,4 @@
+import { FieldProps } from '@/src/utils';
 import { useImageUpload } from '@/src/utils/hooks/useImageUpload';
 import styled from 'styled-components';
 
@@ -7,8 +8,12 @@ const DisplayImageWrapper = styled.div`
   height: 100px;
 `;
 
-export function ImageUploadField() {
-  const { displayImage, onImageChange } = useImageUpload();
+interface ImageUploadFieldProps extends FieldProps<any> {
+  folderRoute: string;
+}
+
+export function ImageUploadField({ form, name, folderRoute }: ImageUploadFieldProps) {
+  const { displayImage, onImageChange } = useImageUpload(folderRoute, form, name);
 
   return (
     <div>
