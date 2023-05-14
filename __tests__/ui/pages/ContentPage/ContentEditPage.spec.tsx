@@ -2,6 +2,7 @@ import EditContentPage from '@/pages/[content]/[editId]/edit';
 import { render, screen } from '@testing-library/react';
 import EditBanner4 from '@/src/mock/db/utils/EditContent/EditBanner4.json';
 import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
+import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';
@@ -91,6 +92,8 @@ describe('ContentEditPage', () => {
   });
 
   it('should success update with new payload and route to list page', async () => {
+    (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
+
     const submitButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
     expect(submitButton).toBeInTheDocument();
 

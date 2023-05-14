@@ -1,12 +1,17 @@
 import { pipe } from 'fp-ts/lib/function';
+import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
 import { combineApiUrl, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
+import { GenericDataType } from '../../types';
 import { addGetFields, removeEndingSlash } from '../useCreateContent';
 
-export function useEditContent(asPath: string, push: (route: string) => void, editId: string) {
+export function useEditContent(asPath: string, editId: string) {
+  const router = useRouter();
+  const { push } = router;
+
   const [openModal, setOpenModal] = useState(false);
 
   const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
@@ -34,7 +39,7 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
   const deleteContent = useCallback(async () => {
     await request(editUrl, requestOptionsTemplate('DELETE'));
     push(listPageUrl);
-  }, [request, requestOptionsTemplate, editUrl, listPageUrl]);
+  }, [request, push, requestOptionsTemplate, editUrl, listPageUrl]);
 
   const handleSubmitUpdate = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
@@ -51,8 +56,10 @@ export function useEditContent(asPath: string, push: (route: string) => void, ed
         },
       ],
     };
-    request(editUrl, requestOptionsTemplate('PUT', payload));
-  }, [request, requestOptionsTemplate, editUrl, data, form, formatNumberForm, fieldsData]);
+    const result: GenericDataType<null> = await request(editUrl, requestOptionsTemplate('PUT', payload));
+
+    if (result.status === 200) push(listPageUrl);
+  }, [request, requestOptionsTemplate, editUrl, data, form, formatNumberForm, fieldsData, push, listPageUrl]);
 
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;

@@ -24,7 +24,7 @@ export default function EditContentPage() {
     setOpenModal,
     deleteContent,
     handleSubmitUpdate,
-  } = useEditContent(asPath, push, newEditId);
+  } = useEditContent(asPath, newEditId);
 
   const title = useMemo(() => data?.topic ?? '', [data]);
 
