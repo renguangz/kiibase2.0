@@ -7,6 +7,13 @@ jest.mock('next/router', () => ({
   useRouter: jest.fn(),
 }));
 
+const mockMutate = jest.fn();
+jest.mock('swr', () => ({
+  useSWRConfig: () => ({
+    mutate: mockMutate,
+  }),
+}));
+
 describe('useLogout', () => {
   const mockPush = jest.fn();
 
@@ -38,5 +45,14 @@ describe('useLogout', () => {
     result.current.handleLogout();
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith('/auth/login');
+  });
+
+  it('should call mutate api for sidebar', async () => {
+    const { result } = renderHook(() => useLogout());
+    result.current.handleLogout();
+
+    expect(mockMutate).toHaveBeenCalledTimes(6);
+    expect(mockMutate).toHaveBeenNthCalledWith(5, '/menuItemNavi');
+    expect(mockMutate).toHaveBeenNthCalledWith(6, '/subMenuNavi');
   });
 });

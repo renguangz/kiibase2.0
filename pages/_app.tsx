@@ -6,9 +6,12 @@ import 'primereact/resources/themes/saga-blue/theme.css';
 import 'primereact/resources/primereact.min.css';
 import { SWRConfig } from 'swr';
 import { request } from '@/src/utils/request';
+import { useMemo } from 'react';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
+
+  const isNotDefaultLayout = useMemo(() => router.asPath === '/auth/login', [router]);
 
   return (
     <SWRConfig
@@ -19,9 +22,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         onError: () => router.push('/auth/login'),
       }}
     >
-      <DefaultLayout>
+      {isNotDefaultLayout ? (
         <Component {...pageProps} key={router.asPath} />
-      </DefaultLayout>
+      ) : (
+        <DefaultLayout>
+          <Component {...pageProps} key={router.asPath} />
+        </DefaultLayout>
+      )}
     </SWRConfig>
   );
 }
