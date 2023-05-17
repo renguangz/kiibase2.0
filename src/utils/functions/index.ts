@@ -35,8 +35,8 @@ export const getContentPath: GetContentPathType = (path) =>
 type CombineUrl = (host: string) => (path: string) => string;
 export const combineUrl: CombineUrl = (host) => (path) => `${host}${path}`;
 
-export const combineApiUrl = combineUrl(environments.DOCKER_HOST);
-export const combineStorageUrl = combineUrl(environments.DOCKER_HOST_STORAGE);
+export const combineApiUrl = combineUrl(environments.API_HOST);
+export const combineStorageUrl = combineUrl(environments.STORAGE_HOST);
 
 export type IsNotContentDynamicRouteYet = (asPath: string) => boolean;
 export const isNotContentDynamicRouteYet: IsNotContentDynamicRouteYet = (asPath) => asPath.includes('[content]');

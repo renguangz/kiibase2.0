@@ -67,7 +67,7 @@ export const request: RequestType = (endpoint, requestOptions, isFormData) => {
       return res.json();
     });
   delete requestOptions?.responseParser;
-  const url = `${environments.DOCKER_HOST}${endpoint}${search}`;
+  const url = `${environments.API_HOST}${endpoint}${search}`;
 
   const promise = new Promise((resolve, reject) => {
     fetch(url, {
