@@ -1,0 +1,104 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "kiitzu-dts-cms-client.fullname" . }}
+  labels:
+    {{- include "kiitzu-dts-cms-client.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    type: Recreate
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "kiitzu-dts-cms-client.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "kiitzu-dts-cms-client.selectorLabels" . | nindent 8 }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      securityContext:
+        {{- toYaml .Values.podSecurityContext | nindent 8 }}
+      containers:
+        - name: {{ .Chart.Name }}
+          securityContext:
+            {{- toYaml .Values.securityContext | nindent 12 }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          #livenessProbe:
+          #  initialDelaySeconds: 60
+          #  periodSeconds: 10
+          #  httpGet:
+          #    path: /api/healthz
+          #    port: http
+          #readinessProbe:
+          #  initialDelaySeconds: 60
+          #  periodSeconds: 10
+          #  httpGet:
+          #    path: /api/healthz
+          #    port: http
+          volumeMounts:
+            - name: data
+              mountPath: /app/data
+          {{- if .Values.secretVolume.enabled }}
+            - name: {{ .Values.secretVolume.secretName }}
+              mountPath: {{ .Values.secretVolume.mountPath }}
+              subPath: {{ .Values.secretVolume.subPath }}
+              readOnly: true
+          {{- end }}
+          env:
+          {{- range .Values.env }}
+            - name: {{ .name }}
+            {{- if .valueFrom }}
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .valueFrom.secretKeyRef.name }}
+                  key: {{ .valueFrom.secretKeyRef.key }}
+            {{- else if .value }}
+              value: {{ .value }}
+            {{- end }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      volumes:
+        - name: data
+        {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            {{- if .Values.persistence.existingDataClaim }}
+            claimName: {{ .Values.persistence.existingDataClaim }}
+            {{- else }}
+            claimName: {{ template "kiitzu-dts-cms-client.fullname" . }}-data
+            {{- end -}}
+        {{- else }}
+          emptyDir: {}
+        {{- end }}
+      {{- if .Values.secretVolume.enabled }}
+        - name: {{ .Values.secretVolume.secretName }}
+          secret:
+            secretName: {{ .Values.secretVolume.secretName }}
+      {{- end }}
