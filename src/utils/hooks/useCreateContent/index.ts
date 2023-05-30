@@ -52,6 +52,7 @@ const mapping: MappingType[] = [
   { name: 'input', component: 'InputTextComponent' },
   { name: 'singleselect', component: 'SingleSelectComponent' },
   { name: 'imageupload', component: 'ImageUploadComponent' },
+  { name: 'datepicker', component: 'CalendarComponent' },
 ];
 
 type GetComponentFromMapping = (name: string, mapping: MappingType[]) => string;
