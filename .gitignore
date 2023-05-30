@@ -35,4 +35,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+<<<<<<< HEAD
 cypress/videos/
+=======
+# cypress
+cypress/videos*
+>>>>>>> b8d6c8d (feat: init)

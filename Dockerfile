@@ -1,4 +1,4 @@
-FROM node:17-alpine AS base
+FROM node:18-alpine AS base
 
 # Install dependencies only when needed
 FROM base AS deps
@@ -18,19 +18,12 @@ WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
 COPY . .
 
-ARG API_HOST
-ARG STORAGE_HOST
-
-ENV API_HOST=${API_HOST}
-ENV STORAGE_HOST=${STORAGE_HOST}
-
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
 # ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN npm run build
-
 
 # Production image, copy all the files and run next
 FROM base AS runner
