@@ -1,6 +1,7 @@
 import { combineStorageUrl, SPACES } from '@/src/utils';
 import { Form, Pagination } from 'antd';
 import { DataTable } from 'primereact/datatable';
+import { Tag } from 'primereact/tag';
 import { Column } from 'primereact/column';
 import { useCallback, useMemo, useState } from 'react';
 import Link from 'next/link';
@@ -21,6 +22,9 @@ const isImageColumn: IsImageColumn = (field) => field.name === '__component:list
 
 type IsRowEditor = (field: Field) => boolean;
 const isRowEditor: IsRowEditor = (field) => field.name === '__slot:actions';
+
+type IsStatusColumn = (field: Field) => boolean;
+const isStatusColumn: IsStatusColumn = (field) => field.name === '__component:status';
 
 export type TableFieldProps = {
   perPage: number;
@@ -49,15 +53,17 @@ export function TableField({
     () =>
       columns.map((column) =>
         isImageColumn(column)
-          ? { ...column, body: fullImageColumnTemplate }
+          ? { ...column, body: fullImageColumnTemplate(column) }
           : isRowEditor(column)
           ? {
               ...column,
               body: editColumnTemplate,
             }
+          : isStatusColumn(column)
+          ? { ...column, body: statusTemplate(column) }
           : column,
       ),
-    [columns, isImageColumn, fullImageColumnTemplate],
+    [columns, isImageColumn, fullImageColumnTemplate, isRowEditor, editColumnTemplate, isStatusColumn, statusTemplate],
   );
 
   const [page, setPage] = useState(currentPage);
@@ -106,13 +112,17 @@ function checkboxColumnTemplate() {
   return <Column key={`checkbox-column-${Math.random()}`} selectionMode="multiple" headerStyle={{ width: '3rem' }} />;
 }
 
-function fullImageColumnTemplate(data: { pic: string }) {
-  const srcUrl = useMemo(() => `${combineStorageUrl('')}/${data.pic}`, [combineStorageUrl, data]);
-  return (
-    <div>
-      <img src={srcUrl} alt={srcUrl} role="img" width={200} height={150} />
-    </div>
-  );
+function fullImageColumnTemplate(column: Field) {
+  return (data: any) => {
+    const imgData = useMemo(() => (column.field ? data[column.field] : null), [column, data]);
+    const srcUrl = useMemo(() => `${combineStorageUrl('')}/${imgData}`, [combineStorageUrl, imgData]);
+
+    return (
+      <div>
+        <img src={srcUrl} alt={srcUrl} role="img" width={200} height={150} />
+      </div>
+    );
+  };
 }
 
 function editColumnTemplate(data: { id: string | number }) {
@@ -126,4 +136,17 @@ function editColumnTemplate(data: { id: string | number }) {
       </Link>
     </div>
   );
+}
+
+export type StatusType = 'success' | 'danger' | 'warning' | undefined;
+
+function statusTemplate(column: Field) {
+  return (data: any) => {
+    const tagData: { value: string; status: StatusType } | null = useMemo(
+      () => (column.field ? data[column.field] : null),
+      [column, data],
+    );
+
+    return <Tag role={'status'} value={tagData?.value ?? ''} severity={tagData?.status ?? undefined} />;
+  };
 }

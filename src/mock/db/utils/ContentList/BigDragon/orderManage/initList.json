@@ -1,0 +1,123 @@
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 0,
+      "order_num": "ABC0000001",
+      "created_at": "2022-06-05 10:21:02",
+      "PNR_num": "DEF0000001",
+      "type": "直飛",
+      "name": "王小華",
+      "phone": "0912-345-678",
+      "payment": "$135,000",
+      "payment_status": {
+        "value": "已付款",
+        "status": "success"
+      },
+      "invoicing_status": {
+        "value": "已開票",
+        "status": "success"
+      }
+    },
+    {
+      "id": 1,
+      "order_num": "ABC0000001",
+      "created_at": "2022-06-05 10:21:02",
+      "PNR_num": "DEF0000001",
+      "type": "直飛",
+      "name": "王小華",
+      "phone": "0912-345-678",
+      "payment": "$135,000",
+      "payment_status": {
+        "value": "已付款",
+        "status": "success"
+      },
+      "invoicing_status": {
+        "value": "開票失敗",
+        "status": "danger"
+      }
+    },
+    {
+      "id": 2,
+      "order_num": "ABC0000001",
+      "created_at": "2022-06-05 10:21:02",
+      "PNR_num": "DEF0000001",
+      "type": "直飛",
+      "name": "王小華",
+      "phone": "0912-345-678",
+      "payment": "$135,000",
+      "payment_status": {
+        "value": "未付款",
+        "status": "danger"
+      },
+      "invoicing_status": {
+        "value": "尚未開票",
+        "status": "warning"
+      }
+    },
+    {
+      "id": 3,
+      "order_num": "ABC0000001",
+      "created_at": "2022-06-05 10:21:02",
+      "PNR_num": "DEF0000001",
+      "type": "直飛",
+      "name": "王小華",
+      "phone": "0912-345-678",
+      "payment": "$135,000",
+      "payment_status": {
+        "value": "已付款",
+        "status": "success"
+      },
+      "invoicing_status": {
+        "value": "已開票",
+        "status": "success"
+      }
+    },
+    {
+      "id": 4,
+      "order_num": "ABC0000001",
+      "created_at": "2022-06-05 10:21:02",
+      "PNR_num": "DEF0000001",
+      "type": "直飛",
+      "name": "王小華",
+      "phone": "0912-345-678",
+      "payment": "$135,000",
+      "payment_status": {
+        "value": "已付款",
+        "status": "success"
+      },
+      "invoicing_status": {
+        "value": "開票失敗",
+        "status": "danger"
+      }
+    },
+    {
+      "id": 5,
+      "order_num": "ABC0000001",
+      "created_at": "2022-06-05 10:21:02",
+      "PNR_num": "DEF0000001",
+      "type": "直飛",
+      "name": "王小華",
+      "phone": "0912-345-678",
+      "payment": "$135,000",
+      "payment_status": {
+        "value": "未付款",
+        "status": "danger"
+      },
+      "invoicing_status": {
+        "value": "尚未開票",
+        "status": "warning"
+      }
+    }
+  ],
+  "first_page_url": "http://localhost:2108/api/orderManage?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://localhost:2108/api/orderManage?page=1",
+  "next_page_url": null,
+  "path": "http://localhost:2108/api/orderManage",
+  "per_page": 15,
+  "prev_page_url": null,
+  "to": 5,
+  "total": 5
+}

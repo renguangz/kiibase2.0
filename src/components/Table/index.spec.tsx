@@ -1,7 +1,8 @@
 import { render, screen } from '@testing-library/react';
-import { TableField, TableFieldProps } from '.';
+import { StatusType, TableField, TableFieldProps } from '.';
 import bannerList from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import searchLogList from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
+import orderManageList from '@/src/mock/db/utils/ContentList/BigDragon/orderManage/initList.json';
 import userEvent from '@testing-library/user-event';
 
 Object.defineProperty(window, 'matchMedia', {
@@ -91,8 +92,11 @@ describe('TableField', () => {
     beforeEach(() => render(<TableField {...props} />));
 
     it('should have 5 images display', async () => {
-      const images = screen.queryAllByRole('img');
+      const images = screen.queryAllByRole('img') as HTMLImageElement[];
       expect(images).toHaveLength(bannerList.total);
+      images.forEach((image, index) => {
+        expect(image.src).toContain(`/storage/${bannerList.data[index].pic}`);
+      });
     });
 
     it('should have edit link', async () => {
@@ -126,8 +130,6 @@ describe('TableField', () => {
     };
 
     beforeEach(() => render(<TableField {...props} />));
-
-    it('', () => {});
 
     // FIXME: 換頁功能應該要通過測試
     // it('should focus on page 4 after clicking', async () => {
@@ -171,5 +173,49 @@ describe('TableField', () => {
     });
 
     it.todo('should change back to page 1 after changing page size');
+  });
+
+  describe('BigDragon orderManage', () => {
+    const props: TableFieldProps = {
+      columns: [
+        { field: 'id', name: 'id', header: 'ID' },
+        { field: 'order_num', name: 'order_num', header: '訂單編號' },
+        { field: 'created_at', name: 'created_at', header: '訂單成立時間' },
+        { field: 'PNR_num', name: 'PNR_num', header: 'PNR編號' },
+        { field: 'type', name: 'type', header: '類別' },
+        { field: 'name', name: 'name', header: '訂購人姓名' },
+        { field: 'phone', name: 'phone', header: '訂購人手機' },
+        { field: 'payment', name: 'payment', header: '收費總金額' },
+        { field: 'payment_status', name: '__component:status', header: '付款狀態' },
+        { field: 'invoicing_status', name: '__component:status', header: '開票狀態' },
+        { field: undefined, name: '__slot:actions', header: '查看' },
+      ],
+      perPage: 10,
+      dataSource: orderManageList.data,
+      total: orderManageList.total,
+      selectedRow: undefined,
+      setSeletedRow: undefined,
+      handleChangePage: jest.fn(),
+      handleChangePerPage: jest.fn(),
+      currentPage: 1,
+    };
+
+    beforeEach(() => render(<TableField {...props} />));
+
+    const statusArr: { value: string; status: StatusType }[] = [];
+    orderManageList.data.forEach((item: any | { value: string; status: StatusType }) => {
+      statusArr.push(item.payment_status);
+      statusArr.push(item.invoicing_status);
+    });
+
+    it('should have tag template with role status', async () => {
+      const status = screen.queryAllByRole('status');
+      expect(status).toHaveLength(statusArr.length);
+      status.forEach((item, index) => {
+        expect(item).toHaveClass(`p-tag-${statusArr[index].status}`);
+        const child = item.children[0] as HTMLSpanElement;
+        expect(child.innerHTML).toBe(statusArr[index].value);
+      });
+    });
   });
 });
