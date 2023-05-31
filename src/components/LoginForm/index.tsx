@@ -10,7 +10,12 @@ export function Loginform() {
         <span>Username</span>
         <input data-testid="authAccount" value={account} onChange={(e) => setAccount(e.target.value)} />
         <span>password</span>
-        <input data-testid="authPassword" value={password} onChange={(e) => setPassword(e.target.value)} />
+        <input
+          data-testid="authPassword"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
         <button data-testid="authLogin" type="button" onClick={handleLogin} disabled={loginDisabled}>
           登入
         </button>
