@@ -10,7 +10,12 @@ export function CalendarField({ form, name }: FieldProps<any>) {
         control={form.control}
         render={({ field }) => (
           <div>
-            <Calendar inputId={field.name} value={field.value} onChange={field.onChange} dateFormat="yy/mm/dd" />
+            <Calendar
+              inputId={field.name}
+              value={new Date(field.value)}
+              onChange={field.onChange}
+              dateFormat="yy/mm/dd"
+            />
           </div>
         )}
       />

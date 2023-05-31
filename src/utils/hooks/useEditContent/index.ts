@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useSWR from 'swr';
-import { combineApiUrl, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
+import { combineApiUrl, formatDateForm, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
 import { GenericDataType } from '../../types';
 import { addGetFields, removeEndingSlash } from '../useCreateContent';
@@ -43,6 +43,8 @@ export function useEditContent(asPath: string, editId: string) {
 
   const handleSubmitUpdate = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
+    const dateForm = formatDateForm(form.control._formValues);
+
     const payload = {
       ...data,
       module: [
@@ -52,6 +54,7 @@ export function useEditContent(asPath: string, editId: string) {
             ...data?.module[0]?.data,
             ...form.watch(),
             ...numberForm,
+            ...dateForm,
           },
         },
       ],

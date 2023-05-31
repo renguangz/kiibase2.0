@@ -1,7 +1,7 @@
 import { pipe } from 'fp-ts/lib/function';
 import { useCallback, useEffect, useMemo } from 'react';
 import useSWR from 'swr';
-import { formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
+import { formatDateForm, formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import { toLowerCase } from 'fp-ts/lib/string';
@@ -128,6 +128,7 @@ export function useCreateContent(asPath: string) {
 
   const handleSubmit = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
+    const dateForm = formatDateForm(form.control._formValues);
 
     const payload = {
       ...data,
@@ -138,6 +139,7 @@ export function useCreateContent(asPath: string) {
             ...data?.module[0]?.data,
             ...form.watch(),
             ...numberForm,
+            ...dateForm,
           },
         },
       ],

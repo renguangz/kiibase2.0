@@ -1,6 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
 import {
+  formatDateForm,
   formatDateString,
   formatNumberForm,
   formatObjectDateToString,
@@ -105,6 +106,24 @@ describe('Functions', () => {
         test2: 'test2+1+3',
       };
       expect(formatObjectValueWithPlus(target)).toStrictEqual(expectResult);
+    });
+  });
+
+  describe('FormatDateForm', () => {
+    const defaultValues = {
+      title: 'test title',
+      pic: '',
+      device: 'PC',
+      status: 'online',
+      testNumber: '123',
+      order: '1',
+      start_at: new Date('2023/04/06'),
+      end_at: new Date('2023/04/08'),
+    };
+    it('should format date form', async () => {
+      const { result } = renderHook(() => useForm({ defaultValues }));
+      const expectResult = { start_at: '2023/4/6', end_at: '2023/4/8' };
+      expect(formatDateForm(result.current.control._formValues)).toStrictEqual(expectResult);
     });
   });
 

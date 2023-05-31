@@ -8,6 +8,8 @@ export const isArray = (data: any): boolean => Array.isArray(data);
 
 export const isEvery = (rule: Function) => (data: Array<any>) => data.every((item) => rule(item));
 
+export const isDate = (value: unknown): value is Date => value instanceof Date;
+
 export const hasTitleRule = <T>(item: T) => 'title' in item;
 
 export const isEveryItemHasTitle = isEvery(hasTitleRule);
@@ -54,6 +56,16 @@ export const formatObjectValueWithPlus: FormatObjectValueWithPlus = (obj) =>
     R.mapWithIndex((_k, v) => (typeof v === 'string' ? replaceSpacesWithPlus(v) : v)),
   );
 
+export type FormatDateForm = (getFormValue: any) => Record<string, any>;
+export const formatDateForm: FormatDateForm = (getFormValue) =>
+  pipe(
+    getFormValue,
+    O.fromNullable,
+    O.getOrElse(() => [] as any),
+    R.filter((value) => isDate(value)),
+    R.mapWithIndex((_key, value) => (isDate(value) ? value.toLocaleDateString() : value)),
+  );
+
 export type FormatNumberForm = (
   fields: Array<Record<string | 'inputType', any>> | undefined,
   getFormValue: any,
@@ -66,8 +78,6 @@ export const formatNumberForm: FormatNumberForm = (fields, getFormValue) =>
     A.filter((field) => field.inputType === 'number'),
     A.reduce({}, (acc, cur: any) => ({ ...acc, [cur.model]: parseInt(getFormValue(cur.model ?? 0)) })),
   );
-
-export const isDate = (value: unknown): value is Date => value instanceof Date;
 
 export type PadZero = (n: number) => string;
 export const padZero: PadZero = (n) => (n < 10 ? `0${n}` : `${n}`);
