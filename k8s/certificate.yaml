@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: tls-secret
+  namespace: default
+spec:
+  dnsNames:
+    - herfon-testtls.kiitzu.ninja
+  secretName: letsencrypt-cluster-issuer-key
+  issuerRef:
+    name: letsencrypt-cluster-issuer
+    kind: ClusterIssuer
+# EBjVzX91EmGyhHFRJxCVOwPFJONCPqUD74qtHWy_O6U.P2xyuR9B-0Haz0DMfqbkZUpbeuEMvxKzL9EtPCHHCoU
