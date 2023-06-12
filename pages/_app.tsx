@@ -19,7 +19,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         refreshInterval: 0,
         shouldRetryOnError: false,
         fetcher: request,
-        onError: () => router.push('/auth/login'),
+        // onError: () => router.push('/auth/login'),
       }}
     >
       {isNotDefaultLayout ? (
