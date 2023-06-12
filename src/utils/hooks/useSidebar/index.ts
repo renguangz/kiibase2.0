@@ -1,48 +1,63 @@
 import { useCallback, useMemo, useState } from 'react';
-import { ItemType } from 'antd/es/menu/hooks/useItems';
 import useSWR from 'swr';
 
-export type MenuItemsDataType = {
-  id: string;
+export type MenuApiDataType = {
+  id: number;
   name: string;
-  title: string;
+  is_menu: boolean;
+  route?: string;
+  items?: MenuApiDataType[];
 };
-export type SubMenuItemsDataType = Record<string, MenuItemsDataType[]>;
-export type MapMenuDataType = (data: MenuItemsDataType[]) => ItemType[];
-export type MapSubMenuDataType = (
-  data: Record<string, MenuItemsDataType[]>,
-) => (MenuItemsDataType & { children: MenuItemsDataType[] })[];
 
-export const mapMenuData: MapMenuDataType = (data) =>
-  data.map((item) => ({
-    key: item.id,
-    label: item.title,
-    name: item.title,
-    link: item.name,
-  }));
+export type MenuDisplayDataType = {
+  label: string;
+  icon: string;
+  link?: string;
+  items?: MenuDisplayDataType[];
+};
 
-export const mapSubMenuData: MapSubMenuDataType = (data) =>
-  Object.keys(data).map((item) => ({
-    id: `subMenu-${item}-${Math.random()}`,
-    name: item,
-    title: item,
-    children: data[item],
-  }));
+const mapApiDataWithItems = (data: MenuApiDataType[]): MenuApiDataType[] =>
+  data.map((item) => ({ id: 0, is_menu: true, name: '', items: [item] }));
+
+const recursiveMenuData = (
+  data: MenuApiDataType[],
+  index: number,
+  arr: MenuDisplayDataType[],
+): MenuDisplayDataType[] => {
+  const current = data?.[index];
+  if (!current) return arr;
+
+  const basic = {
+    label: current.name,
+    icon: '',
+  };
+
+  const newArr = [
+    ...arr,
+    current.is_menu && current.items
+      ? {
+          ...basic,
+          items: recursiveMenuData(current.items, 0, []),
+        }
+      : { ...basic, link: current.route },
+  ];
+
+  return recursiveMenuData(data, index + 1, newArr);
+};
 
 export function useSidebar() {
   const [openKeys, setOpenKeys] = useState<string[]>([]);
 
-  const { data: menuItemNaviData } = useSWR('/menuItemNavi');
-  const { data: subMenuNaviData } = useSWR('/subMenuNavi');
-
-  const subMenuItems = useMemo(() => mapSubMenuData(subMenuNaviData ?? []) ?? [], [subMenuNaviData]);
+  const { data } = useSWR('/naviItem');
+  const naviItemData = useMemo(
+    () => recursiveMenuData(mapApiDataWithItems(data?.data ?? []), 0, []) ?? [],
+    [data, mapApiDataWithItems, recursiveMenuData],
+  );
 
   const onOpenChange = useCallback((keys: any) => setOpenKeys(keys), []);
 
   return {
-    menuItemNaviData,
-    subMenuNaviData,
-    subMenuItems,
+    naviItemData,
     openKeys,
     setOpenKeys,
     onOpenChange,

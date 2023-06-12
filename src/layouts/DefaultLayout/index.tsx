@@ -1,20 +1,26 @@
-import { Layout } from 'antd';
 import { HeaderComponent, SidebarComponent } from '@/src/components';
+import styled from 'styled-components';
 
 interface DefaultLayoutProps {
   children: JSX.Element;
 }
 
-export function DefaultLayout({ children }: DefaultLayoutProps) {
-  const { Content } = Layout;
+const Wrapper = styled.div`
+  width: 100%;
+`;
 
+const BodyWrapper = styled.div`
+  display: flex;
+`;
+
+export function DefaultLayout({ children }: DefaultLayoutProps) {
   return (
-    <Layout className="layout">
+    <Wrapper>
       <HeaderComponent />
-      <Layout>
+      <BodyWrapper>
         <SidebarComponent />
-        <Content>{children}</Content>
-      </Layout>
-    </Layout>
+        <div>{children}</div>
+      </BodyWrapper>
+    </Wrapper>
   );
 }

@@ -1,17 +1,19 @@
-import { DefaultLayout } from '@/src/layouts';
 import '@/styles/global.css';
 import type { AppProps } from 'next/app';
-import { useRouter } from 'next/router';
-import 'primereact/resources/themes/saga-blue/theme.css';
-import 'primereact/resources/primereact.min.css';
 import { SWRConfig } from 'swr';
 import { request } from '@/src/utils/request';
-import { useMemo } from 'react';
+import { LayoutProvider } from '@/src/layouts/layout/context/layoutcontext';
+import Layout from '@/src/layouts/layout/layout';
+import 'primereact/resources/primereact.css';
+import 'primeflex/primeflex.css';
+import 'primeicons/primeicons.css';
+import '@/styles/layout/layout.scss';
+import '@/styles/demo/Demos.scss';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  const router = useRouter();
+  // const router = useRouter();
 
-  const isNotDefaultLayout = useMemo(() => router.asPath === '/auth/login', [router]);
+  // const isNotDefaultLayout = useMemo(() => router.asPath === '/auth/login', [router]);
 
   return (
     <SWRConfig
@@ -22,13 +24,11 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         // onError: () => router.push('/auth/login'),
       }}
     >
-      {isNotDefaultLayout ? (
-        <Component {...pageProps} key={router.asPath} />
-      ) : (
-        <DefaultLayout>
-          <Component {...pageProps} key={router.asPath} />
-        </DefaultLayout>
-      )}
+      <LayoutProvider>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </LayoutProvider>
     </SWRConfig>
   );
 }
