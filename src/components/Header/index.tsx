@@ -27,12 +27,14 @@ export function HeaderComponent() {
     <Header style={{ position: 'sticky', top: 0, zIndex: 1, width: '100%', background: '#ffffff' }}>
       <Wrapper>
         <div>logo</div>
+        {/*
         <Button title="auth" onClick={() => setShowAuthButtons((show) => !show)}>
           <AuthWrapper>
             <UserOutlined />
             <DownOutlined />
           </AuthWrapper>
         </Button>
+        */}
       </Wrapper>
       {showAuthButtons && (
         <div>

@@ -14,8 +14,6 @@ export type GenericDataType<T> = {
 
 export type PrimaryKey = string | number;
 
-export * from './typeGuards';
-
 export type FieldProps<D> = {
   defaultValue: D;
   form: UseFormReturn<any, any>;
