@@ -22,4 +22,6 @@ export type FieldProps<D> = {
   hint?: string;
   placeholder?: string;
   control?: Control<FieldValues, any>;
+  width?: number;
+  height?: number;
 };
