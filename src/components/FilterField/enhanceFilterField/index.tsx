@@ -2,6 +2,7 @@ import React from 'react';
 import { AutoCompleteField } from './AutoCompleteField';
 import { CalendarField } from './CalendarField';
 import { DropdownField } from './DropDownField';
+import { EditorField } from './EditorField';
 import { ImageUploadField } from './ImageUploadField';
 import { InputTextField } from './InputTextField';
 import { NotFoundField } from './NotFoundField';
@@ -15,6 +16,7 @@ const mapping = [
   { name: 'CalendarComponent', component: CalendarField },
   { name: 'SingleSelectComponent', component: DropdownField },
   { name: 'ImageUploadComponent', component: ImageUploadField },
+  { name: 'EditorComponent', component: EditorField },
 ];
 
 type MapStringToComponent = (name: string) => any;
