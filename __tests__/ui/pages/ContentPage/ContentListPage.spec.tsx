@@ -2,11 +2,9 @@ import ContentListPage from '@/pages/[content]';
 import useSWR from 'swr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog.json';
-import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
-import searchListData from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
-import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
-import searchListEmptyData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_empty.json';
+import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
+import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
+import roleListEmptyData from '@/src/mock/db/utils/ContentList/role/filter/emptyList.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
 import { useRouter } from 'next/router';
 import * as requestUtils from '@/src/utils/request';
@@ -33,23 +31,23 @@ jest.mock('@/src/utils/request', () => ({
 
 describe('ContentListPage', () => {
   const mockDateNow = new Date('2023-04-28T00:00:00.000Z');
-  describe('SearchLog Page', () => {
+  describe('Role Page', () => {
     beforeEach(() => {
       jest.useFakeTimers().setSystemTime(mockDateNow);
       jest.resetAllMocks();
 
       (useSWR as jest.Mock).mockImplementation((url: string) => ({
         data: url.includes('getConfig')
-          ? searchLogConfig
+          ? roleConfig
           : url.includes('no_content')
-          ? searchListEmptyData
+          ? roleListEmptyData
           : url.includes('haha')
           ? searchListFilterData
-          : searchListData,
+          : roleListData,
       }));
 
       (useRouter as jest.Mock).mockReturnValue({
-        asPath: '/searchLog',
+        asPath: '/role',
       });
 
       render(<ContentListPage />);
@@ -57,12 +55,12 @@ describe('ContentListPage', () => {
     });
 
     it('should have title `搜尋紀錄列表` and subtitle `檢視全部搜尋紀錄`', async () => {
-      const title = screen.getByRole('heading', { name: /搜尋紀錄列表/ });
+      const title = screen.getByRole('heading', { name: /後台管理者角色列表/ });
       expect(title).toBeInTheDocument();
     });
 
-    it('should have table with columns `ID`, `關鍵字`, `會員`, `時間`, `IP位置`, `語系`', async () => {
-      const expectColumns = ['ID', '關鍵字', '會員', '時間', 'IP位置', '語系'];
+    it('should have table with columns', async () => {
+      const expectColumns = ['', 'ID', '名稱', '建立時間', '更新時間', '操作'];
       const columns = document.querySelectorAll('.p-column-title');
       expect(columns.length).toBe(expectColumns.length);
 
@@ -87,9 +85,8 @@ describe('ContentListPage', () => {
         filter: 'no+content',
         page: 1,
         per_page: 10,
-        sort: 'id%7Cdesc',
       };
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
     it('should update table by filter', async () => {
@@ -103,9 +100,8 @@ describe('ContentListPage', () => {
         filter: 'haha',
         page: 1,
         per_page: 10,
-        sort: 'id%7Cdesc',
       };
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
     it('should update table by calendar `start_date` and `tableSearch` filter', async () => {
@@ -127,11 +123,10 @@ describe('ContentListPage', () => {
         filter: 'haha',
         page: 1,
         per_page: 10,
-        sort: 'id%7Cdesc',
         start_date: '2023-04-15',
       };
 
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
     it('should update table by calendar `end_date` and `tableSearch` filter', async () => {
@@ -153,11 +148,10 @@ describe('ContentListPage', () => {
         filter: 'no+content',
         page: 1,
         per_page: 10,
-        sort: 'id%7Cdesc',
         end_date: '2023-04-28',
       };
 
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
     it('should call useSWR after clicking submit button', async () => {
@@ -167,17 +161,16 @@ describe('ContentListPage', () => {
       const params = {
         page: 1,
         per_page: 10,
-        sort: 'id%7Cdesc',
       };
 
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
-    it('should not have delete button and checkboxes', () => {
+    it('should have delete button and 11 checkboxes', () => {
       const deleteButton = screen.queryByRole('button', { name: '刪除' });
-      expect(deleteButton).not.toBeInTheDocument();
+      expect(deleteButton).toBeInTheDocument();
       const checkboxes = screen.queryAllByRole('checkbox');
-      expect(checkboxes).toHaveLength(0);
+      expect(checkboxes).toHaveLength(11);
     });
 
     it('should call useSWR after changing pages', async () => {
@@ -187,9 +180,8 @@ describe('ContentListPage', () => {
       const params = {
         page: 4,
         per_page: 10,
-        sort: 'id%7Cdesc',
       };
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
     it('should call useSWR after changing `per_page', async () => {
@@ -202,9 +194,8 @@ describe('ContentListPage', () => {
       const params = {
         page: 1,
         per_page: 20,
-        sort: 'id%7Cdesc',
       };
-      expect(useSWR).toHaveBeenNthCalledWith(8, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(8, ['/model/role', { params }]);
     });
 
     it('should call useSWR when changing pages and will call useSWR with page=1 after search filter', async () => {
@@ -220,9 +211,8 @@ describe('ContentListPage', () => {
         filter: 'haha',
         page: 1,
         per_page: 10,
-        sort: 'id%7Cdesc',
       };
-      expect(useSWR).toHaveBeenNthCalledWith(11, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(11, ['/model/role', { params }]);
     });
 
     it('should call useSWR with `page=1` after changing per_page', async () => {
@@ -239,9 +229,8 @@ describe('ContentListPage', () => {
       const params = {
         page: 1,
         per_page: 20,
-        sort: 'id%7Cdesc',
       };
-      expect(useSWR).toHaveBeenNthCalledWith(11, ['/searchLog', { params }]);
+      expect(useSWR).toHaveBeenNthCalledWith(11, ['/model/role', { params }]);
     });
 
     it('should call useSWR after submitting in jumper', async () => {
@@ -256,21 +245,6 @@ describe('ContentListPage', () => {
       //   fetchUtils.fetchDataWithQueries,
       // );
     });
-  });
-
-  describe('Banner Page', () => {
-    beforeEach(() => {
-      jest.resetAllMocks();
-
-      (useSWR as jest.Mock).mockImplementation((url: string) => ({
-        data: url.includes('getConfig') ? bannerConfig : bannerListData,
-      }));
-      (useRouter as jest.Mock).mockReturnValue({
-        asPath: '/banner',
-      });
-
-      render(<ContentListPage />);
-    });
 
     it('should have delete button for deleting multiple table data', async () => {
       const deleteButton = screen.queryByRole('button', { name: '刪除' }) as HTMLButtonElement;
@@ -278,16 +252,16 @@ describe('ContentListPage', () => {
       expect(deleteButton).toBeDisabled();
 
       const checkboxes = screen.queryAllByRole('checkbox');
-      expect(checkboxes).toHaveLength(bannerListData.data.length + 1);
+      expect(checkboxes).toHaveLength(roleListData.data.data.length + 1);
 
       await userEvent.click(checkboxes[1]);
       await userEvent.click(checkboxes[2]);
 
       expect(deleteButton).toBeEnabled();
       await userEvent.click(deleteButton);
-      const body = JSON.stringify([9, 7]);
+      const body = JSON.stringify([51, 50]);
       expect(requestUtils.request).toHaveBeenCalledTimes(1);
-      expect(requestUtils.request).toHaveBeenCalledWith('/banner/deleteAll', {
+      expect(requestUtils.request).toHaveBeenCalledWith('/role/deleteAll', {
         method: 'POST',
         body,
       });

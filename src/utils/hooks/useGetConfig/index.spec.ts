@@ -1,25 +1,22 @@
 import { renderHook } from '@testing-library/react';
 import { useGetConfig } from '.';
-import useSWR from 'swr';
-import searchLogConfig from '@/src/mock/db/utils/getConfig/searchLog.json';
-import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
+import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
 
 jest.mock('swr');
 
 describe('useGetConfig', () => {
-  describe('searchLog', () => {
+  describe('role', () => {
     beforeEach(() => {
       const mockUseSwr = jest.requireMock('swr').default;
       mockUseSwr.mockReturnValue({
-        data: searchLogConfig,
+        data: roleConfig,
       });
     });
-    it('should get topic `搜尋紀錄`, routes `searchLog`, date_filter and', () => {
-      const { result } = renderHook(() => useGetConfig('/searchLog'));
+    it('should get topic `後台管理者角色`, no date_filter', () => {
+      const { result } = renderHook(() => useGetConfig('/role'));
       const data = result.current.data;
 
-      expect(data?.topic).toEqual('搜尋紀錄');
-      expect(data?.routes).toEqual('searchLog');
+      expect(data?.topic).toEqual('後台管理者角色');
       expect(data?.date_filter).toBeTruthy();
     });
 
@@ -32,25 +29,18 @@ describe('useGetConfig', () => {
         expect(column).toHaveProperty('header');
       });
     });
-  });
 
-  describe('Banner', () => {
-    it('banner columns should have header, name and field', async () => {
+    it('columns should have header, name and field', async () => {
       const expectColumns = [
-        { field: undefined, name: '__checkbox', header: undefined },
-        { field: 'id', name: 'id', header: 'ID' },
-        { field: 'title', name: 'title', header: '標題' },
-        { field: 'pic', name: '__component:list-image', header: '封面圖' },
-        { field: 'device', name: 'device_name', header: '所在位置' },
-        { field: 'status', name: '__component:list-select', header: '狀態' },
-        { field: 'order', name: '__component:list-input', header: '權重' },
-        { field: undefined, name: '__slot:actions', header: '操作' },
+        { field: '', name: '__checkbox', header: '' },
+        { field: 'id', name: 'label', header: 'ID' },
+        { field: 'name', name: 'label', header: '名稱' },
+        { field: 'created_at', name: 'label', header: '建立時間' },
+        { field: 'updated_at', name: 'label', header: '更新時間' },
+        { field: '', name: '__slot:actions', header: '操作' },
       ];
-      (useSWR as jest.Mock).mockReturnValue({
-        data: bannerConfig,
-      });
 
-      const { result } = renderHook(() => useGetConfig('banner'));
+      const { result } = renderHook(() => useGetConfig('role'));
       expect(result.current.columns).toStrictEqual(expectColumns);
     });
   });

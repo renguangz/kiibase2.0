@@ -40,11 +40,6 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
     [dateFilter, tableSearch],
   );
 
-  const filters = useMemo(
-    () => (configData && configData.filter ? [...configData.filter, ...basicFilters] : []),
-    [configData, basicFilters],
-  );
-
   const handleSearch = useCallback(() => {
     const formFields = pipeFormatObject(form.control._formValues);
     setQueryParams((query) => ({ ...query, page: 1, ...formFields }));
@@ -58,7 +53,7 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
 
   return {
     form,
-    data: filters,
+    data: basicFilters,
     handleSearch,
     selectedRow,
     setSelectedRow,

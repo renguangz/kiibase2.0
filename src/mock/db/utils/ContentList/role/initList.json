@@ -1,0 +1,76 @@
+{
+  "status": 200,
+  "message": "success",
+  "data": {
+    "data": [
+      {
+        "id": 51,
+        "name": "superAdmin50",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 50,
+        "name": "superAdmin49",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 49,
+        "name": "superAdmin48",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 48,
+        "name": "superAdmin47",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 47,
+        "name": "superAdmin46",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 46,
+        "name": "superAdmin45",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 45,
+        "name": "superAdmin44",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 44,
+        "name": "superAdmin43",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 43,
+        "name": "superAdmin42",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      },
+      {
+        "id": 42,
+        "name": "superAdmin41",
+        "created_at": "2023-06-09 08:16:23",
+        "updated_at": "2023-06-09 08:16:23"
+      }
+    ],
+    "meta": {
+      "current_page": 1,
+      "last_page": 6,
+      "to": 10,
+      "from": 1,
+      "total": 51,
+      "per_page": 10
+    }
+  }
+}

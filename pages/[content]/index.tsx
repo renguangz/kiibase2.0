@@ -39,11 +39,11 @@ export default function ContentListPage() {
     <PageLayout>
       <ContentHeader
         text={`${data?.topic}列表`}
-        button={data?.canBeCreate && <Link href={`${asPath}/create`}>建立新的{data.topic}</Link>}
+        button={data?.create_button && <Link href={`${asPath}/create`}>建立新的{data.topic}</Link>}
       />
       <div>
         <FilterField form={form} onSubmit={handleSearch} filters={filterData} />
-        {data?.canBeDelete && (
+        {data?.delete_button && (
           <button type="button" disabled={disableListDeleteButton} onClick={handleDeleteAll}>
             刪除
           </button>

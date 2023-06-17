@@ -1,40 +1,27 @@
+import { ApiDataType } from '@/src/types/data';
 import { pipe } from 'fp-ts/lib/function';
 import { useMemo } from 'react';
 import useSWR from 'swr';
 import { isNotContentDynamicRouteYet } from '../../functions';
 
-type ConfigDataType = {
-  topic: string;
-  routes: string;
-  canBeCreate: boolean;
-  canBeDelete: boolean;
-  canBeCopy: boolean;
-  listExtend: boolean;
-  filter: never[];
-  index_join: never[];
-  select_column: never[];
-  list: { title: string; name: string; sortField: string }[];
-  listOrder: {
-    field: string;
-    sortField: string;
-    direction: string;
-  }[];
+export type ConfigListType = {
+  title: string;
+  type: string;
+  name?: string;
+  sort_field?: string;
+};
+
+export type ConfigDataType = {
+  create_button: boolean;
+  delete_button: boolean;
+  list: ConfigListType[];
   date_filter: boolean;
-  date_filter_title?: string;
-  date_filter_column: string[];
-  search_map: any;
-  appends: string[];
-  excel: {
-    export: boolean;
-    title: string[];
-    join: any;
-    column: string[];
-  };
-  module: any;
-} | null;
+  date_filter_column: boolean;
+  topic: string;
+};
 
 type AddGetConfig = (route: string) => string;
-const addGetConfig: AddGetConfig = (route) => `${route}/getConfig`;
+const addGetConfig: AddGetConfig = (route) => `/model${route}/getConfig`;
 
 export function useGetConfig(asPath: string) {
   const url = useMemo(
@@ -42,15 +29,22 @@ export function useGetConfig(asPath: string) {
     [isNotContentDynamicRouteYet, asPath, pipe, addGetConfig],
   );
 
-  const { data: swrData } = useSWR<ConfigDataType>(url);
+  const { data: swrData } = useSWR<ApiDataType<ConfigDataType>>(url);
+
+  const apiData = useMemo(() => swrData?.data ?? undefined, [swrData]);
 
   const columns = useMemo(
-    () => swrData?.list?.map((item) => ({ field: item.sortField, name: item.name, header: item.title })),
-    [swrData],
+    () =>
+      apiData?.list.map((item) => ({
+        field: item.name ?? '',
+        name: item.type ?? item.sort_field ?? '',
+        header: item.title,
+      })),
+    [apiData],
   );
 
   return {
-    data: swrData,
+    data: apiData,
     columns,
   };
 }
