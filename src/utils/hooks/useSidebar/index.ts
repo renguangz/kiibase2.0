@@ -39,7 +39,7 @@ const recursiveMenuData = (
           ...basic,
           items: recursiveMenuData(current.items, 0, []),
         }
-      : { ...basic, link: current.route },
+      : { ...basic, to: current.route },
   ];
 
   return recursiveMenuData(data, index + 1, newArr);

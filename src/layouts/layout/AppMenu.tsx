@@ -10,7 +10,7 @@ const AppMenu = () => {
     <MenuProvider>
       <ul className="layout-menu">
         {naviItemData.map((item, i) => (
-          <AppMenuitem item={item} root={true} index={i} key={item.label} />
+          <AppMenuitem item={item} root={true} index={i} key={i} />
         ))}
       </ul>
     </MenuProvider>
