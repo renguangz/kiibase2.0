@@ -6,7 +6,7 @@ interface InputTextFieldProps extends FieldProps<string> {
   inputType?: 'number';
 }
 
-export function InputTextField({ form, name, inputType }: InputTextFieldProps) {
+export function InputTextField({ form, name, inputType, placeholder }: InputTextFieldProps) {
   return (
     <div>
       <Controller
@@ -18,6 +18,7 @@ export function InputTextField({ form, name, inputType }: InputTextFieldProps) {
               id={field.name}
               type={inputType}
               value={field.value}
+              placeholder={placeholder ?? '請輸入'}
               onChange={(e) => field.onChange(e.target.value)}
             />
           </div>

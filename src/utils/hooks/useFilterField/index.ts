@@ -18,9 +18,10 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
     () => ({
       component: 'InputTextComponent',
       props: {
-        label: 'table search title',
+        label: '',
         name: 'filter',
         required: false,
+        placeholder: '請輸入',
       },
     }),
     [],

@@ -17,11 +17,50 @@ export const Wrapper = styled(FakeDiv)`
   align-items: center;
 `;
 
-export const StyledButton = styled.button`
-  cursor: pointer;
+export type ColorConfig = 'primary' | 'secondary' | 'warning' | 'danger';
+
+export const mapColorFromConfig = (color: ColorConfig) => COLORS[color];
+
+type StyledButtonType = {
+  width?: string | number;
+  height?: string | number;
+  variant?: 'contained' | 'outline' | 'text';
+  color?: ColorConfig;
+  disabled?: boolean;
+};
+
+export const StyledButton = styled.button<StyledButtonType>`
+  cursor: ${(props) => (props.disabled ? 'pointer' : 'auto')};
   outline: none;
-  border: none;
-  background: none;
+  border: 1px solid
+    ${(props) =>
+      props.variant === 'outline' && props.disabled
+        ? COLORS.disabledBackground
+        : props.variant === 'outline' && !props.disabled
+        ? mapColorFromConfig(props.color ?? 'primary')
+        : 'transparent'};
+
+  border-radius: none;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+  background: ${(props) =>
+    !props.variant
+      ? COLORS.primary
+      : props.variant !== 'contained'
+      ? 'none'
+      : props.disabled
+      ? COLORS.disabledBackground
+      : COLORS.primary};
+  color: ${(props) =>
+    !props.variant || props.variant === 'contained'
+      ? '#fff'
+      : props.disabled
+      ? COLORS.disabledText
+      : mapColorFromConfig(props.color ?? 'primary')};
+  padding: 8px 12px;
 `;
 
 type BottomBorderType = {
