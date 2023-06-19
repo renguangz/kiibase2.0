@@ -43,8 +43,16 @@ export function useGetConfig(asPath: string) {
     [apiData],
   );
 
+  const canUpdateFields = useMemo(() => ['select', 'input'], []);
+
+  const canUpdate = useMemo(
+    () => columns?.some((column) => column.name.includes('__component')) ?? false,
+    [canUpdateFields, columns],
+  );
+
   return {
     data: apiData,
     columns,
+    canUpdate,
   };
 }

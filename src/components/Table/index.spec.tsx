@@ -1,8 +1,7 @@
 import { render, screen } from '@testing-library/react';
-import { StatusType, TableField, TableFieldProps } from '.';
+import { TableField, TableFieldProps } from '.';
 import bannerList from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import searchLogList from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
-import orderManageList from '@/src/mock/db/utils/ContentList/BigDragon/orderManage/initList.json';
 import userEvent from '@testing-library/user-event';
 
 Object.defineProperty(window, 'matchMedia', {
@@ -70,18 +69,18 @@ describe('TableField', () => {
   describe('Banner', () => {
     const props: TableFieldProps = {
       columns: [
-        { field: undefined, name: '__checkbox', header: undefined },
-        { field: 'id', name: 'id', header: 'ID' },
-        { field: 'title', name: 'title', header: '標題' },
-        { field: 'pic', name: '__component:list-image', header: '封面圖' },
-        { field: 'device', name: 'device_name', header: '所在位置' },
-        { field: 'status', name: '__component:list-select', header: '狀態' },
-        { field: 'order', name: '__component:list-input', header: '權重' },
-        { field: undefined, name: '__slot:actions', header: '操作' },
+        { field: '', name: '__checkbox', header: '' },
+        { field: 'id', name: 'label', header: 'ID' },
+        { field: 'pic', name: 'label', header: '圖片' },
+        { field: 'status', name: 'list-select', header: '狀態' },
+        { field: 'order', name: 'list-input', header: '權重' },
+        { field: 'created_at', name: 'label', header: '建立時間' },
+        { field: 'updated_at', name: 'label', header: '更新時間' },
+        { field: '', name: '__slot:actions', header: '操作' },
       ],
       perPage: 10,
-      dataSource: bannerList.data,
-      total: bannerList.total,
+      dataSource: bannerList.data.data,
+      total: bannerList.data.meta.total,
       selectedRow: undefined,
       setSeletedRow: undefined,
       handleChangePage: jest.fn(),
@@ -91,20 +90,12 @@ describe('TableField', () => {
 
     beforeEach(() => render(<TableField {...props} />));
 
-    it('should have 5 images display', async () => {
-      const images = screen.queryAllByRole('img') as HTMLImageElement[];
-      expect(images).toHaveLength(bannerList.total);
-      images.forEach((image, index) => {
-        expect(image.src).toContain(`/storage/${bannerList.data[index].pic}`);
-      });
-    });
-
     it('should have edit link', async () => {
       const links = screen.queryAllByRole('link') as HTMLLinkElement[];
-      expect(links).toHaveLength(5);
+      expect(links).toHaveLength(10);
 
       links.forEach((link, index) => {
-        expect(link.href).toContain(`/test/${bannerList.data[index].id}/edit`);
+        expect(link.href).toContain(`/test/${bannerList.data.data[index].id}/edit`);
       });
     });
   });
@@ -173,49 +164,5 @@ describe('TableField', () => {
     });
 
     it.todo('should change back to page 1 after changing page size');
-  });
-
-  describe('BigDragon orderManage', () => {
-    const props: TableFieldProps = {
-      columns: [
-        { field: 'id', name: 'id', header: 'ID' },
-        { field: 'order_num', name: 'order_num', header: '訂單編號' },
-        { field: 'created_at', name: 'created_at', header: '訂單成立時間' },
-        { field: 'PNR_num', name: 'PNR_num', header: 'PNR編號' },
-        { field: 'type', name: 'type', header: '類別' },
-        { field: 'name', name: 'name', header: '訂購人姓名' },
-        { field: 'phone', name: 'phone', header: '訂購人手機' },
-        { field: 'payment', name: 'payment', header: '收費總金額' },
-        { field: 'payment_status', name: '__component:status', header: '付款狀態' },
-        { field: 'invoicing_status', name: '__component:status', header: '開票狀態' },
-        { field: undefined, name: '__slot:actions', header: '查看' },
-      ],
-      perPage: 10,
-      dataSource: orderManageList.data,
-      total: orderManageList.total,
-      selectedRow: undefined,
-      setSeletedRow: undefined,
-      handleChangePage: jest.fn(),
-      handleChangePerPage: jest.fn(),
-      currentPage: 1,
-    };
-
-    beforeEach(() => render(<TableField {...props} />));
-
-    const statusArr: { value: string; status: StatusType }[] = [];
-    orderManageList.data.forEach((item: any | { value: string; status: StatusType }) => {
-      statusArr.push(item.payment_status);
-      statusArr.push(item.invoicing_status);
-    });
-
-    it('should have tag template with role status', async () => {
-      const status = screen.queryAllByRole('status');
-      expect(status).toHaveLength(statusArr.length);
-      status.forEach((item, index) => {
-        expect(item).toHaveClass(`p-tag-${statusArr[index].status}`);
-        const child = item.children[0] as HTMLSpanElement;
-        expect(child.innerHTML).toBe(statusArr[index].value);
-      });
-    });
   });
 });

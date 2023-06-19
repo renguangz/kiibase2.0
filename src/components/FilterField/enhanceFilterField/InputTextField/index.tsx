@@ -17,7 +17,7 @@ export function InputTextField({ form, name, inputType, placeholder }: InputText
             <InputText
               id={field.name}
               type={inputType}
-              value={field.value}
+              value={field.value ?? ''}
               placeholder={placeholder ?? '請輸入'}
               onChange={(e) => field.onChange(e.target.value)}
             />

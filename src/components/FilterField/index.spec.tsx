@@ -14,6 +14,7 @@ describe('FilterField', () => {
   const initProps = {
     onSubmit: mockOnSubmit,
     deleteButton: () => null,
+    updateButton: () => null,
   };
 
   const setup = (props: FilterFieldProps) => {

@@ -55,9 +55,10 @@ export interface FilterFieldProps {
   form: UseFormReturn<any, any>;
   filters: FilterType[];
   deleteButton: () => JSX.Element | null;
+  updateButton: () => JSX.Element | null;
 }
 
-export function FilterField({ onSubmit, form, filters, deleteButton }: FilterFieldProps) {
+export function FilterField({ onSubmit, form, filters, deleteButton, updateButton }: FilterFieldProps) {
   const [showFilters, setShowFilters] = useState(true);
 
   const filtersAddForm = useMemo(
@@ -86,6 +87,7 @@ export function FilterField({ onSubmit, form, filters, deleteButton }: FilterFie
             ))}
           </div>
           <ButtonsWrapper>
+            {updateButton()}
             {deleteButton()}
             <StyledButton type="button" onClick={onSubmit}>
               送出

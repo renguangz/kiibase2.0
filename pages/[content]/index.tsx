@@ -20,7 +20,8 @@ export default function ContentListPage() {
   const router = useRouter();
   const { asPath } = router;
 
-  const { data, columns } = useGetConfig(asPath);
+  const { data, columns, canUpdate } = useGetConfig(asPath);
+
   const {
     data: contentData,
     total: contentDataTotal,
@@ -29,6 +30,7 @@ export default function ContentListPage() {
     handleChangePage,
     handleChangePerPage,
   } = useContentList(asPath);
+
   const {
     form,
     data: filterData,
@@ -54,6 +56,13 @@ export default function ContentListPage() {
           form={form}
           onSubmit={handleSearch}
           filters={filterData}
+          updateButton={() =>
+            canUpdate ? (
+              <StyledButton type="button" color="warning" variant="outline" disabled>
+                批次更新
+              </StyledButton>
+            ) : null
+          }
           deleteButton={() =>
             data?.delete_button ? (
               <StyledButton

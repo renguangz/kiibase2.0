@@ -3,10 +3,12 @@ import { Form, Pagination } from 'antd';
 import { DataTable } from 'primereact/datatable';
 import { Tag } from 'primereact/tag';
 import { Column } from 'primereact/column';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
+import { InputTextField } from '../FilterField/enhanceFilterField/InputTextField';
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 
 type Field = {
   field?: string;
@@ -18,13 +20,16 @@ type IsCheckboxColumn = (field: Field) => boolean;
 const isCheckboxColumn: IsCheckboxColumn = (field) => field.name === '__checkbox';
 
 type IsImageColumn = (field: Field) => boolean;
-const isImageColumn: IsImageColumn = (field) => field.name === '__component:list-image';
+const isImageColumn: IsImageColumn = (field) => field.name === 'list-image';
 
 type IsRowEditor = (field: Field) => boolean;
 const isRowEditor: IsRowEditor = (field) => field.name === '__slot:actions';
 
 type IsStatusColumn = (field: Field) => boolean;
-const isStatusColumn: IsStatusColumn = (field) => field.name === '__component:status';
+const isStatusColumn: IsStatusColumn = (field) => field.name === 'status';
+
+type IsInputColumn = (field: Field) => boolean;
+const isInputColumn: IsInputColumn = (field) => field.name === '__component:list-input';
 
 export type TableFieldProps = {
   perPage: number;
@@ -49,6 +54,8 @@ export function TableField({
   handleChangePage,
   handleChangePerPage,
 }: TableFieldProps) {
+  const form = useForm();
+
   const displayColumns = useMemo(
     () =>
       columns.map((column) =>
@@ -61,9 +68,23 @@ export function TableField({
             }
           : isStatusColumn(column)
           ? { ...column, body: statusTemplate(column) }
+          : isInputColumn(column)
+          ? {
+              ...column,
+              body: inputTemplate(column, form, column.field?.includes('number') ?? false),
+            }
           : column,
       ),
-    [columns, isImageColumn, fullImageColumnTemplate, isRowEditor, editColumnTemplate, isStatusColumn, statusTemplate],
+    [
+      columns,
+      isImageColumn,
+      fullImageColumnTemplate,
+      isRowEditor,
+      editColumnTemplate,
+      isStatusColumn,
+      statusTemplate,
+      isInputColumn,
+    ],
   );
 
   const [page, setPage] = useState(currentPage);
@@ -148,5 +169,23 @@ function statusTemplate(column: Field) {
     );
 
     return <Tag role={'status'} value={tagData?.value ?? ''} severity={tagData?.status ?? undefined} />;
+  };
+}
+
+function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isNumberInput: boolean) {
+  return (data: any) => {
+    useEffect(() => {
+      form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
+    }, []);
+
+    return (
+      <InputTextField
+        inputType={isNumberInput ? 'number' : undefined}
+        form={form}
+        name={`${column.field}-${data.id}`}
+        required={false}
+        defaultValue={data[column.field ?? ''] ?? ''}
+      />
+    );
   };
 }

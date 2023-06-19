@@ -3,7 +3,9 @@ import useSWR from 'swr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
+import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
 import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
+import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import roleListEmptyData from '@/src/mock/db/utils/ContentList/role/filter/emptyList.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
 import { useRouter } from 'next/router';
@@ -264,6 +266,51 @@ describe('ContentListPage', () => {
       expect(requestUtils.request).toHaveBeenCalledWith('/model/role/deleteList', {
         method: 'DELETE',
         body,
+      });
+    });
+  });
+
+  describe('Banner', () => {
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig')
+          ? bannerConfig
+          : url.includes('no_content')
+          ? roleListEmptyData
+          : url.includes('haha')
+          ? searchListFilterData
+          : bannerListData,
+      }));
+
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/banner',
+      });
+
+      render(<ContentListPage />);
+      jest.useRealTimers();
+    });
+
+    it('should have disabled update button', () => {
+      const updateButton = screen.queryByRole('button', { name: /更新/ });
+      expect(updateButton).toBeInTheDocument();
+      expect(updateButton).toBeDisabled();
+    });
+
+    it('should have one input field and one select field in table', async () => {
+      const inputFields = screen.queryAllByRole('textbox');
+      expect(inputFields).toHaveLength(12);
+    });
+
+    it('should have expect default value', async () => {
+      const inputFields = screen.queryAllByRole('textbox');
+      inputFields.shift();
+      inputFields.pop();
+      const expectValues = bannerListData.data.data.map((item) => item.order);
+      expectValues.forEach((value, index) => {
+        expect(inputFields[index]).toHaveValue(`${value}`);
       });
     });
   });
