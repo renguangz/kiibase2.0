@@ -5,6 +5,7 @@ import { request } from '@/src/utils/request';
 import { LayoutProvider } from '@/src/layouts/layout/context/layoutcontext';
 import Layout from '@/src/layouts/layout/layout';
 import 'primereact/resources/primereact.css';
+import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '@/styles/layout/layout.scss';

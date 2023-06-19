@@ -10,7 +10,7 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
 
   const { data: configData } = useGetConfig(asPath);
 
-  const deleteAllUrl = useMemo(() => `${asPath}/deleteAll`, [asPath, combineApiUrl]);
+  const deleteAllUrl = useMemo(() => `/model${asPath}/deleteList`, [asPath, combineApiUrl]);
 
   const disableListDeleteButton = useMemo(() => selectedRow === null || selectedRow.length === 0, [selectedRow]);
 
@@ -48,7 +48,7 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
   const handleDeleteAll = useCallback(async () => {
     if (!selectedRow) return;
     const payload = selectedRow.map((row) => row.id);
-    return await request(deleteAllUrl, requestOptionsTemplate('POST', payload));
+    return await request(deleteAllUrl, requestOptionsTemplate('DELETE', payload));
   }, [request, requestOptionsTemplate, selectedRow, deleteAllUrl]);
 
   return {

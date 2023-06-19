@@ -261,8 +261,8 @@ describe('ContentListPage', () => {
       await userEvent.click(deleteButton);
       const body = JSON.stringify([51, 50]);
       expect(requestUtils.request).toHaveBeenCalledTimes(1);
-      expect(requestUtils.request).toHaveBeenCalledWith('/role/deleteAll', {
-        method: 'POST',
+      expect(requestUtils.request).toHaveBeenCalledWith('/model/role/deleteList', {
+        method: 'DELETE',
         body,
       });
     });
