@@ -32,6 +32,7 @@ type IsInputColumn = (field: Field) => boolean;
 const isInputColumn: IsInputColumn = (field) => field.name === '__component:list-input';
 
 export type TableFieldProps = {
+  form: UseFormReturn<FieldValues, any>;
   perPage: number;
   columns: Array<Field>;
   dataSource: any[];
@@ -44,6 +45,7 @@ export type TableFieldProps = {
 };
 
 export function TableField({
+  form,
   perPage,
   columns,
   dataSource,
@@ -54,8 +56,6 @@ export function TableField({
   handleChangePage,
   handleChangePerPage,
 }: TableFieldProps) {
-  const form = useForm();
-
   const displayColumns = useMemo(
     () =>
       columns.map((column) =>

@@ -23,12 +23,15 @@ export default function ContentListPage() {
   const { data, columns, canUpdate } = useGetConfig(asPath);
 
   const {
+    tableForm,
+    updateButtonDisabled,
     data: contentData,
     total: contentDataTotal,
     queryParams,
     setQueryParams,
     handleChangePage,
     handleChangePerPage,
+    handleUpdateList,
   } = useContentList(asPath);
 
   const {
@@ -58,7 +61,13 @@ export default function ContentListPage() {
           filters={filterData}
           updateButton={() =>
             canUpdate ? (
-              <StyledButton type="button" color="warning" variant="outline" disabled>
+              <StyledButton
+                type="button"
+                color="warning"
+                variant="outline"
+                disabled={updateButtonDisabled}
+                onClick={handleUpdateList}
+              >
                 批次更新
               </StyledButton>
             ) : null
@@ -79,6 +88,7 @@ export default function ContentListPage() {
         />
       </FilterFieldWrapper>
       <TableField
+        form={tableForm}
         currentPage={queryParams['page']}
         handleChangePage={handleChangePage}
         handleChangePerPage={handleChangePerPage}

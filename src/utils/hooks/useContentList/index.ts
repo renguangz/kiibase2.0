@@ -1,19 +1,18 @@
 import { useCallback, useMemo, useState } from 'react';
 import { isNotContentDynamicRouteYet } from '../../functions';
 import useSWR from 'swr';
-import { ApiDataType } from '@/src/types/data';
+import { ApiDataResponse, ApiDataType } from '@/src/types/data';
+import { useForm } from 'react-hook-form';
+import { request, requestOptionsTemplate } from '../../request';
 
 type ContentDataType = {
-  data: Array<{
-    id: number;
-    name: string;
-    created_at: string;
-    updated_at: string;
-  }>;
+  data: Array<Record<string, string | number>>;
   meta: Record<'current_page' | 'last_page' | 'to' | 'from' | 'total' | 'per_page', number>;
 };
 
 export function useContentList(asPath: string) {
+  const tableForm = useForm();
+
   const [queryParams, setQueryParams] = useState<Record<string, any>>({
     page: 1,
     per_page: 10,
@@ -24,9 +23,33 @@ export function useContentList(asPath: string) {
     [isNotContentDynamicRouteYet, asPath],
   );
 
-  const { data } = useSWR<ApiDataType<ContentDataType | undefined> | undefined>([endpoint, { params: queryParams }]);
+  const { data, mutate } = useSWR<ApiDataType<ContentDataType | undefined> | undefined>([
+    endpoint,
+    { params: queryParams },
+  ]);
 
   const contentData = useMemo(() => data?.data ?? { data: [], meta: { total: 0 } }, [data]);
+
+  const updatedListData = useMemo(() => {
+    tableForm.watch();
+    const formValue = tableForm.control._formValues;
+    const formKeySet = new Set(Object.keys(formValue).map((key) => key.split('-')[0]));
+    const listData = contentData?.data ?? [];
+    const listDataChanged = listData
+      .map((data) => {
+        const arr: any[] = [];
+        formKeySet.forEach((key) => {
+          const formData: string | number = formValue[`${key}-${data['id']}`];
+          const dataValue = data[key];
+          if (formData.toString().trim() !== dataValue.toString().trim()) arr.push({ id: data.id, [key]: formData });
+        });
+        if (arr.length > 0) return arr[0];
+      })
+      .filter((data) => data);
+    return listDataChanged;
+  }, [tableForm.watch(), contentData]);
+
+  const updateButtonDisabled = useMemo(() => updatedListData.length === 0, [updatedListData]);
 
   const handleChangePage = useCallback(
     (currentPage: number) => {
@@ -42,12 +65,24 @@ export function useContentList(asPath: string) {
     [setQueryParams],
   );
 
+  const handleUpdateList = useCallback(async () => {
+    const result: ApiDataType<boolean> = await request(
+      `${endpoint}/updateList`,
+      requestOptionsTemplate('PUT', updatedListData),
+    );
+    await mutate();
+    return result?.status === 200 ? ApiDataResponse.SUCCESS : ApiDataResponse.ERROR;
+  }, [endpoint, request, updatedListData]);
+
   return {
+    tableForm,
+    updateButtonDisabled,
     data: contentData?.data ?? [],
     total: contentData.meta.total,
     setQueryParams,
     queryParams,
     handleChangePage,
     handleChangePerPage,
+    handleUpdateList,
   };
 }

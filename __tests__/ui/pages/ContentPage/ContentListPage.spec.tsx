@@ -271,6 +271,16 @@ describe('ContentListPage', () => {
   });
 
   describe('Banner', () => {
+    const setup = () => {
+      render(<ContentListPage />);
+
+      const inputFields = screen.queryAllByRole('textbox');
+      inputFields.shift();
+      inputFields.pop();
+      const updateButton = screen.getByRole('button', { name: /更新/ });
+      return { inputFields, updateButton };
+    };
+
     beforeEach(() => {
       jest.useFakeTimers().setSystemTime(mockDateNow);
       jest.resetAllMocks();
@@ -283,34 +293,68 @@ describe('ContentListPage', () => {
           : url.includes('haha')
           ? searchListFilterData
           : bannerListData,
+        mutate: jest.fn(),
       }));
 
       (useRouter as jest.Mock).mockReturnValue({
         asPath: '/banner',
       });
 
-      render(<ContentListPage />);
       jest.useRealTimers();
     });
 
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
     it('should have disabled update button', () => {
-      const updateButton = screen.queryByRole('button', { name: /更新/ });
+      const { updateButton } = setup();
       expect(updateButton).toBeInTheDocument();
       expect(updateButton).toBeDisabled();
     });
 
     it('should have one input field and one select field in table', async () => {
+      setup();
       const inputFields = screen.queryAllByRole('textbox');
       expect(inputFields).toHaveLength(12);
     });
 
     it('should have expect default value', async () => {
-      const inputFields = screen.queryAllByRole('textbox');
-      inputFields.shift();
-      inputFields.pop();
+      const { inputFields } = setup();
       const expectValues = bannerListData.data.data.map((item) => item.order);
       expectValues.forEach((value, index) => {
         expect(inputFields[index]).toHaveValue(`${value}`);
+      });
+    });
+
+    it('update button should be enabled after value changed', async () => {
+      const { inputFields, updateButton } = setup();
+      await userEvent.type(inputFields[0], '24');
+      expect(updateButton).toBeEnabled();
+    });
+
+    it('update button should be disabled again after changing back to default value', async () => {
+      const { inputFields, updateButton } = setup();
+      await userEvent.type(inputFields[0], '24');
+      await userEvent.clear(inputFields[0]);
+      await userEvent.type(inputFields[0], '20');
+      expect(updateButton).toBeDisabled();
+    });
+
+    it('should call `/model/banner/updateList`', async () => {
+      const { inputFields, updateButton } = setup();
+      await userEvent.clear(inputFields[0]);
+      await userEvent.type(inputFields[0], '35');
+      await userEvent.type(inputFields[1], '36');
+      await userEvent.click(updateButton);
+      expect(requestUtils.request).toHaveBeenCalled();
+      const expectPayload = [
+        { id: 20, order: '35' },
+        { id: 19, order: '3036' },
+      ];
+      expect(requestUtils.request).toHaveBeenCalledWith('/model/banner/updateList', {
+        method: 'PUT',
+        body: JSON.stringify(expectPayload),
       });
     });
   });
