@@ -25,6 +25,16 @@
         "title": "狀態",
         "name": "status",
         "type": "__component:list-select",
+        "options": [
+          {
+            "key": "ONLINE",
+            "value": "上架"
+          },
+          {
+            "key": "OFFLINE",
+            "value": "下架"
+          }
+        ],
         "sort_field": "status"
       },
       {

@@ -1,14 +1,12 @@
-// NOTE: 慢慢轉移使用 SelectField
-
 import { FieldProps } from '@/src/utils';
 import { Controller } from 'react-hook-form';
-import { Select } from 'antd';
+import { Dropdown } from 'primereact/dropdown';
 
-interface DropdownFieldProps extends FieldProps<any> {
+interface SelectFieldProps extends FieldProps<any> {
   options: { value: string; label: string }[];
 }
 
-export function DropdownField({ form, options, name, hint, placeholder }: DropdownFieldProps) {
+export function SelectField({ form, options, name, hint, placeholder }: SelectFieldProps) {
   const { control } = form;
 
   return (
@@ -18,7 +16,7 @@ export function DropdownField({ form, options, name, hint, placeholder }: Dropdo
         control={control}
         rules={{ required: hint }}
         render={({ field }) => (
-          <Select
+          <Dropdown
             placeholder={placeholder ?? '請選擇'}
             onChange={(e) => field.onChange(e)}
             value={field.value}

@@ -8,12 +8,15 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { InputTextField } from '../FilterField/enhanceFilterField/InputTextField';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import { DropdownField } from '../FilterField/enhanceFilterField/DropDownField';
+import { SelectField } from '../FilterField/enhanceFilterField/SelectField';
 
 type Field = {
   field?: string;
   name: string;
   header?: string;
+  options?: Array<Record<'key' | 'value', string>>;
 };
 
 type IsCheckboxColumn = (field: Field) => boolean;
@@ -30,6 +33,9 @@ const isStatusColumn: IsStatusColumn = (field) => field.name === 'status';
 
 type IsInputColumn = (field: Field) => boolean;
 const isInputColumn: IsInputColumn = (field) => field.name === '__component:list-input';
+
+type IsSelectColumn = (field: Field) => boolean;
+const isSelectColumn: IsSelectColumn = (field) => field.name === '__component:list-select';
 
 export type TableFieldProps = {
   form: UseFormReturn<FieldValues, any>;
@@ -73,6 +79,11 @@ export function TableField({
               ...column,
               body: inputTemplate(column, form, column.field?.includes('number') ?? false),
             }
+          : isSelectColumn(column)
+          ? {
+              ...column,
+              body: selectTemplate(column, form),
+            }
           : column,
       ),
     [
@@ -84,6 +95,9 @@ export function TableField({
       isStatusColumn,
       statusTemplate,
       isInputColumn,
+      inputTemplate,
+      isSelectColumn,
+      selectTemplate,
     ],
   );
 
@@ -185,6 +199,29 @@ function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isN
         name={`${column.field}-${data.id}`}
         required={false}
         defaultValue={data[column.field ?? ''] ?? ''}
+      />
+    );
+  };
+}
+
+function selectTemplate(column: Field, form: UseFormReturn<FieldValues, any>) {
+  return (data: any) => {
+    const options = useMemo(
+      () => column.options?.map((option) => ({ value: option.key, label: option.value })) ?? [],
+      [column],
+    );
+
+    useEffect(() => {
+      form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
+    }, []);
+
+    return (
+      <SelectField
+        form={form}
+        options={options}
+        defaultValue={'下架'}
+        required={false}
+        name={`${column.field}-${data.id}`}
       />
     );
   };

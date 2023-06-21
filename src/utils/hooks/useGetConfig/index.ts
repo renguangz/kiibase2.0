@@ -9,6 +9,7 @@ export type ConfigListType = {
   type: string;
   name?: string;
   sort_field?: string;
+  options?: Array<Record<'key' | 'value', string>>;
 };
 
 export type ConfigDataType = {
@@ -35,11 +36,14 @@ export function useGetConfig(asPath: string) {
 
   const columns = useMemo(
     () =>
-      apiData?.list.map((item) => ({
-        field: item.name ?? '',
-        name: item.type ?? item.sort_field ?? '',
-        header: item.title,
-      })),
+      apiData?.list
+        .map((item) => ({
+          field: item.name ?? '',
+          name: item.type ?? item.sort_field ?? '',
+          header: item.title,
+          ...(item.options && { options: item.options }),
+        }))
+        .filter((item) => item),
     [apiData],
   );
 

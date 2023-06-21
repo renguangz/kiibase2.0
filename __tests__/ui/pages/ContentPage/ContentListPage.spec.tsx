@@ -274,11 +274,11 @@ describe('ContentListPage', () => {
     const setup = () => {
       render(<ContentListPage />);
 
-      const inputFields = screen.queryAllByRole('textbox');
+      const inputFields = screen.queryAllByRole('textbox').filter((field) => field.className.includes('p-inputtext'));
       inputFields.shift();
-      inputFields.pop();
       const updateButton = screen.getByRole('button', { name: /更新/ });
-      return { inputFields, updateButton };
+      const selectFields = document.querySelectorAll('.p-dropdown');
+      return { inputFields, updateButton, selectFields };
     };
 
     beforeEach(() => {
@@ -315,8 +315,8 @@ describe('ContentListPage', () => {
 
     it('should have one input field and one select field in table', async () => {
       setup();
-      const inputFields = screen.queryAllByRole('textbox');
-      expect(inputFields).toHaveLength(12);
+      const inputFields = screen.queryAllByRole('textbox').filter((field) => field.className.includes('p-inputtext'));
+      expect(inputFields).toHaveLength(11);
     });
 
     it('should have expect default value', async () => {
@@ -341,7 +341,32 @@ describe('ContentListPage', () => {
       expect(updateButton).toBeDisabled();
     });
 
-    it('should call `/model/banner/updateList`', async () => {
+    it('should have enabled update button after changing select value', async () => {
+      const { selectFields, updateButton } = setup();
+      expect(selectFields).toHaveLength(10);
+      const firstSelect = selectFields[0];
+      await userEvent.click(firstSelect);
+      const offline = screen.queryByLabelText(/下架/) as HTMLDivElement;
+      expect(offline).toBeInTheDocument();
+      await userEvent.click(offline);
+      expect(updateButton).toBeEnabled();
+    });
+
+    it('should turn to disabled if changing value back to default value', async () => {
+      const { selectFields, updateButton } = setup();
+      const firstSelect = selectFields[0];
+      await userEvent.click(firstSelect);
+      const offline = screen.queryByLabelText(/下架/) as HTMLDivElement;
+      await userEvent.click(offline);
+      expect(updateButton).toBeEnabled();
+      await userEvent.click(firstSelect);
+      const online = screen.queryByLabelText(/上架/) as HTMLDivElement;
+      expect(online).toBeInTheDocument();
+      await userEvent.click(online);
+      expect(updateButton).toBeDisabled();
+    });
+
+    it('should call `/model/banner/updateList` for changing input', async () => {
       const { inputFields, updateButton } = setup();
       await userEvent.clear(inputFields[0]);
       await userEvent.type(inputFields[0], '35');
@@ -351,6 +376,37 @@ describe('ContentListPage', () => {
       const expectPayload = [
         { id: 20, order: '35' },
         { id: 19, order: '3036' },
+      ];
+      expect(requestUtils.request).toHaveBeenCalledWith('/model/banner/updateList', {
+        method: 'PUT',
+        body: JSON.stringify(expectPayload),
+      });
+    });
+
+    it('should call `/model/banner/updateList` for changing input and select', async () => {
+      const { inputFields, selectFields, updateButton } = setup();
+
+      const firstSelect = selectFields[0];
+      await userEvent.click(firstSelect);
+      const offline = screen.queryByLabelText(/下架/) as HTMLDivElement;
+      await userEvent.click(offline);
+
+      const thirdSelect = selectFields[2];
+      await userEvent.click(thirdSelect);
+      const thirdOffline = screen.queryAllByLabelText(/下架/)[1] as HTMLDivElement;
+      await userEvent.click(thirdOffline);
+
+      await userEvent.click(offline);
+      await userEvent.clear(inputFields[0]);
+      await userEvent.type(inputFields[0], '35');
+      await userEvent.type(inputFields[1], '36');
+
+      await userEvent.click(updateButton);
+      expect(requestUtils.request).toHaveBeenCalled();
+      const expectPayload = [
+        { id: 20, status: 'OFFLINE', order: '35' },
+        { id: 19, order: '3036' },
+        { id: 18, status: 'OFFLINE' },
       ];
       expect(requestUtils.request).toHaveBeenCalledWith('/model/banner/updateList', {
         method: 'PUT',

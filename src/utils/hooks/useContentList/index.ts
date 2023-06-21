@@ -37,13 +37,15 @@ export function useContentList(asPath: string) {
     const listData = contentData?.data ?? [];
     const listDataChanged = listData
       .map((data) => {
-        const arr: any[] = [];
+        let obj: Record<'id' | string, string | number> = {};
         formKeySet.forEach((key) => {
           const formData: string | number = formValue[`${key}-${data['id']}`];
           const dataValue = data[key];
-          if (formData.toString().trim() !== dataValue.toString().trim()) arr.push({ id: data.id, [key]: formData });
+          if (formData.toString().trim() !== dataValue.toString().trim())
+            obj = { ...obj, id: data.id, [key]: formData };
         });
-        if (arr.length > 0) return arr[0];
+
+        if ('id' in obj) return obj;
       })
       .filter((data) => data);
     return listDataChanged;
