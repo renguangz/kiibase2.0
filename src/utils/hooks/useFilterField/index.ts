@@ -19,7 +19,7 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
       component: 'InputTextComponent',
       props: {
         label: '',
-        name: 'filter',
+        name: 'keyword',
         required: false,
         placeholder: '請輸入',
       },

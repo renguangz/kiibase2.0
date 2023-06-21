@@ -74,7 +74,7 @@ describe('ContentListPage', () => {
 
     it('should have table with no value after filtering', async () => {
       const submitButton = screen.getByRole('button', { name: '送出' });
-      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      const searchInput = document.getElementById('keyword') as HTMLInputElement;
       expect(searchInput).toHaveValue('');
 
       const rows = screen.getAllByRole('row');
@@ -85,7 +85,7 @@ describe('ContentListPage', () => {
 
       await userEvent.click(submitButton);
       const params = {
-        filter: 'no+content',
+        keyword: 'no+content',
         page: 1,
         per_page: 10,
       };
@@ -94,13 +94,13 @@ describe('ContentListPage', () => {
 
     it('should update table by filter', async () => {
       const submitButton = screen.getByRole('button', { name: '送出' });
-      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      const searchInput = document.getElementById('keyword') as HTMLInputElement;
       expect(searchInput).toHaveValue('');
 
       await userEvent.type(searchInput, 'haha');
       await userEvent.click(submitButton);
       const params = {
-        filter: 'haha',
+        keyword: 'haha',
         page: 1,
         per_page: 10,
       };
@@ -114,7 +114,7 @@ describe('ContentListPage', () => {
       expect(startDateInput).toBeInTheDocument();
       expect(endDateInput).toBeInTheDocument();
 
-      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      const searchInput = document.getElementById('keyword') as HTMLInputElement;
       await userEvent.type(searchInput, 'haha');
       await userEvent.click(startDateInput);
       const chosenStartDate = screen.queryByText('15') as HTMLSpanElement;
@@ -123,7 +123,7 @@ describe('ContentListPage', () => {
       await userEvent.click(submitButton);
 
       const params = {
-        filter: 'haha',
+        keyword: 'haha',
         page: 1,
         per_page: 10,
         start_date: '2023-04-15',
@@ -139,7 +139,7 @@ describe('ContentListPage', () => {
       expect(startDateInput).toBeInTheDocument();
       expect(endDateInput).toBeInTheDocument();
 
-      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      const searchInput = document.getElementById('keyword') as HTMLInputElement;
       await userEvent.type(searchInput, 'no content');
       await userEvent.click(endDateInput);
       const chosenStartDate = screen.queryAllByText('28')[1] as HTMLSpanElement;
@@ -148,7 +148,7 @@ describe('ContentListPage', () => {
       await userEvent.click(submitButton);
 
       const params = {
-        filter: 'no+content',
+        keyword: 'no+content',
         page: 1,
         per_page: 10,
         end_date: '2023-04-28',
@@ -206,12 +206,12 @@ describe('ContentListPage', () => {
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
-      const searchInput = document.getElementById('filter') as HTMLInputElement;
+      const searchInput = document.getElementById('keyword') as HTMLInputElement;
       await userEvent.type(searchInput, 'haha');
       const submitButton = screen.getByRole('button', { name: '送出' });
       await userEvent.click(submitButton);
       const params = {
-        filter: 'haha',
+        keyword: 'haha',
         page: 1,
         per_page: 10,
       };

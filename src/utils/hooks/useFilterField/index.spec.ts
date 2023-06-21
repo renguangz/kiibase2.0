@@ -37,7 +37,7 @@ describe('useFilterField', () => {
       const filters = setup('/searchLog');
       expect(filters.data).toHaveLength(3);
 
-      const expectFilterName = ['start_date', 'end_date', 'filter'];
+      const expectFilterName = ['start_date', 'end_date', 'keyword'];
       const expectFilterComponent = ['CalendarComponent', 'CalendarComponent', 'InputTextComponent'];
 
       filters.data.forEach((filter, index) => {
