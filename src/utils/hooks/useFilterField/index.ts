@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { combineApiUrl, pipeFormatObject } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
@@ -51,6 +51,10 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
     const payload = selectedRow.map((row) => row.id);
     return await request(deleteAllUrl, requestOptionsTemplate('DELETE', payload));
   }, [request, requestOptionsTemplate, selectedRow, deleteAllUrl]);
+
+  useEffect(() => {
+    form.reset();
+  }, [asPath]);
 
   return {
     form,
