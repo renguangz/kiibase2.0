@@ -4,12 +4,13 @@ import { useForm } from 'react-hook-form';
 import { KeyedMutator } from 'swr';
 import { combineApiUrl, pipeFormatObject } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
+import { ContentDataType } from '../useContentList';
 import { useGetConfig } from '../useGetConfig';
 
 export function useFilterField(
   asPath: string,
   setQueryParams: Dispatch<SetStateAction<Record<string, any>>>,
-  mutateContentList: KeyedMutator<ApiDataType<undefined> | undefined>,
+  mutateContentList: KeyedMutator<ApiDataType<ContentDataType | undefined> | undefined>,
 ) {
   const [selectedRow, setSelectedRow] = useState<Array<any> | null>(null);
   const form = useForm();

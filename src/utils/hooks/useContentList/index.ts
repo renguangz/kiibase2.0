@@ -5,7 +5,7 @@ import { ApiDataResponse, ApiDataType } from '@/src/types/data';
 import { useForm } from 'react-hook-form';
 import { request, requestOptionsTemplate } from '../../request';
 
-type ContentDataType = {
+export type ContentDataType = {
   data: Array<Record<string, string | number>>;
   meta: Record<'current_page' | 'last_page' | 'to' | 'from' | 'total' | 'per_page', number>;
 };
