@@ -9,8 +9,10 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import { InputTextField } from '../FilterField/enhanceFilterField/InputTextField';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
-import { DropdownField } from '../FilterField/enhanceFilterField/DropDownField';
 import { SelectField } from '../FilterField/enhanceFilterField/SelectField';
+import styled from 'styled-components';
+import { StyledButton } from '../common';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 
 type Field = {
   field?: string;
@@ -48,6 +50,7 @@ export type TableFieldProps = {
   currentPage: number;
   handleChangePage: (currentPage: number) => void;
   handleChangePerPage: (pageSize: number) => void;
+  handleDeleteModelList?: (id: string | number) => void;
 };
 
 export function TableField({
@@ -61,6 +64,7 @@ export function TableField({
   currentPage,
   handleChangePage,
   handleChangePerPage,
+  handleDeleteModelList,
 }: TableFieldProps) {
   const displayColumns = useMemo(
     () =>
@@ -70,7 +74,7 @@ export function TableField({
           : isRowEditor(column)
           ? {
               ...column,
-              body: editColumnTemplate,
+              body: editColumnTemplate(handleDeleteModelList ? handleDeleteModelList : () => {}),
             }
           : isStatusColumn(column)
           ? { ...column, body: statusTemplate(column) }
@@ -98,6 +102,7 @@ export function TableField({
       inputTemplate,
       isSelectColumn,
       selectTemplate,
+      handleDeleteModelList,
     ],
   );
 
@@ -119,6 +124,7 @@ export function TableField({
 
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
+      <ConfirmDialog />
       <DataTable
         value={dataSource}
         rows={perPage}
@@ -160,18 +166,69 @@ function fullImageColumnTemplate(column: Field) {
   };
 }
 
-function editColumnTemplate(data: { id: string | number }) {
-  const router = useRouter();
-  const { asPath } = router;
+const EditColumnWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  width: 115px;
+`;
 
-  return (
-    <div>
-      <Link href={`${asPath}/${data.id}/edit`} role="link">
-        edit button
-      </Link>
-    </div>
-  );
+function editColumnTemplate(handleDelete: (id: string | number) => void) {
+  return (data: { id: string | number }) => {
+    const router = useRouter();
+    const { asPath } = router;
+
+    const confirm2 = () => {
+      confirmDialog({
+        header: '確定要刪除嗎',
+        acceptClassName: 'p-button-danger',
+        rejectLabel: '取消',
+        acceptLabel: '確定',
+        accept: () => handleDelete(data.id),
+      });
+    };
+
+    return (
+      <EditColumnWrapper>
+        <StyledButton type="button" color="primary">
+          <Link href={`${asPath}/${data.id}/edit`} role="link" style={{ color: '#fff' }}>
+            編輯
+          </Link>
+        </StyledButton>
+        <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
+          刪除
+        </StyledButton>
+      </EditColumnWrapper>
+    );
+  };
 }
+
+// function editColumnTemplate(data: { id: string | number }) {
+//   const router = useRouter();
+//   const { asPath } = router;
+//
+//   const confirm2 = () => {
+//     confirmDialog({
+//       header: '確定要刪除嗎',
+//       acceptClassName: 'p-button-danger',
+//       rejectLabel: '取消',
+//       acceptLabel: '確定',
+//     });
+//   };
+//
+//   return (
+//     <EditColumnWrapper>
+//       <StyledButton type="button" color="primary">
+//         <Link href={`${asPath}/${data.id}/edit`} role="link" style={{ color: '#fff' }}>
+//           編輯
+//         </Link>
+//       </StyledButton>
+//       <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
+//         刪除
+//       </StyledButton>
+//     </EditColumnWrapper>
+//   );
+// }
 
 export type StatusType = 'success' | 'danger' | 'warning' | undefined;
 

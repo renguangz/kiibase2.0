@@ -55,3 +55,8 @@ code {
 .layout {
   min-height: 100vh;
 }
+
+.p-confirm-dialog {
+  width: 400px;
+  border-radius: 0;
+}

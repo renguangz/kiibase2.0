@@ -46,6 +46,7 @@ describe('ContentListPage', () => {
           : url.includes('haha')
           ? searchListFilterData
           : roleListData,
+        mutate: jest.fn(),
       }));
 
       (useRouter as jest.Mock).mockReturnValue({
@@ -169,7 +170,7 @@ describe('ContentListPage', () => {
     });
 
     it('should have delete button and 11 checkboxes', () => {
-      const deleteButton = screen.queryByRole('button', { name: '刪除' });
+      const deleteButton = screen.queryByRole('button', { name: '批次刪除' });
       expect(deleteButton).toBeInTheDocument();
       const checkboxes = screen.queryAllByRole('checkbox');
       expect(checkboxes).toHaveLength(11);
@@ -249,7 +250,7 @@ describe('ContentListPage', () => {
     });
 
     it('should have delete button for deleting multiple table data', async () => {
-      const deleteButton = screen.queryByRole('button', { name: '刪除' }) as HTMLButtonElement;
+      const deleteButton = screen.queryByRole('button', { name: '批次刪除' }) as HTMLButtonElement;
       expect(deleteButton).toBeInTheDocument();
       expect(deleteButton).toBeDisabled();
 
@@ -267,6 +268,31 @@ describe('ContentListPage', () => {
         method: 'DELETE',
         body,
       });
+    });
+
+    it('should have delete buttons and ', async () => {
+      const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
+      expect(deleteButtons).toHaveLength(10);
+
+      const firstDelete = deleteButtons[0];
+      await userEvent.click(firstDelete);
+    });
+
+    it('will open confirm model and will call api `/model/role/:id` when click it', async () => {
+      const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
+      const firstDelete = deleteButtons[0];
+      await userEvent.click(firstDelete);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(firstDelete);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+      expect(requestUtils.request).toHaveBeenCalled();
+      expect(requestUtils.request).toHaveBeenCalledWith('/model/role/51', { method: 'DELETE' });
     });
   });
 
@@ -412,6 +438,13 @@ describe('ContentListPage', () => {
         method: 'PUT',
         body: JSON.stringify(expectPayload),
       });
+    });
+
+    it('should not have any delete buttons', async () => {
+      const deleteMultipleButton = screen.queryByRole('button', { name: '批次刪除' });
+      const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
+      expect(deleteMultipleButton).not.toBeInTheDocument();
+      expect(deleteButtons).toHaveLength(0);
     });
   });
 });

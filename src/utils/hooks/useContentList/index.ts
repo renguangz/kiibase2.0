@@ -41,7 +41,7 @@ export function useContentList(asPath: string) {
         formKeySet.forEach((key) => {
           const formData: string | number = formValue[`${key}-${data['id']}`];
           const dataValue = data[key];
-          if (formData.toString().trim() !== dataValue.toString().trim())
+          if (formData?.toString().trim() !== dataValue?.toString().trim())
             obj = { ...obj, id: data.id, [key]: formData };
         });
 
@@ -76,6 +76,15 @@ export function useContentList(asPath: string) {
     return result?.status === 200 ? ApiDataResponse.SUCCESS : ApiDataResponse.ERROR;
   }, [endpoint, request, updatedListData]);
 
+  const handleDeleteModel = useCallback(
+    async (id: string | number) => {
+      const result: ApiDataType<boolean> = await request(`${endpoint}/${id}`, requestOptionsTemplate('DELETE'));
+      await mutate();
+      return result?.status === 200 ? ApiDataResponse.SUCCESS : ApiDataResponse.ERROR;
+    },
+    [endpoint, request, mutate],
+  );
+
   return {
     tableForm,
     updateButtonDisabled,
@@ -86,5 +95,6 @@ export function useContentList(asPath: string) {
     handleChangePage,
     handleChangePerPage,
     handleUpdateList,
+    handleDeleteModel,
   };
 }

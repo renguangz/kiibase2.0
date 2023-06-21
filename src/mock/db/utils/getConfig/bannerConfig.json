@@ -3,7 +3,7 @@
   "message": "Success",
   "data": {
     "create_button": true,
-    "delete_button": true,
+    "delete_button": false,
     "list": [
       {
         "title": "",

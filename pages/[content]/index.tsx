@@ -32,6 +32,7 @@ export default function ContentListPage() {
     handleChangePage,
     handleChangePerPage,
     handleUpdateList,
+    handleDeleteModel,
   } = useContentList(asPath);
 
   const {
@@ -81,7 +82,7 @@ export default function ContentListPage() {
                 disabled={disableListDeleteButton}
                 onClick={handleDeleteAll}
               >
-                刪除
+                批次刪除
               </StyledButton>
             ) : null
           }
@@ -98,6 +99,7 @@ export default function ContentListPage() {
         columns={columns ?? []}
         dataSource={contentData ?? []}
         total={contentDataTotal ?? 0}
+        handleDeleteModelList={handleDeleteModel}
       />
     </PageLayout>
   );
