@@ -88,6 +88,7 @@ export function useContentList(asPath: string) {
   return {
     tableForm,
     updateButtonDisabled,
+    mutate,
     data: contentData?.data ?? [],
     total: contentData.meta.total,
     setQueryParams,

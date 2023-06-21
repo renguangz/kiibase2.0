@@ -33,6 +33,7 @@ export default function ContentListPage() {
     handleChangePerPage,
     handleUpdateList,
     handleDeleteModel,
+    mutate,
   } = useContentList(asPath);
 
   const {
@@ -43,7 +44,7 @@ export default function ContentListPage() {
     setSelectedRow,
     disableListDeleteButton,
     handleDeleteAll,
-  } = useFilterField(asPath, setQueryParams);
+  } = useFilterField(asPath, setQueryParams, mutate);
 
   useEffect(() => {
     form.reset();

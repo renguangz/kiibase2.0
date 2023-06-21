@@ -1,10 +1,16 @@
+import { ApiDataType } from '@/src/types/data';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { KeyedMutator } from 'swr';
 import { combineApiUrl, pipeFormatObject } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
 import { useGetConfig } from '../useGetConfig';
 
-export function useFilterField(asPath: string, setQueryParams: Dispatch<SetStateAction<Record<string, any>>>) {
+export function useFilterField(
+  asPath: string,
+  setQueryParams: Dispatch<SetStateAction<Record<string, any>>>,
+  mutateContentList: KeyedMutator<ApiDataType<undefined> | undefined>,
+) {
   const [selectedRow, setSelectedRow] = useState<Array<any> | null>(null);
   const form = useForm();
 
@@ -49,7 +55,8 @@ export function useFilterField(asPath: string, setQueryParams: Dispatch<SetState
   const handleDeleteAll = useCallback(async () => {
     if (!selectedRow) return;
     const payload = selectedRow.map((row) => row.id);
-    return await request(deleteAllUrl, requestOptionsTemplate('DELETE', payload));
+    await request(deleteAllUrl, requestOptionsTemplate('DELETE', payload));
+    await mutateContentList();
   }, [request, requestOptionsTemplate, selectedRow, deleteAllUrl]);
 
   useEffect(() => {
