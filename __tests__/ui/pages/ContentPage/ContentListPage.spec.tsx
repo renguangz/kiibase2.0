@@ -262,6 +262,16 @@ describe('ContentListPage', () => {
 
       expect(deleteButton).toBeEnabled();
       await userEvent.click(deleteButton);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(deleteButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+
       const body = JSON.stringify([51, 50]);
       expect(requestUtils.request).toHaveBeenCalledTimes(1);
       expect(requestUtils.request).toHaveBeenCalledWith('/model/role/deleteList', {
@@ -270,12 +280,30 @@ describe('ContentListPage', () => {
       });
     });
 
-    it('should have delete buttons and ', async () => {
+    it('should have delete buttons', async () => {
       const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
       expect(deleteButtons).toHaveLength(10);
 
       const firstDelete = deleteButtons[0];
       await userEvent.click(firstDelete);
+    });
+
+    it('should be disabled after clicking  confirm button', async () => {
+      const deleteButton = screen.queryByRole('button', { name: '批次刪除' }) as HTMLButtonElement;
+
+      const checkboxes = screen.queryAllByRole('checkbox');
+      expect(checkboxes).toHaveLength(roleListData.data.data.length + 1);
+
+      await userEvent.click(checkboxes[1]);
+      await userEvent.click(checkboxes[2]);
+
+      expect(deleteButton).toBeEnabled();
+      await userEvent.click(deleteButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+
+      expect(deleteButton).toBeDisabled();
     });
 
     it('will open confirm model and will call api `/model/role/:id` when click it', async () => {
@@ -398,6 +426,15 @@ describe('ContentListPage', () => {
       await userEvent.type(inputFields[0], '35');
       await userEvent.type(inputFields[1], '36');
       await userEvent.click(updateButton);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(updateButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
       expect(requestUtils.request).toHaveBeenCalled();
       const expectPayload = [
         { id: 20, order: '35' },
@@ -428,6 +465,16 @@ describe('ContentListPage', () => {
       await userEvent.type(inputFields[1], '36');
 
       await userEvent.click(updateButton);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(updateButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+
       expect(requestUtils.request).toHaveBeenCalled();
       const expectPayload = [
         { id: 20, status: 'OFFLINE', order: '35' },

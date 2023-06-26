@@ -124,7 +124,6 @@ export function TableField({
 
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
-      <ConfirmDialog />
       <DataTable
         value={dataSource}
         rows={perPage}
@@ -202,33 +201,6 @@ function editColumnTemplate(handleDelete: (id: string | number) => void) {
     );
   };
 }
-
-// function editColumnTemplate(data: { id: string | number }) {
-//   const router = useRouter();
-//   const { asPath } = router;
-//
-//   const confirm2 = () => {
-//     confirmDialog({
-//       header: '確定要刪除嗎',
-//       acceptClassName: 'p-button-danger',
-//       rejectLabel: '取消',
-//       acceptLabel: '確定',
-//     });
-//   };
-//
-//   return (
-//     <EditColumnWrapper>
-//       <StyledButton type="button" color="primary">
-//         <Link href={`${asPath}/${data.id}/edit`} role="link" style={{ color: '#fff' }}>
-//           編輯
-//         </Link>
-//       </StyledButton>
-//       <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
-//         刪除
-//       </StyledButton>
-//     </EditColumnWrapper>
-//   );
-// }
 
 export type StatusType = 'success' | 'danger' | 'warning' | undefined;
 

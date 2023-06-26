@@ -8,6 +8,7 @@ import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks'
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useEffect } from 'react';
 import styled from 'styled-components';
 
@@ -46,12 +47,23 @@ export default function ContentListPage() {
     handleDeleteAll,
   } = useFilterField(asPath, setQueryParams, mutate);
 
+  const confirm = (type: 'DELETE' | 'UPDATE') => {
+    confirmDialog({
+      header: type === 'DELETE' ? '確定要刪除嗎' : '確定要更新嗎',
+      acceptClassName: 'p-button-danger',
+      rejectLabel: '取消',
+      acceptLabel: '確定',
+      accept: type === 'DELETE' ? () => handleDeleteAll() : () => handleUpdateList(),
+    });
+  };
+
   useEffect(() => {
     form.reset();
   }, [form]);
 
   return (
     <PageLayout>
+      <ConfirmDialog />
       <ContentHeader
         text={`${data?.topic}列表`}
         button={data?.create_button && <Link href={`${asPath}/create`}>建立新的{data.topic}</Link>}
@@ -68,7 +80,7 @@ export default function ContentListPage() {
                 color="warning"
                 variant="outline"
                 disabled={updateButtonDisabled}
-                onClick={handleUpdateList}
+                onClick={() => confirm('UPDATE')}
               >
                 批次更新
               </StyledButton>
@@ -81,7 +93,7 @@ export default function ContentListPage() {
                 color="danger"
                 variant="outline"
                 disabled={disableListDeleteButton}
-                onClick={handleDeleteAll}
+                onClick={() => confirm('DELETE')}
               >
                 批次刪除
               </StyledButton>
