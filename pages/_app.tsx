@@ -25,7 +25,13 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         refreshInterval: 0,
         shouldRetryOnError: false,
         fetcher: request,
-        onError: () => router.push('/auth/login'),
+        onError: (error) => {
+          if (error === 'Unauthorized') {
+            router.push('/auth/login');
+          } else {
+            router.push('/');
+          }
+        },
       }}
     >
       {isAuthLayout ? (
