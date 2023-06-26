@@ -7,6 +7,7 @@ import {
   formatObjectDateToString,
   formatObjectValueWithPlus,
   getContentPath,
+  hasEmptyString,
   isNotContentDynamicRouteYet,
   pipeFormatObject,
   reduceQueryParams,
@@ -266,6 +267,18 @@ describe('Functions', () => {
         test5: 'test',
       };
       expect(pipeFormatObject(target)).toStrictEqual(expectResult);
+    });
+  });
+
+  describe('hasEmptyString', () => {
+    it('should return false if there is not empty string', () => {
+      const testValues = ['test1', 'test2'];
+      expect(hasEmptyString(testValues)).toBeFalsy();
+    });
+
+    it('should return true if there is empty string', () => {
+      const testValues = ['test1', '', 'test3'];
+      expect(hasEmptyString(testValues)).toBeTruthy();
     });
   });
 });

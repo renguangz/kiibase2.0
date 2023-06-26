@@ -10,6 +10,8 @@ export const isEvery = (rule: Function) => (data: Array<any>) => data.every((ite
 
 export const isDate = (value: unknown): value is Date => value instanceof Date;
 
+export const isEmptyString = (value: string) => value.trim() === '';
+
 export const hasTitleRule = <T>(item: T) => 'title' in item;
 
 export const isEveryItemHasTitle = isEvery(hasTitleRule);
@@ -105,3 +107,7 @@ export const formatObjectDateToString: FormatObjectDateToString = (obj) =>
 export type PipeFormatObject = (obj: Record<string, any | Date>) => Record<string, any | Date>;
 export const pipeFormatObject: PipeFormatObject = (obj) =>
   pipe(obj, formatObjectDateToString, formatObjectValueWithPlus);
+
+export type HasEmptyString = (values: string[]) => boolean;
+
+export const hasEmptyString: HasEmptyString = (values) => values.some((value) => isEmptyString(value));

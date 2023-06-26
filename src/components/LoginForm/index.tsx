@@ -1,4 +1,5 @@
 import { useLogin } from '@/src/utils/hooks';
+import Link from 'next/link';
 
 export function Loginform() {
   const { account, setAccount, password, setPassword, handleLogin, loginDisabled } = useLogin();
@@ -19,6 +20,7 @@ export function Loginform() {
         <button data-testid="authLogin" type="button" onClick={handleLogin} disabled={loginDisabled}>
           登入
         </button>
+        <Link href={'/auth/signup'}>前往註冊</Link>
       </div>
     </div>
   );
