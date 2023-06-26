@@ -8,6 +8,8 @@ import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
 import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import roleListEmptyData from '@/src/mock/db/utils/ContentList/role/filter/emptyList.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
+import unauthorized from '@/src/mock/db/utils/auth/unauthrized.json';
+import apiError from '@/src/mock/db/utils/auth/apiError.json';
 import { useRouter } from 'next/router';
 import * as requestUtils from '@/src/utils/request';
 
@@ -19,6 +21,8 @@ global.matchMedia =
       removeListener: jest.fn(),
     };
   };
+
+const mockRouterPush = jest.fn();
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
@@ -352,6 +356,7 @@ describe('ContentListPage', () => {
 
       (useRouter as jest.Mock).mockReturnValue({
         asPath: '/banner',
+        push: mockRouterPush,
       });
 
       jest.useRealTimers();

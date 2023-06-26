@@ -105,8 +105,8 @@ describe('useLogin', () => {
     expect(requestUtils.request).toHaveBeenCalledWith('/login', { method: 'POST', body });
 
     act(() => {
-      expect(result.current.data?.status).toEqual(400);
-      expect(result.current.data?.message).toEqual('DATA_ERROR');
+      expect(result.current.data?.status).toEqual(failLogin.status);
+      expect(result.current.data?.message).toEqual(failLogin.message);
     });
   });
 });

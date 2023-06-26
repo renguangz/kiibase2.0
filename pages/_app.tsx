@@ -10,11 +10,14 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '@/styles/layout/layout.scss';
 import '@/styles/demo/Demos.scss';
+import { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { AuthLayout } from '@/src/layouts/AuthLayout';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  // const router = useRouter();
+  const router = useRouter();
 
-  // const isNotDefaultLayout = useMemo(() => router.asPath === '/auth/login', [router]);
+  const isAuthLayout = useMemo(() => router.asPath.includes('/auth'), [router]);
 
   return (
     <SWRConfig
@@ -22,14 +25,20 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         refreshInterval: 0,
         shouldRetryOnError: false,
         fetcher: request,
-        // onError: () => router.push('/auth/login'),
+        onError: () => router.push('/auth/login'),
       }}
     >
-      <LayoutProvider>
-        <Layout>
+      {isAuthLayout ? (
+        <AuthLayout>
           <Component {...pageProps} />
-        </Layout>
-      </LayoutProvider>
+        </AuthLayout>
+      ) : (
+        <LayoutProvider>
+          <Layout>
+            <Component {...pageProps} />
+          </Layout>
+        </LayoutProvider>
+      )}
     </SWRConfig>
   );
 }
