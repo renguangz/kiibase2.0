@@ -5,7 +5,7 @@ import React, { forwardRef, useContext, useImperativeHandle, useRef } from 'reac
 import { AppTopbarRef } from '@/src/types/types';
 import { LayoutContext } from './context/layoutcontext';
 
-const AppTopbar = forwardRef<AppTopbarRef>((_props, ref, noSidebar) => {
+const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
   const { layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
