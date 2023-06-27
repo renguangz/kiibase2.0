@@ -1,10 +1,9 @@
 import { Wrapper } from '@/src/components/common';
-import { SPACES } from '@/src/utils';
-import React from 'react';
 import styled from 'styled-components';
 
 const PageLayoutWrapper = styled(Wrapper)`
-  padding: ${SPACES['space-16']}px ${SPACES['space-50']}px;
+  width: 100%;
+  height: 100%;
   padding-bottom: 0;
   flex-direction: column;
   justify-content: flex-start;

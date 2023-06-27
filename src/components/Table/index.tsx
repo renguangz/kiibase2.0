@@ -126,6 +126,7 @@ export function TableField({
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
       <DataTable
+        style={{ fontSize: 14 }}
         value={dataSource}
         rows={perPage}
         dataKey="id"
@@ -159,14 +160,7 @@ function fullImageColumnTemplate(column: Field) {
 
     return (
       <div>
-        <img
-          src={imgData}
-          alt={imgData}
-          role="img"
-          width={200}
-          height={150}
-          style={{ maxWidth: 200, maxHeight: 150 }}
-        />
+        <img src={imgData} alt={imgData} role="img" width={200} height={150} style={{ maxWidth: 100, maxHeight: 75 }} />
       </div>
     );
   };
@@ -230,6 +224,7 @@ function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isN
 
     return (
       <InputTextField
+        width={100}
         inputType={isNumberInput ? 'number' : undefined}
         form={form}
         name={`${column.field}-${data.id}`}
