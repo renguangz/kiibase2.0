@@ -156,11 +156,17 @@ function checkboxColumnTemplate() {
 function fullImageColumnTemplate(column: Field) {
   return (data: any) => {
     const imgData = useMemo(() => (column.field ? data[column.field] : null), [column, data]);
-    const srcUrl = useMemo(() => `${combineStorageUrl('')}/${imgData}`, [combineStorageUrl, imgData]);
 
     return (
       <div>
-        <img src={srcUrl} alt={srcUrl} role="img" width={200} height={150} />
+        <img
+          src={imgData}
+          alt={imgData}
+          role="img"
+          width={200}
+          height={150}
+          style={{ maxWidth: 200, maxHeight: 150 }}
+        />
       </div>
     );
   };
