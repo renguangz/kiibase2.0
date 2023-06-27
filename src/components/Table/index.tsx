@@ -34,7 +34,8 @@ type IsStatusColumn = (field: Field) => boolean;
 const isStatusColumn: IsStatusColumn = (field) => field.name === 'status';
 
 type IsInputColumn = (field: Field) => boolean;
-const isInputColumn: IsInputColumn = (field) => field.name === '__component:list-input';
+const isInputColumn: IsInputColumn = (field) =>
+  field.name === '__component:list-input' || field.name === '__component:list-input_number';
 
 type IsSelectColumn = (field: Field) => boolean;
 const isSelectColumn: IsSelectColumn = (field) => field.name === '__component:list-select';
@@ -81,7 +82,7 @@ export function TableField({
           : isInputColumn(column)
           ? {
               ...column,
-              body: inputTemplate(column, form, column.field?.includes('number') ?? false),
+              body: inputTemplate(column, form, column.name.includes('number') ?? false),
             }
           : isSelectColumn(column)
           ? {
