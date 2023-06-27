@@ -86,8 +86,6 @@ const AppMenuitem = (props: AppMenuItemProps) => {
       {item!.to && !item!.items && item!.visible !== false ? (
         <Link
           href={item!.to}
-          replace={item!.replaceUrl}
-          target={item!.target}
           onClick={(e) => itemClick(e)}
           className={classNames(item!.class, 'p-ripple', { 'active-route': isActiveRoute })}
           tabIndex={0}

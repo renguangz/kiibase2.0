@@ -17,7 +17,12 @@ import { AuthLayout } from '@/src/layouts/AuthLayout';
 export default function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter();
 
-  const isAuthLayout = useMemo(() => router.asPath.includes('/auth'), [router]);
+  const authLayoutRoutes = useMemo(() => ['/auth/login', '/auth/signup'], []);
+
+  const isAuthLayout = useMemo(
+    () => authLayoutRoutes.some((route) => router.asPath.includes(route)),
+    [authLayoutRoutes, router],
+  );
 
   return (
     <SWRConfig

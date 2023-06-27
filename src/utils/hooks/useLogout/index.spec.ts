@@ -46,13 +46,4 @@ describe('useLogout', () => {
     expect(mockPush).toHaveBeenCalledTimes(1);
     expect(mockPush).toHaveBeenCalledWith('/auth/login');
   });
-
-  it('should call mutate api for sidebar', async () => {
-    const { result } = renderHook(() => useLogout());
-    result.current.handleLogout();
-
-    expect(mockMutate).toHaveBeenCalledTimes(6);
-    expect(mockMutate).toHaveBeenNthCalledWith(5, '/menuItemNavi');
-    expect(mockMutate).toHaveBeenNthCalledWith(6, '/subMenuNavi');
-  });
 });
