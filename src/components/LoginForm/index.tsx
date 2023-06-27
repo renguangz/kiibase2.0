@@ -76,9 +76,6 @@ export function Loginform() {
         <StyledButton data-testid="authLogin" type="button" onClick={handleLogin} disabled={loginDisabled}>
           登入
         </StyledButton>
-        <StyledButton variant="text">
-          <Link href={'/auth/signup'}>前往註冊</Link>
-        </StyledButton>
       </ButtonWrapper>
     </Wrapper>
   );
