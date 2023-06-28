@@ -17,7 +17,7 @@ const ConfirmButtonWrapper = styled.div`
   gap: 7px;
 `;
 
-const StyledLink = styled(Link)`
+export const StyledLink = styled(Link)`
   color: ${COLORS.primary};
 `;
 
