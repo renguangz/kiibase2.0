@@ -3,7 +3,7 @@
   "message": "Success",
   "data": {
     "create_button": true,
-    "delete_button": false,
+    "delete_button": true,
     "list": [
       {
         "title": "",
@@ -16,44 +16,38 @@
         "sort_field": "id"
       },
       {
-        "title": "封面圖",
-        "name": "pic",
-        "type": "list-image",
-        "sort_field": "pic"
+        "title": "帳號",
+        "name": "account",
+        "type": "label",
+        "sort_field": "account"
       },
       {
-        "title": "狀態",
+        "title": "啟用狀態",
         "name": "status",
         "type": "__component:list-select",
         "options": [
           {
             "key": "ONLINE",
-            "value": "上架"
+            "value": "啟用"
           },
           {
             "key": "OFFLINE",
-            "value": "下架"
+            "value": "停用"
           }
         ],
         "sort_field": "status"
       },
       {
-        "title": "權重",
-        "name": "order",
-        "type": "__component:list-input",
-        "sort_field": "order"
+        "title": "最後登入時間",
+        "name": "last_logged_at",
+        "type": "label",
+        "sort_field": "last_logged_at"
       },
       {
-        "title": "建立時間",
+        "title": "註冊時間",
         "name": "created_at",
         "type": "label",
         "sort_field": "created_at"
-      },
-      {
-        "title": "更新時間",
-        "name": "updated_at",
-        "type": "label",
-        "sort_field": "updated_at"
       },
       {
         "title": "操作",
@@ -62,19 +56,32 @@
     ],
     "date_filter": false,
     "date_filter_column": [],
+    "detailExtend": true,
     "field": [
       {
-        "type": "ImageUpload",
-        "label": "封面圖",
-        "model": "pic",
+        "type": "Input",
+        "inputType": "text",
+        "label": "帳號",
+        "model": "account",
+        "required": true,
+        "readonly": false,
+        "disabled": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "密碼",
+        "model": "password",
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": null
+        "default": ""
       },
       {
         "type": "SingleSelect",
-        "label": "狀態",
+        "label": "啟用狀態",
         "model": "status",
         "required": true,
         "readonly": false,
@@ -82,26 +89,16 @@
         "options": [
           {
             "id": "ONLINE",
-            "name": "上架"
+            "name": "啟用"
           },
           {
             "id": "OFFLINE",
-            "name": "下架"
+            "name": "停用"
           }
         ],
         "default": "ONLINE"
-      },
-      {
-        "type": "Input",
-        "inputType": "number",
-        "label": "權重",
-        "model": "order",
-        "required": true,
-        "readonly": false,
-        "hint": "此欄位必填",
-        "default": 0
       }
     ],
-    "topic": "Banner"
+    "topic": "後台管理者"
   }
 }

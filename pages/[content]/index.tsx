@@ -11,6 +11,7 @@ import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useEffect } from 'react';
 import styled from 'styled-components';
+import { StyledLink } from './create';
 
 const FilterFieldWrapper = styled.div`
   width: 100%;
@@ -66,7 +67,13 @@ export default function ContentListPage() {
       <ConfirmDialog />
       <ContentHeader
         text={`${data?.topic}列表`}
-        button={data?.create_button && <Link href={`${asPath}/create`}>建立新的{data.topic}</Link>}
+        button={
+          data?.create_button && (
+            <StyledButton variant="outline">
+              <StyledLink href={`${asPath}/create`}>建立新的{data.topic}</StyledLink>
+            </StyledButton>
+          )
+        }
       />
       <FilterFieldWrapper>
         <FilterField

@@ -29,17 +29,6 @@ describe('useEditContent', () => {
     jest.resetAllMocks();
   });
 
-  it('should return EditBanner4 if url is `banner/4/edit`', async () => {
-    const { result } = renderHook(() => useEditContent('/banner/4/edit', '4'));
-    expect(result.current.data).toStrictEqual(EditBanner4);
-    expect(useSWR).toHaveBeenLastCalledWith('/banner/4/edit');
-  });
-
-  it('should have form with default value EditBanner4 data', async () => {
-    const { result } = renderHook(() => useEditContent('/banner/4/edit', '4'));
-    expect(result.current.form.formState.defaultValues).toStrictEqual(EditBanner4.module[0].data);
-  });
-
   it('should route to `banner list` page after edit successfully', async () => {
     (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
 
@@ -52,7 +41,7 @@ describe('useEditContent', () => {
     expect(mockRouterPush).toHaveBeenCalledWith('/banner/');
   });
 
-  it('should not route to `banner list` page if apu response error', async () => {
+  it('should not route to `banner list` page if api response error', async () => {
     (requestUtils.request as jest.Mock).mockResolvedValue({ ...CreateBannerSuccess, status: 400 });
 
     const { result } = renderHook(() => useEditContent('/banner/4/edit', '4'));

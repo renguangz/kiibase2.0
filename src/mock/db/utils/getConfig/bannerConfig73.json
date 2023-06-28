@@ -3,7 +3,7 @@
   "message": "Success",
   "data": {
     "create_button": true,
-    "delete_button": false,
+    "delete_button": true,
     "list": [
       {
         "title": "",
@@ -17,7 +17,7 @@
       },
       {
         "title": "封面圖",
-        "name": "pic",
+        "name": "pic_url",
         "type": "list-image",
         "sort_field": "pic"
       },
@@ -40,7 +40,7 @@
       {
         "title": "權重",
         "name": "order",
-        "type": "__component:list-input",
+        "type": "__component:list-input_number",
         "sort_field": "order"
       },
       {
@@ -70,7 +70,8 @@
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": null
+        "default": "Banner/20230627_153850105-cat01.jpeg",
+        "url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Banner/20230627_153850105-cat01.jpeg"
       },
       {
         "type": "SingleSelect",
@@ -99,7 +100,7 @@
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": 0
+        "default": 1012
       }
     ],
     "topic": "Banner"

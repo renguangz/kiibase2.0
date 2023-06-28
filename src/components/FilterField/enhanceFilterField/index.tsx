@@ -1,4 +1,5 @@
 import React from 'react';
+import styled from 'styled-components';
 import { AutoCompleteField } from './AutoCompleteField';
 import { CalendarField } from './CalendarField';
 import { DropdownField } from './DropDownField';
@@ -21,6 +22,18 @@ const mapping = [
 
 type MapStringToComponent = (name: string) => any;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const Title = styled.h4`
+  margin: 0;
+  font-size: 16px;
+  color: #000;
+`;
+
 export const mapStringToComponent: MapStringToComponent = (name) =>
   mapping.find((item) => item.name === name)?.component ?? NotFoundField;
 
@@ -31,16 +44,16 @@ export function enhanceFilterField(component: string) {
 
   return function (props: EnhanceFilterFieldProps) {
     return (
-      <div>
+      <Wrapper>
         {props.label && (
           <div>
-            <h2 role="heading">{props.label}</h2>
+            <Title role="heading">{props.label}</Title>
           </div>
         )}
         <div>
           <Component {...props} />
         </div>
-      </div>
+      </Wrapper>
     );
   };
 }

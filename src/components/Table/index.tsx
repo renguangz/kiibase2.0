@@ -106,6 +106,7 @@ export function TableField({
       isSelectColumn,
       selectTemplate,
       handleDeleteModelList,
+      dataSource,
     ],
   );
 
@@ -224,7 +225,7 @@ function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isN
   return (data: any) => {
     useEffect(() => {
       form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
-    }, []);
+    }, [data]);
 
     return (
       <InputTextField
@@ -248,7 +249,7 @@ function selectTemplate(column: Field, form: UseFormReturn<FieldValues, any>) {
 
     useEffect(() => {
       form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
-    }, []);
+    }, [data]);
 
     return (
       <SelectField

@@ -1,6 +1,5 @@
 import { pipe } from 'fp-ts/lib/function';
 import { useCallback, useEffect, useMemo } from 'react';
-import useSWR from 'swr';
 import { formatDateForm, formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
@@ -9,36 +8,8 @@ import { useForm } from 'react-hook-form';
 import { request, requestOptionsTemplate } from '../../request';
 import { GenericDataType } from '../../types';
 import { useRouter } from 'next/router';
-
-type ConfigDataType = {
-  topic: string;
-  routes: string;
-  canBeCreate: boolean;
-  canBeDelete: boolean;
-  canBeCopy: boolean;
-  listExtend: boolean;
-  filter: never[];
-  index_join: never[];
-  select_column: never[];
-  list: { title: string; name: string; sortField: string; dataClass?: string }[];
-  listOrder: {
-    field: string;
-    sortField: string;
-    direction: string;
-  }[];
-  date_filter: boolean;
-  date_filter_title?: string;
-  date_filter_column: string[];
-  search_map: any;
-  appends: string[];
-  excel: {
-    export: boolean;
-    title: string[];
-    join: any;
-    column: string[];
-  };
-  module: any;
-} | null;
+import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
+import { filter } from 'fp-ts/lib/Record';
 
 type RemoveEndingSlash = (route: string) => string;
 export const removeEndingSlash: RemoveEndingSlash = (route) =>
@@ -86,7 +57,7 @@ type FormatSelectData = (data: any[]) => any[];
 export const formatSelectData: FormatSelectData = (data) =>
   data.map((item) => (item.options ? { ...item, options: formatOptions(item.options) } : item));
 
-export const isFieldsApiData = (data: unknown): data is any[] =>
+export const isFieldsApiData = (data: unknown): data is ConfigDataFieldType[] =>
   !!data && Array.isArray(data) && data.every((item) => 'type' in item);
 
 type ShouldCheckDocumentValue = (field: { type: string }) => boolean;
@@ -97,59 +68,56 @@ export function useCreateContent(asPath: string) {
   const router = useRouter();
   const { push } = router;
 
-  const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
-
   const rootUrl = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, getContentPath)),
     [isNotContentDynamicRouteYet, asPath, pipe, getContentPath],
   );
 
-  const getFieldsUrl = useMemo(() => (rootUrl === '' ? '' : addGetFields(rootUrl)), [rootUrl, addGetFields]);
+  const { data } = useGetConfig(rootUrl);
 
-  const { data } = useSWR<ConfigDataType>(url);
-  const { data: getFieldsData } = useSWR(getFieldsUrl);
-
-  const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
   const form = useForm();
 
-  const fieldsData = useMemo(
-    () => (isFieldsApiData(getFieldsData) ? pipe(getFieldsData, mapNameToComponent, formatSelectData) : undefined),
-    [isFieldsApiData, getFieldsData, mapNameToComponent, pipe, formatSelectData],
+  const fieldsData: (ConfigDataFieldType & { name: string })[] | undefined = useMemo(
+    () =>
+      data && isFieldsApiData(data?.field)
+        ? pipe(
+            data.field,
+            mapNameToComponent,
+            formatSelectData,
+            A.map((data) => ({ ...data, folder: rootUrl })),
+          )
+        : undefined,
+    [isFieldsApiData, data, pipe, mapNameToComponent, formatSelectData, rootUrl],
   );
 
-  const requiredFields = useMemo(() => fieldsData?.filter((field) => field.required) ?? [], [fieldsData]);
-
-  const isSubmitButtonDisabled: boolean = useMemo(
-    () => {
-      return false;
-    },
-    // () => requiredFields.every((field) => shouldCheckDocumentValue(field)),
-    [requiredFields, shouldCheckDocumentValue, form],
+  const defaultValues = useMemo(
+    () => fieldsData?.reduce((acc, cur) => ({ ...acc, [cur.name]: cur.default }), {}) ?? {},
+    [fieldsData],
   );
+
+  const isSubmitButtonDisabled: boolean = useMemo(() => {
+    return false;
+  }, [shouldCheckDocumentValue, form]);
 
   const handleSubmit = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
     const dateForm = formatDateForm(form.control._formValues);
 
+    const formValue = pipe(
+      form.watch(),
+      filter((value) => value),
+    );
+
     const payload = {
-      ...data,
-      module: [
-        {
-          ...data?.module[0],
-          data: {
-            ...data?.module[0]?.data,
-            ...form.watch(),
-            ...numberForm,
-            ...dateForm,
-          },
-        },
-      ],
+      ...formValue,
+      ...numberForm,
+      ...dateForm,
     };
 
-    const result: GenericDataType<null> = await request(rootUrl, requestOptionsTemplate('POST', payload));
+    const result: GenericDataType<null> = await request(`/model${rootUrl}`, requestOptionsTemplate('POST', payload));
 
     if (result.status === 200) push(rootUrl);
-  }, [request, rootUrl, requestOptionsTemplate, form, fieldsData, data, formatNumberForm, push]);
+  }, [request, rootUrl, requestOptionsTemplate, form, data, formatNumberForm, push]);
 
   useEffect(() => {
     if (Object.keys(defaultValues).length === 0) return;
@@ -160,7 +128,7 @@ export function useCreateContent(asPath: string) {
     form,
     data,
     fieldsData,
-    requiredFields,
+    listPageUrl: rootUrl,
     isSubmitButtonDisabled,
     handleSubmit,
   };

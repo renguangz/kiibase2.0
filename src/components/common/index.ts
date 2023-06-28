@@ -53,7 +53,7 @@ export const StyledButton = styled.button<StyledButtonType>`
       ? 'none'
       : props.disabled
       ? COLORS.disabledBackground
-      : COLORS.primary};
+      : mapColorFromConfig(props.color ?? 'primary')};
   color: ${(props) =>
     !props.variant || props.variant === 'contained'
       ? '#fff'
