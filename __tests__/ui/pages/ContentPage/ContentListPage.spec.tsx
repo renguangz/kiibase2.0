@@ -493,6 +493,7 @@ describe('ContentListPage', () => {
     });
 
     it('should not have any delete buttons', async () => {
+      setup();
       const deleteMultipleButton = screen.queryByRole('button', { name: '批次刪除' });
       const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
       expect(deleteMultipleButton).not.toBeInTheDocument();
