@@ -1,11 +1,21 @@
-import { FieldProps } from '@/src/utils';
+import { COLORS, FieldProps } from '@/src/utils';
 import { useImageUpload } from '@/src/utils/hooks/useImageUpload';
 import styled from 'styled-components';
 
 const DisplayImageWrapper = styled.div`
-  border: 1px solid black;
-  width: 100px;
-  height: 100px;
+  background: #fff;
+  border: 1px solid ${COLORS.lightGray};
+  width: 300px;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const DisplayImg = styled.img`
+  object-fit: civer;
+  max-width: 100%;
+  max-height: 100%;
 `;
 
 interface ImageUploadFieldProps extends FieldProps<any> {
@@ -19,7 +29,9 @@ export function ImageUploadField({ form, name, folder, url }: ImageUploadFieldPr
   return (
     <div>
       <input data-testid="photo-uploader" type="file" name="uploadImageField" onChange={onImageChange} />
-      <DisplayImageWrapper>{displayImage && <img src={displayImage} alt="uploadImageField" />}</DisplayImageWrapper>
+      <DisplayImageWrapper>
+        {displayImage && <DisplayImg src={displayImage} alt="uploadImageField" />}
+      </DisplayImageWrapper>
     </div>
   );
 }

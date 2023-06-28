@@ -13,7 +13,7 @@ export function InputTextField({ form, name, inputType, placeholder, width }: In
         name={name}
         control={form.control}
         render={({ field }) => (
-          <div style={{ width: width ?? 'auto' }}>
+          <div style={{ width: width ?? inputType === 'number' ? '200px' : 'auto' }}>
             <InputText
               style={{ width: '100%' }}
               id={field.name}

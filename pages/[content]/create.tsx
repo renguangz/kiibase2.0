@@ -1,8 +1,25 @@
 import { ContentUpdateField } from '@/src/components';
+import { StyledButton } from '@/src/components/common';
 import { ContentHeader } from '@/src/components/Content';
+import { PageLayout } from '@/src/layouts';
+import { COLORS } from '@/src/utils';
 import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import styled from 'styled-components';
+
+const ConfirmButtonWrapper = styled.div`
+  margin-top: 16px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+`;
+
+const StyledLink = styled(Link)`
+  color: ${COLORS.primary};
+`;
 
 export default function CreateContentPage() {
   const router = useRouter();
@@ -18,15 +35,21 @@ export default function CreateContentPage() {
   } = useCreateContent(asPath);
 
   return (
-    <div>
+    <PageLayout>
       <ContentHeader
         text={`${createConfigData?.topic ?? ''}建立`}
-        button={<Link href={`/${listPageUrl}`}>{createConfigData?.topic}列表</Link>}
+        button={
+          <StyledButton type="button" variant="outline">
+            <StyledLink href={`/${listPageUrl}`}>{createConfigData?.topic}列表</StyledLink>
+          </StyledButton>
+        }
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
-      <button type="button" disabled={isSubmitButtonDisabled} onClick={handleSubmit}>
-        確定
-      </button>
-    </div>
+      <ConfirmButtonWrapper>
+        <StyledButton variant="contained" type="button" disabled={isSubmitButtonDisabled} onClick={handleSubmit}>
+          確定
+        </StyledButton>
+      </ConfirmButtonWrapper>
+    </PageLayout>
   );
 }
