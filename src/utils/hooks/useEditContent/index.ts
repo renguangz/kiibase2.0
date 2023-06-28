@@ -66,7 +66,7 @@ export function useEditContent(asPath: string, editId: string) {
       ...numberForm,
       ...dateForm,
     };
-    const result: GenericDataType<null> = await request(editUrl, requestOptionsTemplate('PUT', payload));
+    const result: GenericDataType<null> = await request(`/model${editUrl}`, requestOptionsTemplate('PUT', payload));
 
     if (result.status === 200) push(listPageUrl);
   }, [request, requestOptionsTemplate, editUrl, data, form, formatNumberForm, fieldsData, push, listPageUrl]);

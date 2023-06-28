@@ -107,7 +107,7 @@ describe('ContentEditPage', () => {
         status: 'ONLINE',
         order: 1012,
       });
-      expect(requestUtils.request).toHaveBeenCalledWith('/banner/73', {
+      expect(requestUtils.request).toHaveBeenCalledWith('/model/banner/73', {
         method: 'PUT',
         body,
       });
@@ -139,7 +139,7 @@ describe('ContentEditPage', () => {
         status: 'OFFLINE',
         order: 90,
       });
-      expect(requestUtils.request).toHaveBeenCalledWith('/banner/73', {
+      expect(requestUtils.request).toHaveBeenCalledWith('/model/banner/73', {
         method: 'PUT',
         body,
       });
