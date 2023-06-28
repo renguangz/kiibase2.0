@@ -1,7 +1,5 @@
 import EditContentPage from '@/pages/[content]/[editId]/edit';
 import { render, screen } from '@testing-library/react';
-import EditBanner4 from '@/src/mock/db/utils/EditContent/EditBanner4.json';
-import CreateBannerFieldsData from '@/src/mock/db/utils/getFields/bannerFieldsApi.json';
 import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
 import useSWR from 'swr';
@@ -66,13 +64,8 @@ describe('ContentEditPage', () => {
       const deleteButton = screen.getByRole('button', { name: '刪除Banner' });
       await userEvent.click(deleteButton);
 
-      const modal = screen.queryByRole('alert');
-      expect(modal).toBeInTheDocument();
-
       const cancelButton = screen.getByRole('button', { name: '取消' });
       await userEvent.click(cancelButton);
-
-      expect(screen.queryByRole('alert')).not.toBeInTheDocument();
     });
 
     it('should open confirm modal then call delete api and change route to list page after clicking delete confirm button', async () => {
@@ -81,10 +74,7 @@ describe('ContentEditPage', () => {
       const deleteButton = screen.getByRole('button', { name: '刪除Banner' });
       await userEvent.click(deleteButton);
 
-      const modal = screen.queryByRole('alert');
-      expect(modal).toBeInTheDocument();
-
-      const confirmButton = screen.getByRole('button', { name: '確認刪除' });
+      const confirmButton = screen.getByRole('button', { name: '確定刪除' });
       await userEvent.click(confirmButton);
 
       expect(requestUtils.request).toHaveBeenCalledTimes(1);

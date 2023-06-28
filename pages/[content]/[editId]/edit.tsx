@@ -1,10 +1,19 @@
 import { ContentUpdateField } from '@/src/components';
-import { AlertModal } from '@/src/components/AlertModal';
+import { StyledButton } from '@/src/components/common';
 import { ContentHeader } from '@/src/components/Content';
+import { PageLayout } from '@/src/layouts';
 import { useEditContent } from '@/src/utils/hooks';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useMemo } from 'react';
+import styled from 'styled-components';
+import { ConfirmButtonWrapper, StyledLink } from '../create';
+
+const ContentHeaderButtonsWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 7px;
+`;
 
 export default function EditContentPage() {
   const router = useRouter();
@@ -13,38 +22,42 @@ export default function EditContentPage() {
 
   const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
-  const {
-    listPageUrl,
-    fieldsData,
-    form,
-    data,
-    handleOpenConfirmModal,
-    openModal,
-    setOpenModal,
-    deleteContent,
-    handleSubmitUpdate,
-  } = useEditContent(asPath, newEditId);
+  const { listPageUrl, fieldsData, form, data, deleteContent, handleSubmitUpdate } = useEditContent(asPath, newEditId);
 
   const title = useMemo(() => data?.topic ?? '', [data]);
 
+  const confirm = () => {
+    confirmDialog({
+      header: '確定要刪除嗎',
+      acceptClassName: 'p-button-danger',
+      rejectLabel: '取消',
+      acceptLabel: '確定刪除',
+      accept: () => deleteContent(),
+    });
+  };
+
   return (
-    <div>
+    <PageLayout>
+      <ConfirmDialog />
       <ContentHeader
         text={`${title}修改`}
         button={
-          <div>
-            <Link href={listPageUrl}>{title}列表</Link>
-            <button type="button" onClick={handleOpenConfirmModal}>
+          <ContentHeaderButtonsWrapper>
+            <StyledButton type="button" variant="outline">
+              <StyledLink href={listPageUrl}>{title}列表</StyledLink>
+            </StyledButton>
+            <StyledButton type="button" variant="contained" color="danger" onClick={confirm}>
               刪除{title}
-            </button>
-          </div>
+            </StyledButton>
+          </ContentHeaderButtonsWrapper>
         }
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
-      <button type="button" onClick={handleSubmitUpdate}>
-        確定
-      </button>
-      {openModal && <AlertModal setModalDisplay={setOpenModal} confirmFunction={deleteContent} />}
-    </div>
+      <ConfirmButtonWrapper>
+        <StyledButton variant="contained" type="button" onClick={handleSubmitUpdate}>
+          確定
+        </StyledButton>
+      </ConfirmButtonWrapper>
+    </PageLayout>
   );
 }

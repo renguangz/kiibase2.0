@@ -8,7 +8,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 
-const ConfirmButtonWrapper = styled.div`
+export const ConfirmButtonWrapper = styled.div`
   margin-top: 16px;
   width: 100%;
   display: flex;
