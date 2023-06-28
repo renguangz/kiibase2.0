@@ -2,21 +2,20 @@ import { ContentUpdateField } from '@/src/components';
 import { AlertModal } from '@/src/components/AlertModal';
 import { ContentHeader } from '@/src/components/Content';
 import { useEditContent } from '@/src/utils/hooks';
-import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useMemo } from 'react';
 
 export default function EditContentPage() {
   const router = useRouter();
-  const { asPath, push, query } = router;
+  const { asPath, query } = router;
   const { editId } = query;
 
   const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
-  const { fieldsData } = useCreateContent(asPath);
   const {
     listPageUrl,
+    fieldsData,
     form,
     data,
     handleOpenConfirmModal,

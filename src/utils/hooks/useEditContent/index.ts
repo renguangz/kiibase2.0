@@ -2,11 +2,13 @@ import { pipe } from 'fp-ts/lib/function';
 import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import useSWR from 'swr';
-import { combineApiUrl, formatDateForm, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
+import * as A from 'fp-ts/Array';
+import { formatDateForm, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
 import { GenericDataType } from '../../types';
-import { addGetFields, removeEndingSlash } from '../useCreateContent';
+import { formatSelectData, isFieldsApiData, mapNameToComponent } from '../useCreateContent';
+import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
+import { filter } from 'fp-ts/lib/Record';
 
 export function useEditContent(asPath: string, editId: string) {
   const router = useRouter();
@@ -15,29 +17,39 @@ export function useEditContent(asPath: string, editId: string) {
   const [openModal, setOpenModal] = useState(false);
 
   const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
-
   const editUrl = useMemo(() => url.replace('/edit', ''), [url]);
+  const folderUrl = useMemo(() => editUrl.replace(`/${editId}`, ''), [editUrl, editId]);
+
+  const { data } = useGetConfig(editUrl);
+
+  const fieldsData: (ConfigDataFieldType & { name: string })[] | undefined = useMemo(
+    () =>
+      data && isFieldsApiData(data.field)
+        ? pipe(
+            data.field,
+            mapNameToComponent,
+            formatSelectData,
+            A.map((data: any) => ({ ...data, folder: folderUrl })),
+          )
+        : undefined,
+    [data, isFieldsApiData, pipe, mapNameToComponent, formatSelectData, folderUrl],
+  );
 
   const listPageUrl = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : asPath.split(editId)[0]),
     [isNotContentDynamicRouteYet, asPath, editId],
   );
 
-  const getFieldsUrl = useMemo(
-    () => (listPageUrl === '' ? '' : pipe(listPageUrl, removeEndingSlash, addGetFields)),
-    [listPageUrl, addGetFields, pipe, combineApiUrl, removeEndingSlash],
+  const defaultValues = useMemo(
+    () => fieldsData?.reduce((acc, cur) => ({ ...acc, [cur.name]: cur.default }), {}) ?? {},
+    [fieldsData],
   );
-
-  const { data: fieldsData } = useSWR(getFieldsUrl);
-  const { data } = useSWR(url);
-
-  const defaultValues = useMemo(() => data?.module?.[0]?.data ?? {}, [data]);
   const form = useForm();
 
   const handleOpenConfirmModal = useCallback(() => setOpenModal(true), [setOpenModal]);
 
   const deleteContent = useCallback(async () => {
-    await request(editUrl, requestOptionsTemplate('DELETE'));
+    await request(`/model${editUrl}`, requestOptionsTemplate('DELETE'));
     push(listPageUrl);
   }, [request, push, requestOptionsTemplate, editUrl, listPageUrl]);
 
@@ -45,19 +57,14 @@ export function useEditContent(asPath: string, editId: string) {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
     const dateForm = formatDateForm(form.control._formValues);
 
+    const formValue = pipe(
+      form.watch(),
+      filter((value) => value),
+    );
     const payload = {
-      ...data,
-      module: [
-        {
-          ...data?.module[0],
-          data: {
-            ...data?.module[0]?.data,
-            ...form.watch(),
-            ...numberForm,
-            ...dateForm,
-          },
-        },
-      ],
+      ...formValue,
+      ...numberForm,
+      ...dateForm,
     };
     const result: GenericDataType<null> = await request(editUrl, requestOptionsTemplate('PUT', payload));
 
@@ -71,6 +78,7 @@ export function useEditContent(asPath: string, editId: string) {
 
   return {
     data,
+    fieldsData,
     deleteContent,
     handleOpenConfirmModal,
     openModal,

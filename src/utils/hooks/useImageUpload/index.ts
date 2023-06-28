@@ -10,8 +10,13 @@ const isUploadFileResponse = (object: unknown): object is UploadImageResponseTyp
   return false;
 };
 
-export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldValues, any>, name: string) {
-  const [displayImage, setDisplayImage] = useState<string | undefined>(undefined);
+export function useImageUpload(
+  folderRoute: string,
+  form: UseFormReturn<FieldValues, any>,
+  name: string,
+  imageUrl?: string,
+) {
+  const [displayImage, setDisplayImage] = useState<string | undefined>(imageUrl);
 
   const onImageChange = useCallback(
     async (event: any) => {
