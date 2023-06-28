@@ -1,15 +1,12 @@
-import { ChangeEvent, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { request } from '../../request';
+import { GenericDataType } from '../../types';
 
-type UploadImageResponseType = {
-  filename: string;
-  original_filename: string;
-  url: string;
-};
+type UploadImageResponseType = GenericDataType<{ filePath: string }>;
 
 const isUploadFileResponse = (object: unknown): object is UploadImageResponseType => {
-  if (object && typeof object === 'object') return 'filename' in object;
+  if (object && typeof object === 'object') return 'status' in object;
   return false;
 };
 
@@ -17,7 +14,7 @@ export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldVal
   const [displayImage, setDisplayImage] = useState<string | undefined>(undefined);
 
   const onImageChange = useCallback(
-    async (event: ChangeEvent<HTMLInputElement>) => {
+    async (event: any) => {
       const img = event.target.files?.[0];
       if (!img) return;
 
@@ -26,7 +23,7 @@ export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldVal
       formData.append('folder', folderRoute);
 
       const result = await request(
-        '/upload/file',
+        `/model/${folderRoute}/upload/file`,
         {
           method: 'POST',
           body: formData,
@@ -35,7 +32,7 @@ export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldVal
       );
 
       if (isUploadFileResponse(result)) {
-        form.setValue(name, result.filename);
+        form.setValue(name, result.data.filePath);
         setDisplayImage(() => URL.createObjectURL(img));
       }
     },

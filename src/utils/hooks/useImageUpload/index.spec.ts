@@ -11,17 +11,17 @@ jest.mock('@/src/utils/request', () => ({
 }));
 
 describe('useImageUplaod', () => {
+  const { result: formResult } = renderHook(() => useForm());
+
   beforeEach(() => {
     jest.resetAllMocks();
   });
 
   it('should call upload file POST api after uploading image', async () => {
     global.URL.createObjectURL = jest.fn(() => 'imageURL');
-    (requestUtils.request as jest.Mock).mockResolvedValue({
-      status: 200,
-    });
+    (requestUtils.request as jest.Mock).mockResolvedValue(UploadImageData);
     const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
-    const { result } = renderHook(() => useImageUpload('banner'));
+    const { result } = renderHook(() => useImageUpload('banner', formResult.current, 'pic'));
     await act(async () => {
       await result.current.onImageChange({ target: { files: [file] } });
     });
@@ -32,7 +32,7 @@ describe('useImageUplaod', () => {
 
     expect(requestUtils.request).toHaveBeenCalledTimes(1);
     expect(requestUtils.request).toHaveBeenCalledWith(
-      '/upload/file',
+      '/model/banner/upload/file',
       {
         method: 'POST',
         body,
@@ -43,11 +43,9 @@ describe('useImageUplaod', () => {
 
   it('should call upload file POST api with content name `testroute` in folder column', async () => {
     global.URL.createObjectURL = jest.fn(() => 'imageURL');
-    (requestUtils.request as jest.Mock).mockResolvedValue({
-      status: 200,
-    });
+    (requestUtils.request as jest.Mock).mockResolvedValue(UploadImageData);
     const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
-    const { result } = renderHook(() => useImageUpload('testroute'));
+    const { result } = renderHook(() => useImageUpload('testroute', formResult.current, 'pic'));
     await act(async () => {
       await result.current.onImageChange({ target: { files: [file] } });
     });
@@ -58,7 +56,7 @@ describe('useImageUplaod', () => {
 
     expect(requestUtils.request).toHaveBeenCalledTimes(1);
     expect(requestUtils.request).toHaveBeenCalledWith(
-      '/upload/file',
+      '/model/testroute/upload/file',
       {
         method: 'POST',
         body,
@@ -78,6 +76,6 @@ describe('useImageUplaod', () => {
       await result.current.onImageChange({ target: { files: [file] } });
     });
 
-    expect(form.watch()).toStrictEqual({ testUploadPhotoName: UploadImageData.filename });
+    expect(form.watch()).toStrictEqual({ testUploadPhotoName: UploadImageData.data.filePath });
   });
 });

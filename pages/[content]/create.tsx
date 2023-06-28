@@ -8,13 +8,20 @@ export default function CreateContentPage() {
   const router = useRouter();
   const { asPath } = router;
 
-  const { data: createConfigData, form, fieldsData, isSubmitButtonDisabled, handleSubmit } = useCreateContent(asPath);
+  const {
+    data: createConfigData,
+    form,
+    fieldsData,
+    listPageUrl,
+    isSubmitButtonDisabled,
+    handleSubmit,
+  } = useCreateContent(asPath);
 
   return (
     <div>
       <ContentHeader
         text={`${createConfigData?.topic ?? ''}建立`}
-        button={<Link href={`/${createConfigData?.routes}`}>{createConfigData?.topic}列表</Link>}
+        button={<Link href={`/${listPageUrl}`}>{createConfigData?.topic}列表</Link>}
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
       <button type="button" disabled={isSubmitButtonDisabled} onClick={handleSubmit}>

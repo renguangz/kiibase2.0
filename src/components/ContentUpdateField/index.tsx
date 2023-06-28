@@ -11,7 +11,7 @@ export function ContentUpdateField({ form, fields }: ContentUpdateFieldProps) {
     <div>
       <div>ContentUpdateField</div>
       {fields.map((field) => (
-        <div key={Math.random()}>{enhanceFilterField(field.type)({ ...field, form })}</div>
+        <div key={Math.random()}>{enhanceFilterField(field.type)({ ...field, form, folder: 'banner' })}</div>
       ))}
     </div>
   );
