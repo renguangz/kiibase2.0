@@ -155,7 +155,7 @@ describe('ContentCreatePage', () => {
 
       const formData = new FormData();
       formData.append('file', file);
-      formData.append('folder', 'banner');
+      formData.append('folder', '/banner');
       expect(requestUtils.request).toHaveBeenCalledWith(
         '/model/banner/upload/file',
         {

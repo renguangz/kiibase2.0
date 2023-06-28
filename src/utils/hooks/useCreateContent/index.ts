@@ -95,13 +95,9 @@ export function useCreateContent(asPath: string) {
     [fieldsData],
   );
 
-  const isSubmitButtonDisabled: boolean = useMemo(
-    () => {
-      return false;
-    },
-    // () => requiredFields.every((field) => shouldCheckDocumentValue(field)),
-    [shouldCheckDocumentValue, form],
-  );
+  const isSubmitButtonDisabled: boolean = useMemo(() => {
+    return false;
+  }, [shouldCheckDocumentValue, form]);
 
   const handleSubmit = useCallback(async () => {
     const numberForm = formatNumberForm(fieldsData, form.getValues);

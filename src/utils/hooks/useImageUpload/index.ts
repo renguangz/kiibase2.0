@@ -3,7 +3,7 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { request } from '../../request';
 import { GenericDataType } from '../../types';
 
-type UploadImageResponseType = GenericDataType<{ filePath: string }>;
+type UploadImageResponseType = GenericDataType<{ filePath: string; fileUrl: string }>;
 
 const isUploadFileResponse = (object: unknown): object is UploadImageResponseType => {
   if (object && typeof object === 'object') return 'status' in object;
@@ -23,7 +23,7 @@ export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldVal
       formData.append('folder', folderRoute);
 
       const result = await request(
-        `/model/${folderRoute}/upload/file`,
+        `/model${folderRoute}/upload/file`,
         {
           method: 'POST',
           body: formData,
@@ -33,7 +33,7 @@ export function useImageUpload(folderRoute: string, form: UseFormReturn<FieldVal
 
       if (isUploadFileResponse(result)) {
         form.setValue(name, result.data.filePath);
-        setDisplayImage(() => URL.createObjectURL(img));
+        setDisplayImage(() => result.data.fileUrl);
       }
     },
     [setDisplayImage, request, URL, isUploadFileResponse, form, name],

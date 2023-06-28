@@ -21,14 +21,14 @@ describe('useImageUplaod', () => {
     global.URL.createObjectURL = jest.fn(() => 'imageURL');
     (requestUtils.request as jest.Mock).mockResolvedValue(UploadImageData);
     const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
-    const { result } = renderHook(() => useImageUpload('banner', formResult.current, 'pic'));
+    const { result } = renderHook(() => useImageUpload('/banner', formResult.current, 'pic'));
     await act(async () => {
       await result.current.onImageChange({ target: { files: [file] } });
     });
 
     const body = new FormData();
     body.append('file', file);
-    body.append('folder', 'banner');
+    body.append('folder', '/banner');
 
     expect(requestUtils.request).toHaveBeenCalledTimes(1);
     expect(requestUtils.request).toHaveBeenCalledWith(
@@ -45,14 +45,14 @@ describe('useImageUplaod', () => {
     global.URL.createObjectURL = jest.fn(() => 'imageURL');
     (requestUtils.request as jest.Mock).mockResolvedValue(UploadImageData);
     const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
-    const { result } = renderHook(() => useImageUpload('testroute', formResult.current, 'pic'));
+    const { result } = renderHook(() => useImageUpload('/testroute', formResult.current, 'pic'));
     await act(async () => {
       await result.current.onImageChange({ target: { files: [file] } });
     });
 
     const body = new FormData();
     body.append('file', file);
-    body.append('folder', 'testroute');
+    body.append('folder', '/testroute');
 
     expect(requestUtils.request).toHaveBeenCalledTimes(1);
     expect(requestUtils.request).toHaveBeenCalledWith(

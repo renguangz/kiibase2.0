@@ -1,0 +1,108 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": true,
+    "delete_button": true,
+    "list": [
+      {
+        "title": "",
+        "type": "__checkbox"
+      },
+      {
+        "title": "ID",
+        "name": "id",
+        "type": "label",
+        "sort_field": "id"
+      },
+      {
+        "title": "封面圖",
+        "name": "pic_url",
+        "type": "list-image",
+        "sort_field": "pic"
+      },
+      {
+        "title": "狀態",
+        "name": "status",
+        "type": "__component:list-select",
+        "options": [
+          {
+            "key": "ONLINE",
+            "value": "上架"
+          },
+          {
+            "key": "OFFLINE",
+            "value": "下架"
+          }
+        ],
+        "sort_field": "status"
+      },
+      {
+        "title": "權重",
+        "name": "order",
+        "type": "__component:list-input_number",
+        "sort_field": "order"
+      },
+      {
+        "title": "建立時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "更新時間",
+        "name": "updated_at",
+        "type": "label",
+        "sort_field": "updated_at"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": false,
+    "date_filter_column": [],
+    "field": [
+      {
+        "type": "ImageUpload",
+        "label": "封面圖",
+        "model": "pic",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "Banner/20230627_153850105-cat01.jpeg",
+        "url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Banner/20230627_153850105-cat01.jpeg"
+      },
+      {
+        "type": "SingleSelect",
+        "label": "狀態",
+        "model": "status",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "options": [
+          {
+            "id": "ONLINE",
+            "name": "上架"
+          },
+          {
+            "id": "OFFLINE",
+            "name": "下架"
+          }
+        ],
+        "default": "ONLINE"
+      },
+      {
+        "type": "Input",
+        "inputType": "number",
+        "label": "權重",
+        "model": "order",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": 1012
+      }
+    ],
+    "topic": "Banner"
+  }
+}

@@ -12,13 +12,7 @@ describe('ImageUploadField', () => {
   const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
   const setup = (form: UseFormReturn<any, any>) =>
     render(
-      <ImageUploadField
-        defaultValue={''}
-        folderRoute="testroute"
-        form={form}
-        name="testImageUpload"
-        required={false}
-      />,
+      <ImageUploadField defaultValue={''} folder="/testroute" form={form} name="testImageUpload" required={false} />,
     );
 
   it('should not have image when initial', async () => {
