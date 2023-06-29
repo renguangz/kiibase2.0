@@ -147,7 +147,7 @@ describe('ContentCreatePage', () => {
       expect(comboBoxes).toHaveLength(1);
       await userEvent.click(comboBoxes[0]);
       await userEvent.click(screen.queryByRole('option', { name: '桌機版' }) as HTMLDivElement);
-      const imageUploadInput = screen.getByTestId('photo-uploader') as HTMLInputElement;
+      const imageUploadInput = screen.getByTestId('photo-uploader-pic') as HTMLInputElement;
       await waitFor(() => {
         fireEvent.change(imageUploadInput, { target: { files: [file] } });
       });
