@@ -153,6 +153,11 @@ describe('ContentEditPage', () => {
       jest.resetAllMocks();
     });
 
+    it('should not have delete button', async () => {
+      const deleteButton = screen.queryByRole('button', { name: /刪除機台/ });
+      expect(deleteButton).not.toBeInTheDocument();
+    });
+
     it('should have enabled confirm button', async () => {
       screen.debug();
       const submitButton = screen.getByRole('button', { name: '確定' });

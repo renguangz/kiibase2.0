@@ -47,9 +47,11 @@ export default function EditContentPage() {
             <StyledButton type="button" variant="outline">
               <StyledLink href={listPageUrl}>{title}列表</StyledLink>
             </StyledButton>
-            <StyledButton type="button" variant="contained" color="danger" onClick={confirm}>
-              刪除{title}
-            </StyledButton>
+            {data?.delete_button && (
+              <StyledButton type="button" variant="contained" color="danger" onClick={confirm}>
+                刪除{title}
+              </StyledButton>
+            )}
           </ContentHeaderButtonsWrapper>
         }
       />
