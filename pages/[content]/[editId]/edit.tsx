@@ -22,7 +22,8 @@ export default function EditContentPage() {
 
   const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
-  const { listPageUrl, fieldsData, form, data, deleteContent, handleSubmitUpdate } = useEditContent(asPath, newEditId);
+  const { listPageUrl, fieldsData, form, data, deleteContent, handleSubmitUpdate, requiredImageUploadFieldsAreEmpty } =
+    useEditContent(asPath, newEditId);
 
   const title = useMemo(() => data?.topic ?? '', [data]);
 
@@ -54,7 +55,12 @@ export default function EditContentPage() {
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
       <ConfirmButtonWrapper>
-        <StyledButton variant="contained" type="button" onClick={handleSubmitUpdate}>
+        <StyledButton
+          variant="contained"
+          type="button"
+          disabled={!form.formState.isValid || requiredImageUploadFieldsAreEmpty}
+          onClick={handleSubmitUpdate}
+        >
           確定
         </StyledButton>
       </ConfirmButtonWrapper>

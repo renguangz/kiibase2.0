@@ -1,7 +1,8 @@
 import EditContentPage from '@/pages/[content]/[editId]/edit';
-import { render, screen } from '@testing-library/react';
+import { render, screen, waitFor } from '@testing-library/react';
 import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
+import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';
@@ -133,6 +134,39 @@ describe('ContentEditPage', () => {
         method: 'PUT',
         body,
       });
+    });
+  });
+
+  describe('MachineCategory 5', () => {
+    beforeEach(() => {
+      mockAsPath.mockReturnValue('/machineCategory/5/edit');
+      mockQuery.mockReturnValue({ editId: '5' });
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('/machineCategory/5/getConfig') ? MachineCategoryConfig5 : {},
+      }));
+
+      render(<EditContentPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should have enabled confirm button', async () => {
+      screen.debug();
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      await waitFor(async () => {
+        expect(submitButton).toBeEnabled();
+      });
+    });
+
+    it('should disabled confirm button when clear up one input field', async () => {
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      const inputs = screen.queryAllByRole('textbox');
+      expect(inputs).toHaveLength(2);
+      await userEvent.clear(inputs[0]);
+      expect(submitButton).toBeDisabled();
     });
   });
 });

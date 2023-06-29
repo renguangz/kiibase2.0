@@ -14,6 +14,8 @@ export function useEditContent(asPath: string, editId: string) {
   const router = useRouter();
   const { push } = router;
 
+  const form = useForm();
+
   const [openModal, setOpenModal] = useState(false);
 
   const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
@@ -40,12 +42,22 @@ export function useEditContent(asPath: string, editId: string) {
     [isNotContentDynamicRouteYet, asPath, editId],
   );
 
+  const requiredFields = useMemo(() => fieldsData?.filter((field) => field.required === true), [fieldsData]);
+
+  const requiredImageUploadFields = useMemo(
+    () => requiredFields?.filter((field) => field.type === 'ImageUploadComponent') ?? [],
+    [requiredFields],
+  );
+
+  const requiredImageUploadFieldsAreEmpty = useMemo(
+    () => requiredImageUploadFields.some((field) => !form.getValues(field.name)),
+    [requiredImageUploadFields, form.watch()],
+  );
+
   const defaultValues = useMemo(
     () => fieldsData?.reduce((acc, cur) => ({ ...acc, [cur.name]: cur.default }), {}) ?? {},
     [fieldsData],
   );
-  const form = useForm();
-
   const handleOpenConfirmModal = useCallback(() => setOpenModal(true), [setOpenModal]);
 
   const deleteContent = useCallback(async () => {
@@ -86,5 +98,6 @@ export function useEditContent(asPath: string, editId: string) {
     handleSubmitUpdate,
     form,
     listPageUrl,
+    requiredImageUploadFieldsAreEmpty,
   };
 }
