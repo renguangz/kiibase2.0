@@ -3,7 +3,7 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 import styled from 'styled-components';
 import { enhanceFilterField } from '../FilterField/enhanceFilterField';
 
-const Wrapper = styled.div`
+const Wrapper = styled.form`
   border: 1px solid ${COLORS.lightGray};
   width: 100%;
   padding: 12px 16px;
@@ -21,7 +21,7 @@ export function ContentUpdateField({ form, fields }: ContentUpdateFieldProps) {
   return (
     <Wrapper>
       {fields.map((field) => (
-        <div key={Math.random()}>{enhanceFilterField(field.type)({ ...field, form })}</div>
+        <div key={field.name}>{enhanceFilterField(field.type)({ ...field, form })}</div>
       ))}
     </Wrapper>
   );

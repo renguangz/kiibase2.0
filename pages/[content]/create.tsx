@@ -30,8 +30,8 @@ export default function CreateContentPage() {
     form,
     fieldsData,
     listPageUrl,
-    isSubmitButtonDisabled,
     handleSubmit,
+    requiredImageUploadFieldsAreEmpty,
   } = useCreateContent(asPath);
 
   return (
@@ -46,7 +46,12 @@ export default function CreateContentPage() {
       />
       <ContentUpdateField form={form} fields={fieldsData ?? []} />
       <ConfirmButtonWrapper>
-        <StyledButton variant="contained" type="button" disabled={isSubmitButtonDisabled} onClick={handleSubmit}>
+        <StyledButton
+          variant="contained"
+          type="button"
+          disabled={!form.formState.isValid || requiredImageUploadFieldsAreEmpty}
+          onClick={handleSubmit}
+        >
           確定
         </StyledButton>
       </ConfirmButtonWrapper>

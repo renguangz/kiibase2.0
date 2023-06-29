@@ -75,7 +75,7 @@ export function useCreateContent(asPath: string) {
 
   const { data } = useGetConfig(rootUrl);
 
-  const form = useForm();
+  const form = useForm({ mode: 'all' });
 
   const fieldsData: (ConfigDataFieldType & { name: string })[] | undefined = useMemo(
     () =>
@@ -88,6 +88,18 @@ export function useCreateContent(asPath: string) {
           )
         : undefined,
     [isFieldsApiData, data, pipe, mapNameToComponent, formatSelectData, rootUrl],
+  );
+
+  const requiredFields = useMemo(() => fieldsData?.filter((field) => field.required === true), [fieldsData]);
+
+  const requiredImageUploadFields = useMemo(
+    () => requiredFields?.filter((field) => field.type === 'ImageUploadComponent') ?? [],
+    [requiredFields],
+  );
+
+  const requiredImageUploadFieldsAreEmpty = useMemo(
+    () => requiredImageUploadFields.some((field) => !form.getValues(field.name)),
+    [requiredImageUploadFields, form.watch()],
   );
 
   const defaultValues = useMemo(
@@ -129,7 +141,9 @@ export function useCreateContent(asPath: string) {
     data,
     fieldsData,
     listPageUrl: rootUrl,
+    requiredFields,
     isSubmitButtonDisabled,
+    requiredImageUploadFieldsAreEmpty,
     handleSubmit,
   };
 }

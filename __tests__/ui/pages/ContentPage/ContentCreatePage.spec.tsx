@@ -22,7 +22,6 @@ const mockAsPath = jest.fn();
 
 jest.mock('next/router', () => ({
   useRouter: () => ({
-    // asPath: '/banner/create',
     asPath: mockAsPath(),
     push: jest.fn(),
   }),
@@ -73,26 +72,25 @@ describe('ContentCreatePage', () => {
       expect(window.location.href).not.toContain('create');
     });
 
-    // it('should not disable confirm button if required fields were all filled', async () => {
-    //   const { submitButton } = result;
-    //   const inputs = screen.getAllByRole('textbox') as HTMLInputElement[];
-    //   expect(inputs).toHaveLength(2);
-    //   await userEvent.type(inputs[0], 'filled up input1');
-    //   expect(submitButton).toBeDisabled();
-    //   await userEvent.type(inputs[1], 'filled up input2');
-    //   expect(inputs[0]).toHaveValue('filled up input1');
-    //   const comboBoxes = screen.getAllByRole('combobox');
-    //   expect(comboBoxes).toHaveLength(2);
-    //   await userEvent.click(comboBoxes[0]);
-    //   expect(screen.getByTitle('手機版')).toBeInTheDocument();
-    //   await userEvent.click(screen.getByTitle('手機版'));
-    //
-    //   await userEvent.click(comboBoxes[1]);
-    //   expect(screen.getByTitle('下架')).toBeInTheDocument();
-    //   await userEvent.click(screen.getByTitle('下架'));
-    //
-    //   expect(submitButton).toBeEnabled();
-    // });
+    it('should disable confirm button initial', async () => {
+      const { submitButton } = result;
+      expect(submitButton).toBeDisabled();
+    });
+
+    it('should be enabled after fireEvent change image', async () => {
+      (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
+        url.includes('/upload/file') ? UploadImageData : CreateBannerSuccess,
+      );
+      global.URL.createObjectURL = jest.fn(() => 'imageURL');
+      const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
+      const { submitButton } = result;
+
+      const imageUploadInput = screen.getByTestId('photo-uploader-pic') as HTMLInputElement;
+      await waitFor(() => {
+        fireEvent.change(imageUploadInput, { target: { files: [file] } });
+        expect(submitButton).toBeEnabled();
+      });
+    });
 
     // it('button should disable after clicking and enable after changing filled data', () => {
     // const { submitButton } = result;
@@ -182,18 +180,28 @@ describe('ContentCreatePage', () => {
     });
 
     it('should submit with default value `{ title: "not default title", device: "PC", status: "online", order: "0" }`', async () => {
-      (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
+      (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
+        url.includes('/upload/file') ? UploadImageData : CreateBannerSuccess,
+      );
+      global.URL.createObjectURL = jest.fn(() => 'imageURL');
+      const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
 
       const { submitButton } = result;
       expect(requestUtils.request).toHaveBeenCalledTimes(0);
 
+      const imageUploadInput = screen.getByTestId('photo-uploader-pic') as HTMLInputElement;
+      await waitFor(() => {
+        fireEvent.change(imageUploadInput, { target: { files: [file] } });
+      });
+
       await userEvent.click(submitButton);
-      expect(requestUtils.request).toHaveBeenCalledTimes(1);
+      expect(requestUtils.request).toHaveBeenCalledTimes(2);
       const body = JSON.stringify({
+        pic: 'testimageresponse',
         status: 'ONLINE',
         order: 0,
       });
-      expect(requestUtils.request).toHaveBeenCalledWith('/model/banner', {
+      expect(requestUtils.request).toHaveBeenNthCalledWith(2, '/model/banner', {
         method: 'POST',
         body,
       });
@@ -215,20 +223,6 @@ describe('ContentCreatePage', () => {
 
     afterEach(() => {
       jest.clearAllMocks();
-    });
-
-    it('should submit with default data', async () => {
-      (requestUtils.request as jest.Mock).mockResolvedValue(CreateBannerSuccess);
-      const { submitButton } = result;
-      await userEvent.click(submitButton);
-      expect(requestUtils.request).toHaveBeenCalledTimes(1);
-      const expectResult = JSON.stringify({
-        status: 'ONLINE',
-      });
-      expect(requestUtils.request).toHaveBeenCalledWith('/model/adminUser', {
-        method: 'POST',
-        body: expectResult,
-      });
     });
 
     it('should submit with account and password data', async () => {

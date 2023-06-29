@@ -13,7 +13,7 @@ export type ConfigListType = {
 };
 
 export type ConfigDataFieldType = {
-  type: 'ImageUpload' | 'SingleSelect' | 'Input';
+  type: 'ImageUploadComponent' | 'SingleSelectComponent' | 'Input';
   label: string;
   model: string;
   required: boolean;
@@ -50,7 +50,7 @@ export function useGetConfig(asPath: string) {
   const columns = useMemo(
     () =>
       apiData?.list
-        .map((item) => ({
+        ?.map((item) => ({
           field: item.name ?? '',
           name: item.type ?? item.sort_field ?? '',
           header: item.title,

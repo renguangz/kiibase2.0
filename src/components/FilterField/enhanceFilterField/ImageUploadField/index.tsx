@@ -28,7 +28,15 @@ export function ImageUploadField({ form, name, folder, url }: ImageUploadFieldPr
 
   return (
     <div>
-      <input data-testid={`photo-uploader-${name}`} type="file" name="uploadImageField" onChange={onImageChange} />
+      <input
+        {...form.register(name, {
+          validate: {},
+        })}
+        data-testid={`photo-uploader-${name}`}
+        type="file"
+        name="uploadImageField"
+        onChange={onImageChange}
+      />
       <DisplayImageWrapper>
         {displayImage && <DisplayImg src={displayImage} alt="uploadImageField" />}
       </DisplayImageWrapper>

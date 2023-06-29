@@ -6,12 +6,13 @@ interface InputTextFieldProps extends FieldProps<string> {
   inputType?: 'number';
 }
 
-export function InputTextField({ form, name, inputType, placeholder, width }: InputTextFieldProps) {
+export function InputTextField({ form, required, name, inputType, placeholder, width }: InputTextFieldProps) {
   return (
     <div>
       <Controller
         name={name}
         control={form.control}
+        rules={{ required }}
         render={({ field }) => (
           <div style={{ width: width ?? inputType === 'number' ? '200px' : 'auto' }}>
             <InputText

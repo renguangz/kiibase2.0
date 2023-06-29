@@ -6,7 +6,7 @@ interface SelectFieldProps extends FieldProps<any> {
   options: { value: string; label: string }[];
 }
 
-export function SelectField({ form, options, name, hint, placeholder }: SelectFieldProps) {
+export function SelectField({ form, options, name, required, placeholder }: SelectFieldProps) {
   const { control } = form;
 
   return (
@@ -14,7 +14,7 @@ export function SelectField({ form, options, name, hint, placeholder }: SelectFi
       <Controller
         name={name}
         control={control}
-        rules={{ required: hint }}
+        rules={{ required }}
         render={({ field }) => (
           <Dropdown
             placeholder={placeholder ?? '請選擇'}
