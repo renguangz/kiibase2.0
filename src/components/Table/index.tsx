@@ -49,6 +49,7 @@ export type TableFieldProps = {
   selectedRow: any;
   setSeletedRow: any;
   currentPage: number;
+  cannotDelete?: boolean;
   handleChangePage: (currentPage: number) => void;
   handleChangePerPage: (pageSize: number) => void;
   handleDeleteModelList?: (id: string | number) => void;
@@ -63,6 +64,7 @@ export function TableField({
   selectedRow,
   setSeletedRow,
   currentPage,
+  cannotDelete,
   handleChangePage,
   handleChangePerPage,
   handleDeleteModelList,
@@ -75,7 +77,7 @@ export function TableField({
           : isRowEditor(column)
           ? {
               ...column,
-              body: editColumnTemplate(handleDeleteModelList ? handleDeleteModelList : () => {}),
+              body: editColumnTemplate(handleDeleteModelList ? handleDeleteModelList : () => {}, cannotDelete),
             }
           : isStatusColumn(column)
           ? { ...column, body: statusTemplate(column) }
@@ -174,7 +176,7 @@ const EditColumnWrapper = styled.div`
   width: 115px;
 `;
 
-function editColumnTemplate(handleDelete: (id: string | number) => void) {
+function editColumnTemplate(handleDelete: (id: string | number) => void, cannotDelete?: boolean) {
   return (data: { id: string | number }) => {
     const router = useRouter();
     const { asPath } = router;
@@ -196,9 +198,11 @@ function editColumnTemplate(handleDelete: (id: string | number) => void) {
             編輯
           </Link>
         </StyledButton>
-        <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
-          刪除
-        </StyledButton>
+        {cannotDelete ? null : (
+          <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
+            刪除
+          </StyledButton>
+        )}
       </EditColumnWrapper>
     );
   };

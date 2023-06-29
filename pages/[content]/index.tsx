@@ -119,6 +119,7 @@ export default function ContentListPage() {
         columns={columns ?? []}
         dataSource={contentData ?? []}
         total={contentDataTotal ?? 0}
+        cannotDelete={!data?.delete_button}
         handleDeleteModelList={handleDeleteModel}
       />
     </PageLayout>
