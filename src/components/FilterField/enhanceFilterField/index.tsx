@@ -1,3 +1,4 @@
+import { COLORS } from '@/src/utils';
 import React from 'react';
 import styled from 'styled-components';
 import { AutoCompleteField } from './AutoCompleteField';
@@ -28,16 +29,25 @@ const Wrapper = styled.div`
   gap: 4px;
 `;
 
-const Title = styled.h4`
+const TitleWrapper = styled.div`
+  display: flex;
+  gap: 6px;
+`;
+
+interface TitleProps {
+  danger?: boolean;
+}
+
+const Title = styled.h4<TitleProps>`
   margin: 0;
   font-size: 16px;
-  color: #000;
+  color: ${(props) => (props.danger ? COLORS.danger : '#000')};
 `;
 
 export const mapStringToComponent: MapStringToComponent = (name) =>
   mapping.find((item) => item.name === name)?.component ?? NotFoundField;
 
-export type EnhanceFilterFieldProps = Record<'label' | string, any>;
+export type EnhanceFilterFieldProps = Record<'label' | 'required' | string, any>;
 
 export function enhanceFilterField(component: string) {
   const Component = mapStringToComponent(component);
@@ -46,9 +56,10 @@ export function enhanceFilterField(component: string) {
     return (
       <Wrapper>
         {props.label && (
-          <div>
+          <TitleWrapper>
             <Title role="heading">{props.label}</Title>
-          </div>
+            {props.required && <Title danger>*</Title>}
+          </TitleWrapper>
         )}
         <div>
           <Component {...props} />
