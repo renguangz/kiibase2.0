@@ -36,7 +36,7 @@ describe('ContentUpdateField', () => {
       const { form } = setup();
       const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
 
-      const imageUpload = screen.getByTestId('photo-uploader');
+      const imageUpload = screen.getByTestId('photo-uploader-pic');
       await waitFor(() => {
         fireEvent.change(imageUpload, { target: { files: [file] } });
       });

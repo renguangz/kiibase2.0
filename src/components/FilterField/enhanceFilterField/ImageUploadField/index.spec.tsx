@@ -19,8 +19,8 @@ describe('ImageUploadField', () => {
     const { result } = renderHook(() => useForm());
     setup(result.current);
     expect(screen.queryByRole('img')).not.toBeInTheDocument();
-    expect(screen.queryByTestId('photo-uploader')).toBeInTheDocument();
-    expect(screen.queryByTestId('photo-uploader')).toBeVisible();
+    expect(screen.queryByTestId('photo-uploader-testImageUpload')).toBeInTheDocument();
+    expect(screen.queryByTestId('photo-uploader-testImageUpload')).toBeVisible();
   });
 
   it('should upload photo', async () => {
@@ -28,7 +28,7 @@ describe('ImageUploadField', () => {
     setup(result.current);
     global.URL.createObjectURL = jest.fn(() => 'imageURL');
     (requestUtils.request as jest.Mock).mockResolvedValue(ImageUploadResponse);
-    const imageInput = screen.getByTestId('photo-uploader') as HTMLInputElement;
+    const imageInput = screen.getByTestId('photo-uploader-testImageUpload') as HTMLInputElement;
     await waitFor(() => {
       fireEvent.change(imageInput, { target: { files: [file] } });
     });
