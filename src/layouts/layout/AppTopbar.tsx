@@ -1,5 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-
 import { classNames } from 'primereact/utils';
 import React, { forwardRef, useContext, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { AppTopbarRef } from '@/src/types/types';
@@ -10,10 +9,24 @@ import { useRouter } from 'next/router';
 import { useLogout } from '@/src/utils/hooks';
 import { COLORS } from '@/src/utils';
 import { StyledButton } from '@/src/components/common';
+import Logo from '@/public/Logo.svg';
+import Link from 'next/link';
+
+export const Wrapper = styled.div`
+  background: #2b3b44;
+  height: 60px;
+`;
+
+export const LogoImg = styled.img`
+  max-height: 32px;
+  max-width: 120px;
+`;
 
 const ProfileListWrapper = styled.ul`
   background: #fff;
   list-style: none;
+  margin: 0;
+  margin-top: 6px;
   border: 1px solid ${COLORS.lightGray};
   padding: 10px 0;
   position: absolute;
@@ -28,11 +41,36 @@ const ProfileList = styled.li`
   cursor: pointer;
 `;
 
+const Button = styled.button`
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  color: var(--text-color-secondary);
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+`;
+
+interface IconProps {
+  mouseenter?: boolean;
+}
+
+const Icon = styled.i<IconProps>`
+  font-size: 1.5rem;
+  color: ${(props) => (props.mouseenter ? COLORS.primary : '#fff')};
+`;
+
 const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
   const router = useRouter();
   const { push } = router;
 
-  const { layoutState, onMenuToggle, showProfileSidebar } = useContext(LayoutContext);
+  const [mouseenterMenuButton, setMouseenterMenubutton] = useState(false);
+  const [mouseenterProfileButton, setMouseenterProfilebutton] = useState(false);
+
+  const { layoutState, onMenuToggle } = useContext(LayoutContext);
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);
@@ -57,24 +95,25 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
   );
 
   return (
-    <div className="layout-topbar">
-      <button
+    <Wrapper className="layout-topbar">
+      <Link href="/adminUser">
+        <LogoImg src={Logo.src} alt="logo" />
+      </Link>
+      <Button
         ref={menubuttonRef}
         type="button"
         className="p-link layout-menu-button layout-topbar-button"
         onClick={onMenuToggle}
+        onMouseEnter={() => setMouseenterMenubutton(true)}
+        onMouseOut={() => setMouseenterMenubutton(false)}
       >
-        <i className="pi pi-bars" />
-      </button>
-
-      <button
-        ref={topbarmenubuttonRef}
-        type="button"
-        className="p-link layout-topbar-menu-button layout-topbar-button"
-        onClick={showProfileSidebar}
-      >
-        <i className="pi pi-ellipsis-v" />
-      </button>
+        <Icon
+          className="pi pi-bars"
+          mouseenter={mouseenterMenuButton}
+          onMouseEnter={() => setMouseenterMenubutton(true)}
+          onMouseOut={() => setMouseenterMenubutton(false)}
+        />
+      </Button>
 
       <div
         ref={topbarmenuRef}
@@ -83,14 +122,21 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
         })}
       >
         <div ref={wrapperRef}>
-          <button
+          <Button
             type="button"
             className="p-link layout-topbar-button"
             onClick={() => setShowProfileList((show) => !show)}
+            onMouseEnter={() => setMouseenterProfilebutton(true)}
+            onMouseOut={() => setMouseenterProfilebutton(false)}
           >
-            <i className="pi pi-user"></i>
+            <Icon
+              className="pi pi-user"
+              mouseenter={mouseenterProfileButton}
+              onMouseEnter={() => setMouseenterProfilebutton(true)}
+              onMouseOut={() => setMouseenterProfilebutton(false)}
+            ></Icon>
             <span>Profile</span>
-          </button>
+          </Button>
           {showProfileList && (
             <OutsideClickHandler wrapperRef={wrapperRef} onOutsideClick={() => setShowProfileList(false)}>
               <ProfileListWrapper>
@@ -106,7 +152,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
           )}
         </div>
       </div>
-    </div>
+    </Wrapper>
   );
 });
 

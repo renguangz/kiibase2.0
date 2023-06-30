@@ -1,5 +1,5 @@
 export const COLORS: Record<string, string> = {
-  primary: '#3B82F6',
+  primary: '#24526D',
   white: '#ffffff',
   lightGray: '#D9D9D9',
   disabledBackground: '#E5E5E5',
