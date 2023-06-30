@@ -3,6 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
 import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
+import AdminUser1Config from '@/src/mock/db/utils/getConfig/adminUserConfig1.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';
@@ -172,6 +173,29 @@ describe('ContentEditPage', () => {
       expect(inputs).toHaveLength(2);
       await userEvent.clear(inputs[0]);
       expect(submitButton).toBeDisabled();
+    });
+  });
+
+  describe('Admin User 1', () => {
+    beforeEach(() => {
+      mockAsPath.mockReturnValue('/adminUser/1/edit');
+      mockQuery.mockReturnValue({ editId: '1' });
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('/adminUser/1/getConfig') ? AdminUser1Config : {},
+      }));
+
+      render(<EditContentPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should have a disabled input field', async () => {
+      const input = screen.queryByRole('textbox');
+      expect(input).toBeInTheDocument();
+      expect(input).toBeDisabled();
     });
   });
 });

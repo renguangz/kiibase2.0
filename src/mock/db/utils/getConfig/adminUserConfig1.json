@@ -1,0 +1,94 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": true,
+    "delete_button": true,
+    "list": [
+      {
+        "title": "",
+        "type": "__checkbox"
+      },
+      {
+        "title": "帳號",
+        "name": "account",
+        "type": "label",
+        "sort_field": "account"
+      },
+      {
+        "title": "啟用狀態",
+        "name": "status",
+        "type": "__component:list-select",
+        "options": [
+          {
+            "key": "ONLINE",
+            "value": "啟用"
+          },
+          {
+            "key": "OFFLINE",
+            "value": "停用"
+          }
+        ],
+        "sort_field": "status"
+      },
+      {
+        "title": "最後登入時間",
+        "name": "last_logged_at",
+        "type": "label",
+        "sort_field": "last_logged_at"
+      },
+      {
+        "title": "註冊時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": false,
+    "date_filter_column": [],
+    "detailExtend": true,
+    "field": [
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "帳號",
+        "model": "account",
+        "required": true,
+        "readonly": false,
+        "disabled": true,
+        "hint": "此欄位必填",
+        "default": "super"
+      },
+      {
+        "type": "SingleSelect",
+        "label": "啟用狀態",
+        "model": "status",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "options": [
+          {
+            "id": "ONLINE",
+            "name": "啟用"
+          },
+          {
+            "id": "OFFLINE",
+            "name": "停用"
+          }
+        ],
+        "default": "ONLINE"
+      }
+    ],
+    "repeatField": [
+      {
+        "field": "account",
+        "label": "帳號"
+      }
+    ],
+    "topic": "後台管理者"
+  }
+}
