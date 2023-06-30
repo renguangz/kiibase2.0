@@ -160,7 +160,6 @@ describe('ContentEditPage', () => {
     });
 
     it('should have enabled confirm button', async () => {
-      screen.debug();
       const submitButton = screen.getByRole('button', { name: '確定' });
       await waitFor(async () => {
         expect(submitButton).toBeEnabled();
