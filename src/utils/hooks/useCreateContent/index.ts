@@ -21,6 +21,7 @@ export const addGetFields: AddGetFields = (route) => `${route}/getFields`;
 type MappingType = { name: string; component: string };
 const mapping: MappingType[] = [
   { name: 'input', component: 'InputTextComponent' },
+  { name: 'textarea', component: 'TextareaComponent' },
   { name: 'singleselect', component: 'SingleSelectComponent' },
   { name: 'imageupload', component: 'ImageUploadComponent' },
   { name: 'datepicker', component: 'CalendarComponent' },

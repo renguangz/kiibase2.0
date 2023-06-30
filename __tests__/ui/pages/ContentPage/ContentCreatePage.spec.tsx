@@ -4,6 +4,7 @@ import userEvent from '@testing-library/user-event';
 import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import UploadImageData from '@/src/mock/db/utils/uploadFile/uploadImage.json';
 import BannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
+import MachineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
 import AdminUserConfig from '@/src/mock/db/utils/getConfig/adminUserConfig.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
@@ -91,45 +92,6 @@ describe('ContentCreatePage', () => {
         expect(submitButton).toBeEnabled();
       });
     });
-
-    // it('button should disable after clicking and enable after changing filled data', () => {
-    // const { submitButton } = result;
-    // 填完資料
-    // expect(submitButton.disabled).toBeFalsy();
-    // act(() => {
-    //   // 如果點擊可能會有報錯，例如資料填寫有錯誤才需要下面這段
-    //   userEvent.click(submitButton);
-    //   expect(submitButton.disabled).toBeTruthy();
-    //   // userEvent.type()
-    //   expect(submitButton.disabled).toBeFalsy();
-    // userEvent.clear()
-    // });
-
-    // it('button should enable after filled up required field and disabled after clearing any required fields', async () => {
-    //   const { submitButton } = result;
-    //   const inputs = screen.getAllByRole('textbox') as HTMLInputElement[];
-    //   expect(inputs).toHaveLength(2);
-    //   await userEvent.type(inputs[0], 'filled up input1');
-    //   await userEvent.type(inputs[1], 'filled up input2');
-    //   expect(inputs[0]).toHaveValue('filled up input1');
-    //   const comboBoxes = screen.getAllByRole('combobox');
-    //   expect(comboBoxes).toHaveLength(2);
-    //   await userEvent.click(comboBoxes[0]);
-    //   expect(screen.getByTitle('手機版')).toBeInTheDocument();
-    //   await userEvent.click(screen.getByTitle('手機版'));
-    //
-    //   await userEvent.click(comboBoxes[1]);
-    //   expect(screen.getByTitle('下架')).toBeInTheDocument();
-    //   await userEvent.click(screen.getByTitle('下架'));
-    //
-    //   expect(submitButton).toBeEnabled();
-    //
-    //   await userEvent.clear(inputs[0]);
-    //   expect(submitButton).toBeDisabled();
-    //
-    //   await userEvent.type(inputs[0], 'a');
-    //   expect(submitButton).toBeEnabled();
-    // });
 
     it('should submit with create data and change module[0].data to `{ title: "test title", pic: "testPic", device: "PC", status: "ONLINE", order: 0 }`', async () => {
       (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
@@ -247,6 +209,74 @@ describe('ContentCreatePage', () => {
       expect(requestUtils.request).toHaveBeenCalledWith('/model/adminUser', {
         method: 'POST',
         body: expectResult,
+      });
+    });
+  });
+
+  describe('Machine', () => {
+    let result: {
+      title: HTMLElement | null;
+      linkButton: HTMLLinkElement;
+      submitButton: HTMLButtonElement;
+      form: UseFormReturn<FieldValues, any>;
+    };
+
+    beforeEach(() => {
+      mockAsPath.mockReturnValue('/machine/create');
+      result = setup('機台建立', '機台列表', MachineConfig);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should have 8 text area fields', async () => {
+      const textareas = screen.queryAllByRole('dialog');
+      expect(textareas).toHaveLength(8);
+    });
+
+    it('should change to enabled submitButton after filled up all fields', async () => {
+      (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
+        url.includes('/upload/file') ? UploadImageData : CreateBannerSuccess,
+      );
+      global.URL.createObjectURL = jest.fn(() => 'imageURL');
+      const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
+      const { submitButton } = result;
+      expect(submitButton).toBeDisabled();
+      const textareas = screen.queryAllByRole('dialog');
+      textareas.forEach((textarea) => {
+        fireEvent.change(textarea, { target: { value: 'test textarea' } });
+      });
+      expect(submitButton).toBeDisabled();
+      const imgFields = MachineConfig.data.field.filter((field) => field.type === 'ImageUpload');
+      imgFields.forEach((field) => {
+        const imgInput = screen.queryByTestId(`photo-uploader-${field.model}`) as HTMLInputElement;
+        expect(imgInput).toBeInTheDocument();
+        fireEvent.change(imgInput, { target: { files: [file] } });
+      });
+      expect(submitButton).toBeDisabled();
+      const inputs = screen.queryAllByRole('textbox');
+      inputs.forEach((input) => {
+        fireEvent.change(input, { target: { value: 'test input' } });
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeEnabled();
+      });
+      await userEvent.click(submitButton);
+      const body = MachineConfig.data.field.reduce((acc, cur) => {
+        return {
+          ...acc,
+          [cur.model]:
+            cur.type === 'Input' ? 'test input' : cur.type === 'ImageUpload' ? 'testimageresponse' : 'test textarea',
+        };
+      }, {});
+      const expectBody = JSON.stringify({
+        ...body,
+        order: 0,
+      });
+      expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine', {
+        method: 'POST',
+        body: expectBody,
       });
     });
   });

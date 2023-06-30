@@ -8,6 +8,7 @@ import { EditorField } from './EditorField';
 import { ImageUploadField } from './ImageUploadField';
 import { InputTextField } from './InputTextField';
 import { NotFoundField } from './NotFoundField';
+import { TextareaField } from './TextareaField';
 
 const mapping = [
   { name: 'AutoCompleteComponent', component: AutoCompleteField },
@@ -15,6 +16,7 @@ const mapping = [
     name: 'InputTextComponent',
     component: InputTextField,
   },
+  { name: 'TextareaComponent', component: TextareaField },
   { name: 'CalendarComponent', component: CalendarField },
   { name: 'SingleSelectComponent', component: DropdownField },
   { name: 'ImageUploadComponent', component: ImageUploadField },

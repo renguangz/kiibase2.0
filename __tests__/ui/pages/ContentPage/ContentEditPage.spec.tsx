@@ -1,9 +1,10 @@
 import EditContentPage from '@/pages/[content]/[editId]/edit';
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
 import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
 import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
 import AdminUser1Config from '@/src/mock/db/utils/getConfig/adminUserConfig1.json';
+import Machine1Config from '@/src/mock/db/utils/getConfig/machineConfig1.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';
@@ -195,6 +196,56 @@ describe('ContentEditPage', () => {
       const input = screen.queryByRole('textbox');
       expect(input).toBeInTheDocument();
       expect(input).toBeDisabled();
+    });
+  });
+
+  describe('Machine 1', () => {
+    beforeEach(() => {
+      mockAsPath.mockReturnValue('/machine/1/edit');
+      mockQuery.mockReturnValue({ editId: '1' });
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('/machine/1/getConfig') ? Machine1Config : {},
+      }));
+
+      render(<EditContentPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should have 8 text areas fields with default values', async () => {
+      const textareas = screen.queryAllByRole('dialog');
+      expect(textareas).toHaveLength(8);
+      textareas.forEach((textarea, index) => {
+        expect(textarea).toHaveValue(Machine1Config.data.field[index].default);
+      });
+    });
+
+    it('should have disabled submitButton', async () => {
+      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      expect(submitButton).toBeDisabled();
+      const inputs = screen.queryAllByRole('textbox');
+      inputs.forEach((input) => {
+        fireEvent.change(input, { target: { value: 'test input' } });
+      });
+      await waitFor(() => {
+        expect(submitButton).toBeEnabled();
+      });
+      await userEvent.click(submitButton);
+      const body = Machine1Config.data.field.reduce((acc, cur) => {
+        return { ...acc, [cur.model]: cur.type === 'Input' ? 'test input' : cur.default };
+      }, {});
+      const expectBody = JSON.stringify({
+        ...body,
+        order: 0,
+      });
+      expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine/1', {
+        method: 'PUT',
+        body: expectBody,
+      });
     });
   });
 });
