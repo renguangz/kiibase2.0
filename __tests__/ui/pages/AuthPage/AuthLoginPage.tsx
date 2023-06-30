@@ -55,7 +55,7 @@ describe('AuthLoginPage', () => {
     await userEvent.type(passwordInput, 'testpassword');
     await userEvent.click(loginButton);
     expect(mockRouterPush).toHaveBeenCalledTimes(1);
-    expect(mockRouterPush).toHaveBeenCalledWith('/');
+    expect(mockRouterPush).toHaveBeenCalledWith('/adminUser');
   });
 
   it('should not call router push when login fail', async () => {

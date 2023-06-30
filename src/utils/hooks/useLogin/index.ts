@@ -42,7 +42,7 @@ export function useLogin() {
     if (result.status === 200) {
       const token = result.data.token;
       Cookies.set('token', token, { expires: 7 });
-      push('/');
+      push('/adminUser');
       setAccount('');
       mutate('/menuItemNavi');
       mutate('/subMenuNavi');

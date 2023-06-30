@@ -1,6 +1,14 @@
 import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Home() {
+  const router = useRouter();
+  const { replace } = router;
+
+  useEffect(() => {
+    replace('/adminUser');
+  }, []);
   return (
     <div>
       <Head>

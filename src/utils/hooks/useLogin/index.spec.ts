@@ -31,7 +31,7 @@ const ACCOUNTS = authAccounts.data;
 describe('useLogin', () => {
   afterEach(() => jest.resetAllMocks());
 
-  it('should successfull login then clear account and password and router push to home page', async () => {
+  it('should successfull login then clear account and password and router push to adminUser page', async () => {
     (requestUtils.request as jest.Mock).mockResolvedValue({
       ...successfullLogin,
     });
@@ -59,7 +59,7 @@ describe('useLogin', () => {
       expect(result.current.data?.status).toEqual(200);
       expect(result.current.data?.message).toEqual('success');
       expect(mockRouterPush).toHaveBeenCalledTimes(1);
-      expect(mockRouterPush).toHaveBeenCalledWith('/');
+      expect(mockRouterPush).toHaveBeenCalledWith('/adminUser');
       expect(result.current.account).toEqual('');
       expect(result.current.password).toEqual('');
     });
