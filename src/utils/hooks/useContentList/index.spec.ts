@@ -5,8 +5,17 @@ import initRole from '@/src/mock/db/utils/ContentList/role/initList.json';
 
 jest.mock('swr');
 
+jest.mock('next/router', () => ({
+  useRouter: () => ({
+    events: {
+      on: jest.fn(),
+      off: jest.fn(),
+    },
+  }),
+}));
+
 describe('useContentList', () => {
-  describe('search log', () => {
+  describe('role', () => {
     it('should have data', async () => {
       const mockUseSwr = jest.requireMock('swr').default;
       mockUseSwr.mockReturnValue({

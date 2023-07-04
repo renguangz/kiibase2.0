@@ -3,13 +3,13 @@ import useSWR from 'swr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
+import machineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
 import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
 import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
+import machineListData from '@/src/mock/db/utils/ContentList/machine/initList.json';
 import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import roleListEmptyData from '@/src/mock/db/utils/ContentList/role/filter/emptyList.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
-import unauthorized from '@/src/mock/db/utils/auth/unauthrized.json';
-import apiError from '@/src/mock/db/utils/auth/apiError.json';
 import { useRouter } from 'next/router';
 import * as requestUtils from '@/src/utils/request';
 
@@ -55,6 +55,10 @@ describe('ContentListPage', () => {
 
       (useRouter as jest.Mock).mockReturnValue({
         asPath: '/role',
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
       });
 
       render(<ContentListPage />);
@@ -357,6 +361,10 @@ describe('ContentListPage', () => {
       (useRouter as jest.Mock).mockReturnValue({
         asPath: '/banner',
         push: mockRouterPush,
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
       });
 
       jest.useRealTimers();
@@ -498,6 +506,47 @@ describe('ContentListPage', () => {
       const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
       expect(deleteMultipleButton).not.toBeInTheDocument();
       expect(deleteButtons).toHaveLength(0);
+    });
+  });
+
+  describe('Machine', () => {
+    const setup = () => {
+      render(<ContentListPage />);
+
+      const inputFields = screen.queryAllByRole('textbox').filter((field) => field.className.includes('p-inputtext'));
+      inputFields.shift();
+      const updateButton = screen.getByRole('button', { name: /更新/ });
+      const selectFields = document.querySelectorAll('.p-dropdown');
+      return { inputFields, updateButton, selectFields };
+    };
+
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig') ? machineConfig : machineListData,
+      }));
+
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/machine',
+        push: mockRouterPush,
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
+      });
+
+      jest.useRealTimers();
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should have disabled updateButton', async () => {
+      const { updateButton } = setup();
+      expect(updateButton).toBeDisabled();
     });
   });
 });

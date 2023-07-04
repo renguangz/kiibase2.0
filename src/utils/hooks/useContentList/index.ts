@@ -1,22 +1,26 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { isNotContentDynamicRouteYet } from '../../functions';
 import useSWR from 'swr';
 import { ApiDataResponse, ApiDataType } from '@/src/types/data';
 import { useForm } from 'react-hook-form';
 import { request, requestOptionsTemplate } from '../../request';
+import { useRouter } from 'next/router';
 
 export type ContentDataType = {
   data: Array<Record<string, string | number>>;
   meta: Record<'current_page' | 'last_page' | 'to' | 'from' | 'total' | 'per_page', number>;
 };
 
+const INIT_QUERY_PARAMS = {
+  page: 1,
+  per_page: 10,
+};
+
 export function useContentList(asPath: string) {
+  const router = useRouter();
   const tableForm = useForm();
 
-  const [queryParams, setQueryParams] = useState<Record<string, any>>({
-    page: 1,
-    per_page: 10,
-  });
+  const [queryParams, setQueryParams] = useState<Record<string, any>>(INIT_QUERY_PARAMS);
 
   const endpoint = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : `/model${asPath}`),
@@ -31,7 +35,6 @@ export function useContentList(asPath: string) {
   const contentData = useMemo(() => data?.data ?? { data: [], meta: { total: 0 } }, [data]);
 
   const updatedListData = useMemo(() => {
-    tableForm.watch();
     const formValue = tableForm.control._formValues;
     const formKeySet = new Set(Object.keys(formValue).map((key) => key.split('-')[0]));
     const listData = contentData?.data ?? [];
@@ -49,7 +52,7 @@ export function useContentList(asPath: string) {
       })
       .filter((data) => data);
     return listDataChanged;
-  }, [tableForm.watch(), contentData]);
+  }, [tableForm.watch(), contentData, asPath]);
 
   const updateButtonDisabled = useMemo(() => updatedListData.length === 0, [updatedListData]);
 
@@ -85,6 +88,10 @@ export function useContentList(asPath: string) {
     [endpoint, request, mutate],
   );
 
+  const resetQueryParams = () => {
+    setQueryParams(INIT_QUERY_PARAMS);
+  };
+
   return {
     tableForm,
     updateButtonDisabled,
@@ -93,6 +100,7 @@ export function useContentList(asPath: string) {
     total: contentData.meta.total,
     setQueryParams,
     queryParams,
+    resetQueryParams,
     handleChangePage,
     handleChangePerPage,
     handleUpdateList,
