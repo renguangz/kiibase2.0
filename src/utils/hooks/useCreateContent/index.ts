@@ -1,5 +1,5 @@
 import { pipe } from 'fp-ts/lib/function';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { formatDateForm, formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
@@ -69,6 +69,11 @@ export function useCreateContent(asPath: string) {
   const router = useRouter();
   const { push } = router;
 
+  const [createResponseMessage, setCreateResponseMessage] = useState<{
+    type: 'success' | 'error';
+    message: string;
+  } | null>(null);
+
   const rootUrl = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, getContentPath)),
     [isNotContentDynamicRouteYet, asPath, pipe, getContentPath],
@@ -129,7 +134,12 @@ export function useCreateContent(asPath: string) {
 
     const result: GenericDataType<null> = await request(`/model${rootUrl}`, requestOptionsTemplate('POST', payload));
 
-    if (result.status === 200) push(rootUrl);
+    if (result.status === 200) {
+      setCreateResponseMessage({ type: 'success', message: '成功' });
+      push(rootUrl);
+    } else {
+      setCreateResponseMessage({ type: 'error', message: result.message });
+    }
   }, [request, rootUrl, requestOptionsTemplate, form, data, formatNumberForm, push]);
 
   useEffect(() => {
@@ -146,5 +156,6 @@ export function useCreateContent(asPath: string) {
     isSubmitButtonDisabled,
     requiredImageUploadFieldsAreEmpty,
     handleSubmit,
+    createResponseMessage,
   };
 }

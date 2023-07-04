@@ -82,7 +82,9 @@ export const request: RequestType = (endpoint, requestOptions, isFormData) => {
             Authorization: `Bearer ${token}`,
           },
     }).then((res) => {
-      if (!res.ok) {
+      if (res.status === 422) {
+        resolve(res.json());
+      } else if (!res.ok) {
         reject(res.statusText);
       } else {
         resolve(res.json());

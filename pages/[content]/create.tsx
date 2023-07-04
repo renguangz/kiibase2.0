@@ -7,6 +7,7 @@ import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
+import { Message } from 'primereact/message';
 
 export const ConfirmButtonWrapper = styled.div`
   margin-top: 16px;
@@ -15,6 +16,18 @@ export const ConfirmButtonWrapper = styled.div`
   align-items: center;
   justify-content: flex-end;
   gap: 7px;
+`;
+
+interface MessageWrapperProps {
+  shouldDisplay: boolean;
+}
+
+export const MessageWrapper = styled.div<MessageWrapperProps>`
+  position: fixed;
+  z-index: 4;
+  top: 70px;
+  display: ${(props) => (props.shouldDisplay ? 'flex' : 'none')};
+  justify-content: center;
 `;
 
 export const StyledLink = styled(Link)`
@@ -32,10 +45,16 @@ export default function CreateContentPage() {
     listPageUrl,
     handleSubmit,
     requiredImageUploadFieldsAreEmpty,
+    createResponseMessage,
   } = useCreateContent(asPath);
 
   return (
     <PageLayout>
+      <MessageWrapper shouldDisplay={createResponseMessage !== null}>
+        {createResponseMessage && (
+          <Message severity={createResponseMessage.type} text={createResponseMessage.message} />
+        )}
+      </MessageWrapper>
       <ContentHeader
         text={`${createConfigData?.topic ?? ''}建立`}
         button={
