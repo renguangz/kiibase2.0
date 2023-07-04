@@ -65,14 +65,13 @@ type ShouldCheckDocumentValue = (field: { type: string }) => boolean;
 const shouldCheckDocumentValue: ShouldCheckDocumentValue = (field) =>
   field.type === 'InputTextComponent' || field.type === 'NotFound';
 
+export type ResponseMessageType = { type: 'success' | 'error'; message: string } | null;
+
 export function useCreateContent(asPath: string) {
   const router = useRouter();
   const { push } = router;
 
-  const [createResponseMessage, setCreateResponseMessage] = useState<{
-    type: 'success' | 'error';
-    message: string;
-  } | null>(null);
+  const [createResponseMessage, setCreateResponseMessage] = useState<ResponseMessageType>(null);
 
   const rootUrl = useMemo(
     () => (isNotContentDynamicRouteYet(asPath) ? '' : pipe(asPath, getContentPath)),
@@ -138,7 +137,7 @@ export function useCreateContent(asPath: string) {
       setCreateResponseMessage({ type: 'success', message: '成功' });
       push(rootUrl);
     } else {
-      setCreateResponseMessage({ type: 'error', message: result.message });
+      setCreateResponseMessage({ type: 'error', message: result?.message ?? '' });
     }
   }, [request, rootUrl, requestOptionsTemplate, form, data, formatNumberForm, push]);
 

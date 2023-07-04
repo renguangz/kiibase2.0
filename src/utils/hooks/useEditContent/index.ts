@@ -6,7 +6,7 @@ import * as A from 'fp-ts/Array';
 import { formatDateForm, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
 import { request, requestOptionsTemplate } from '../../request';
 import { GenericDataType } from '../../types';
-import { formatSelectData, isFieldsApiData, mapNameToComponent } from '../useCreateContent';
+import { formatSelectData, isFieldsApiData, mapNameToComponent, ResponseMessageType } from '../useCreateContent';
 import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
 import { filter } from 'fp-ts/lib/Record';
 
@@ -17,6 +17,7 @@ export function useEditContent(asPath: string, editId: string) {
   const form = useForm();
 
   const [openModal, setOpenModal] = useState(false);
+  const [editResponseMessage, setEditResponseMessage] = useState<ResponseMessageType>(null);
 
   const url = useMemo(() => (isNotContentDynamicRouteYet(asPath) ? '' : asPath), [isNotContentDynamicRouteYet, asPath]);
   const editUrl = useMemo(() => url.replace('/edit', ''), [url]);
@@ -80,7 +81,12 @@ export function useEditContent(asPath: string, editId: string) {
     };
     const result: GenericDataType<null> = await request(`/model${editUrl}`, requestOptionsTemplate('PUT', payload));
 
-    if (result.status === 200) push(listPageUrl);
+    if (result.status === 200) {
+      setEditResponseMessage({ type: 'success', message: '成功' });
+      push(listPageUrl);
+    } else {
+      setEditResponseMessage({ type: 'error', message: result?.message ?? '' });
+    }
   }, [request, requestOptionsTemplate, editUrl, data, form, formatNumberForm, fieldsData, push, listPageUrl]);
 
   useEffect(() => {
@@ -99,5 +105,6 @@ export function useEditContent(asPath: string, editId: string) {
     form,
     listPageUrl,
     requiredImageUploadFieldsAreEmpty,
+    editResponseMessage,
   };
 }

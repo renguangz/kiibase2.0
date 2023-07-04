@@ -5,9 +5,10 @@ import { PageLayout } from '@/src/layouts';
 import { useEditContent } from '@/src/utils/hooks';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { Message } from 'primereact/message';
 import { useMemo } from 'react';
 import styled from 'styled-components';
-import { ConfirmButtonWrapper, StyledLink } from '../create';
+import { ConfirmButtonWrapper, MessageWrapper, StyledLink } from '../create';
 
 const ContentHeaderButtonsWrapper = styled.div`
   display: flex;
@@ -22,8 +23,16 @@ export default function EditContentPage() {
 
   const newEditId: string = useMemo(() => (Array.isArray(editId) ? editId[0] : editId ?? ''), [editId]);
 
-  const { listPageUrl, fieldsData, form, data, deleteContent, handleSubmitUpdate, requiredImageUploadFieldsAreEmpty } =
-    useEditContent(asPath, newEditId);
+  const {
+    listPageUrl,
+    fieldsData,
+    form,
+    data,
+    deleteContent,
+    handleSubmitUpdate,
+    requiredImageUploadFieldsAreEmpty,
+    editResponseMessage,
+  } = useEditContent(asPath, newEditId);
 
   const title = useMemo(() => data?.topic ?? '', [data]);
 
@@ -39,6 +48,9 @@ export default function EditContentPage() {
 
   return (
     <PageLayout>
+      <MessageWrapper shouldDisplay={editResponseMessage !== null}>
+        {editResponseMessage && <Message severity={editResponseMessage.type} text={editResponseMessage.message} />}
+      </MessageWrapper>
       <ConfirmDialog />
       <ContentHeader
         text={`${title}修改`}
