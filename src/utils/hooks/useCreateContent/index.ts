@@ -9,7 +9,6 @@ import { request, requestOptionsTemplate } from '../../request';
 import { GenericDataType } from '../../types';
 import { useRouter } from 'next/router';
 import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
-import { filter } from 'fp-ts/lib/Record';
 
 type RemoveEndingSlash = (route: string) => string;
 export const removeEndingSlash: RemoveEndingSlash = (route) =>
@@ -120,13 +119,8 @@ export function useCreateContent(asPath: string) {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
     const dateForm = formatDateForm(form.control._formValues);
 
-    const formValue = pipe(
-      form.watch(),
-      filter((value) => value),
-    );
-
     const payload = {
-      ...formValue,
+      ...form.watch(),
       ...numberForm,
       ...dateForm,
     };

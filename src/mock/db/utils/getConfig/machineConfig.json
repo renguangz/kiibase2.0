@@ -17,7 +17,7 @@
       },
       {
         "title": "種類",
-        "name": "machine_category_title",
+        "name": "machine_category_single_title",
         "type": "label",
         "sort_field": "machine_category_title"
       },
@@ -61,6 +61,39 @@
     "detailExtend": false,
     "field": [
       {
+        "type": "SingleSelect",
+        "label": "機台種類",
+        "model": "machine_category_id",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "options": [
+          {
+            "id": 1,
+            "name": "印刷機"
+          },
+          {
+            "id": 2,
+            "name": "平軋機"
+          },
+          {
+            "id": 3,
+            "name": "柔版預印機"
+          },
+          {
+            "id": 4,
+            "name": "雙片貼合機"
+          },
+          {
+            "id": 5,
+            "name": "製版設備"
+          }
+        ],
+        "options_calss": "App\\Repositories\\MachineCategoryRepository",
+        "options_function": "findMachineCategoriesBySelect",
+        "default": null
+      },
+      {
         "type": "Textarea",
         "label": "標題",
         "model": "title",
@@ -84,6 +117,7 @@
         "model": "description",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
         "default": ""
       },
@@ -93,6 +127,7 @@
         "model": "description_en",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
         "default": ""
       },
@@ -120,6 +155,7 @@
         "model": "subdescription",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
         "default": ""
       },
@@ -129,6 +165,7 @@
         "model": "subdescription_en",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
         "default": ""
       },
@@ -163,11 +200,31 @@
         "url": null
       },
       {
+        "type": "ImageUpload",
+        "label": "產品內容說明手機圖片",
+        "model": "content_pic_mobile",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
+        "type": "ImageUpload",
+        "label": "產品內容說明手機圖片(英文)",
+        "model": "content_pic_mobile_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
         "type": "Input",
         "inputType": "text",
         "label": "表格第一欄標題",
         "model": "tabel_column_title_1",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -177,7 +234,7 @@
         "inputType": "text",
         "label": "表格第一欄標題(英文)",
         "model": "tabel_column_title_1_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -187,7 +244,7 @@
         "inputType": "text",
         "label": "表格第二欄標題",
         "model": "tabel_column_title_2",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -197,7 +254,7 @@
         "inputType": "text",
         "label": "表格第二欄標題(英文)",
         "model": "tabel_column_title_2_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -207,7 +264,7 @@
         "inputType": "text",
         "label": "表格第三欄標題",
         "model": "tabel_column_title_3",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -217,7 +274,7 @@
         "inputType": "text",
         "label": "表格第三欄標題(英文)",
         "model": "tabel_column_title_3_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -227,7 +284,7 @@
         "inputType": "text",
         "label": "表格第四欄標題",
         "model": "tabel_column_title_4",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -237,7 +294,7 @@
         "inputType": "text",
         "label": "表格第四欄標題(英文)",
         "model": "tabel_column_title_4_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -247,7 +304,7 @@
         "inputType": "text",
         "label": "表格第五欄標題",
         "model": "tabel_column_title_5",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -257,7 +314,7 @@
         "inputType": "text",
         "label": "表格第五欄標題(英文)",
         "model": "tabel_column_title_5_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -273,6 +330,7 @@
         "default": 0
       }
     ],
-    "topic": "機台"
+    "topic": "機台",
+    "is_single_data": false
   }
 }

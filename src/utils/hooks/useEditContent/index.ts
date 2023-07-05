@@ -70,12 +70,8 @@ export function useEditContent(asPath: string, editId: string) {
     const numberForm = formatNumberForm(fieldsData, form.getValues);
     const dateForm = formatDateForm(form.control._formValues);
 
-    const formValue = pipe(
-      form.watch(),
-      filter((value) => value),
-    );
     const payload = {
-      ...formValue,
+      ...form.watch(),
       ...numberForm,
       ...dateForm,
     };

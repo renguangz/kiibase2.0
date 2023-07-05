@@ -17,7 +17,7 @@
       },
       {
         "title": "種類",
-        "name": "machine_category_title",
+        "name": "machine_category_single_title",
         "type": "label",
         "sort_field": "machine_category_title"
       },
@@ -61,13 +61,46 @@
     "detailExtend": false,
     "field": [
       {
+        "type": "SingleSelect",
+        "label": "機台種類",
+        "model": "machine_category_id",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "options": [
+          {
+            "id": 1,
+            "name": "印刷機"
+          },
+          {
+            "id": 2,
+            "name": "平軋機"
+          },
+          {
+            "id": 3,
+            "name": "柔版預印機"
+          },
+          {
+            "id": 4,
+            "name": "雙片貼合機"
+          },
+          {
+            "id": 5,
+            "name": "製版設備"
+          }
+        ],
+        "options_calss": "App\\Repositories\\MachineCategoryRepository",
+        "options_function": "findMachineCategoriesBySelect",
+        "default": 1
+      },
+      {
         "type": "Textarea",
         "label": "標題",
         "model": "title",
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "日本．新幸\n印刷機"
+        "default": "日本．新幸"
       },
       {
         "type": "Textarea",
@@ -76,7 +109,7 @@
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "日本．新幸\n印刷機"
+        "default": "Japan．\nShinko"
       },
       {
         "type": "Textarea",
@@ -84,6 +117,7 @@
         "model": "description",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
         "default": "全新自動化控制系統\n換單快速好上手\n印刷品質穩定"
       },
@@ -93,8 +127,9 @@
         "model": "description_en",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
-        "default": "全新自動化控制系統\n換單快速好上手\n印刷品質穩定"
+        "default": "New automated electronic control system\nMore flexible processing, shorter setup times\nStable quality"
       },
       {
         "type": "Textarea",
@@ -103,7 +138,7 @@
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "\n購買整新機 低成本高效益"
+        "default": "購買整新機 低成本高效益"
       },
       {
         "type": "Textarea",
@@ -112,7 +147,7 @@
         "required": true,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "\n購買整新機 低成本高效益"
+        "default": "Purchase a reconditioned machine at a low cost and high efficiency"
       },
       {
         "type": "Textarea",
@@ -120,6 +155,7 @@
         "model": "subdescription",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
         "default": "觸控型人機介面，可依需求更換多國語言。\n節省人員訓練時間，操作容易好上手。\n可配合大批量、快速、客製化、多樣性生產。\n與國際知名品牌電控零件通用，取得方便。\n損耗率低，維護性良好。能夠應對4色顏色的印刷。\n高效節能；與吸風送紙部相比，電力消費約可降低40％"
       },
@@ -129,8 +165,9 @@
         "model": "subdescription_en",
         "required": true,
         "readonly": false,
+        "rows": 8,
         "hint": "此欄位必填",
-        "default": "觸控型人機介面，可依需求更換多國語言。\n節省人員訓練時間，操作容易好上手。\n可配合大批量、快速、客製化、多樣性生產。\n與國際知名品牌電控零件通用，取得方便。\n損耗率低，維護性良好。能夠應對4色顏色的印刷。\n高效節能；與吸風送紙部相比，電力消費約可降低40％"
+        "default": "Touch Panel Chinese Human-Machine Interface (HMI), which can be replaced by multi-language model according to needs.\nEasy to operate, low threshold, high quality.\nThoroughly and flexibly addresses a variety of customers' needs.\nInternationally renowned brand electronic control parts are universal, easy to maintain and easy to obtain.\nMulti-color printing.\nEasy maintenance.\nAbout 40% lower electricity consumption compared to suction transfer mechanism."
       },
       {
         "type": "ImageUpload",
@@ -163,11 +200,31 @@
         "url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Machine/20230630_120620407-content_pic_en.webp"
       },
       {
+        "type": "ImageUpload",
+        "label": "產品內容說明手機圖片",
+        "model": "content_pic_mobile",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "Machine/20230630_120557728-content_pic.webp",
+        "url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Machine/20230630_120557728-content_pic.webp"
+      },
+      {
+        "type": "ImageUpload",
+        "label": "產品內容說明手機圖片(英文)",
+        "model": "content_pic_mobile_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "Machine/20230630_120620407-content_pic_en.webp",
+        "url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Machine/20230630_120620407-content_pic_en.webp"
+      },
+      {
         "type": "Input",
         "inputType": "text",
         "label": "表格第一欄標題",
         "model": "tabel_column_title_1",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": "1125型"
@@ -177,17 +234,17 @@
         "inputType": "text",
         "label": "表格第一欄標題(英文)",
         "model": "tabel_column_title_1_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "1125型"
+        "default": "Type 1125"
       },
       {
         "type": "Input",
         "inputType": "text",
         "label": "表格第二欄標題",
         "model": "tabel_column_title_2",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": "1225型"
@@ -197,17 +254,17 @@
         "inputType": "text",
         "label": "表格第二欄標題(英文)",
         "model": "tabel_column_title_2_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "1225型"
+        "default": "Type 1225"
       },
       {
         "type": "Input",
         "inputType": "text",
         "label": "表格第三欄標題",
         "model": "tabel_column_title_3",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": "1227型"
@@ -217,17 +274,17 @@
         "inputType": "text",
         "label": "表格第三欄標題(英文)",
         "model": "tabel_column_title_3_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "1227型"
+        "default": "Type 1227"
       },
       {
         "type": "Input",
         "inputType": "text",
         "label": "表格第四欄標題",
         "model": "tabel_column_title_4",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": "1425型"
@@ -237,17 +294,17 @@
         "inputType": "text",
         "label": "表格第四欄標題(英文)",
         "model": "tabel_column_title_4_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
-        "default": "1425型"
+        "default": "Type 1425"
       },
       {
         "type": "Input",
         "inputType": "text",
         "label": "表格第五欄標題",
         "model": "tabel_column_title_5",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -257,7 +314,7 @@
         "inputType": "text",
         "label": "表格第五欄標題(英文)",
         "model": "tabel_column_title_5_en",
-        "required": true,
+        "required": false,
         "readonly": false,
         "hint": "此欄位必填",
         "default": ""
@@ -273,6 +330,7 @@
         "default": 0
       }
     ],
-    "topic": "機台"
+    "topic": "機台",
+    "is_single_data": false
   }
 }
