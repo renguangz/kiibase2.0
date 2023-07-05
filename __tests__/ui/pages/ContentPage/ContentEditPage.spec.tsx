@@ -5,6 +5,7 @@ import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
 import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
 import AdminUser1Config from '@/src/mock/db/utils/getConfig/adminUserConfig1.json';
 import Machine1Config from '@/src/mock/db/utils/getConfig/machineConfig1.json';
+import Home1Config from '@/src/mock/db/utils/getConfig/homepageConfig1.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';
@@ -289,6 +290,38 @@ describe('ContentEditPage', () => {
         method: 'PUT',
         body: expectBody,
       });
+    });
+  });
+
+  describe('Homepage 1', () => {
+    beforeEach(() => {
+      mockAsPath.mockReturnValue('/homepage/1/edit');
+      mockQuery.mockReturnValue({ editId: '1' });
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('/homepage/1/getConfig') ? Home1Config : {},
+      }));
+
+      render(<EditContentPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should not have list link', async () => {
+      const listButton = screen.queryByRole('button', { name: '首頁設定列表' });
+      expect(listButton).not.toBeInTheDocument();
+    });
+
+    it('should not call router push to list page after submit', async () => {
+      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      await waitFor(async () => {
+        expect(submitButton).toBeEnabled();
+      });
+      await userEvent.click(submitButton);
+      expect(routerPush).not.toHaveBeenCalled();
     });
   });
 });

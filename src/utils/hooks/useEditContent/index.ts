@@ -8,7 +8,6 @@ import { request, requestOptionsTemplate } from '../../request';
 import { GenericDataType } from '../../types';
 import { formatSelectData, isFieldsApiData, mapNameToComponent, ResponseMessageType } from '../useCreateContent';
 import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
-import { filter } from 'fp-ts/lib/Record';
 
 export function useEditContent(asPath: string, editId: string) {
   const router = useRouter();
@@ -78,7 +77,8 @@ export function useEditContent(asPath: string, editId: string) {
     const result: GenericDataType<null> = await request(`/model${editUrl}`, requestOptionsTemplate('PUT', payload));
 
     if (result.status === 200) {
-      setEditResponseMessage({ type: 'success', message: '成功' });
+      setEditResponseMessage({ type: 'success', message: '更新成功' });
+      if (data?.is_single_data) return;
       push(listPageUrl);
     } else {
       setEditResponseMessage({ type: 'error', message: result?.message ?? '' });

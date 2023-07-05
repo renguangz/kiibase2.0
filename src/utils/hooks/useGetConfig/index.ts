@@ -32,6 +32,8 @@ export type ConfigDataType = {
   date_filter_column: boolean;
   topic: string;
   field: ConfigDataFieldType[];
+  is_single_data?: boolean;
+  single_data_id?: string | number;
 };
 
 type AddGetConfig = (route: string) => string;
