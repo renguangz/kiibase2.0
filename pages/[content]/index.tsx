@@ -8,6 +8,7 @@ import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks'
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './create';
 
@@ -18,7 +19,7 @@ const FilterFieldWrapper = styled.div`
 
 export default function ContentListPage() {
   const router = useRouter();
-  const { asPath } = router;
+  const { asPath, push } = router;
 
   const { data, columns, canUpdate } = useGetConfig(asPath);
 
@@ -55,6 +56,12 @@ export default function ContentListPage() {
       accept: type === 'DELETE' ? () => handleDeleteAll() : () => handleUpdateList(),
     });
   };
+
+  useLayoutEffect(() => {
+    if (data?.is_single_data) {
+      push(`${asPath}/${data?.single_data_id ?? 1}/edit`);
+    }
+  }, [data, asPath]);
 
   return (
     <PageLayout>

@@ -235,7 +235,7 @@ describe('ContentCreatePage', () => {
       expect(textareas).toHaveLength(8);
     });
 
-    it('should change to enabled submitButton after filled up all fields', async () => {
+    it('should submit with all required fields filled and default value with not required fields', async () => {
       (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
         url.includes('/upload/file') ? UploadImageData : CreateBannerSuccess,
       );
@@ -243,33 +243,42 @@ describe('ContentCreatePage', () => {
       const file = new File(['test file'], 'testImage.png', { type: 'image/png' });
       const { submitButton } = result;
       expect(submitButton).toBeDisabled();
+      const select = screen.queryByRole('combobox') as HTMLDivElement;
+      expect(select).toBeInTheDocument();
+      await userEvent.click(select);
+      const firstOption = screen.queryByText(/印刷機/) as HTMLDivElement;
+      expect(firstOption).toBeInTheDocument();
+      await userEvent.click(firstOption);
       const textareas = screen.queryAllByRole('dialog');
       textareas.forEach((textarea) => {
         fireEvent.change(textarea, { target: { value: 'test textarea' } });
       });
       expect(submitButton).toBeDisabled();
       const imgFields = MachineConfig.data.field.filter((field) => field.type === 'ImageUpload');
+      expect(imgFields).toHaveLength(5);
       imgFields.forEach((field) => {
         const imgInput = screen.queryByTestId(`photo-uploader-${field.model}`) as HTMLInputElement;
         expect(imgInput).toBeInTheDocument();
         fireEvent.change(imgInput, { target: { files: [file] } });
       });
-      expect(submitButton).toBeDisabled();
-      const inputs = screen.queryAllByRole('textbox');
-      inputs.forEach((input) => {
-        fireEvent.change(input, { target: { value: 'test input' } });
-      });
       await waitFor(() => {
         expect(submitButton).toBeEnabled();
       });
       await userEvent.click(submitButton);
-      const body = MachineConfig.data.field.reduce((acc, cur) => {
-        return {
+      const body = MachineConfig.data.field.reduce(
+        (acc, cur) => ({
           ...acc,
           [cur.model]:
-            cur.type === 'Input' ? 'test input' : cur.type === 'ImageUpload' ? 'testimageresponse' : 'test textarea',
-        };
-      }, {});
+            cur.model === 'machine_category_id'
+              ? 1
+              : cur.type === 'ImageUpload'
+              ? 'testimageresponse'
+              : cur.type === 'Input'
+              ? ''
+              : 'test textarea',
+        }),
+        {},
+      );
       const expectBody = JSON.stringify({
         ...body,
         order: 0,

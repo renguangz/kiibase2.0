@@ -5,6 +5,7 @@ import userEvent from '@testing-library/user-event';
 import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
 import machineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
 import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
+import homeConfig from '@/src/mock/db/utils/getConfig/homepageConfig.json';
 import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
 import machineListData from '@/src/mock/db/utils/ContentList/machine/initList.json';
 import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
@@ -547,6 +548,39 @@ describe('ContentListPage', () => {
     it('should have disabled updateButton', async () => {
       const { updateButton } = setup();
       expect(updateButton).toBeDisabled();
+    });
+  });
+
+  describe('Homepage', () => {
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig') ? homeConfig : machineListData,
+      }));
+
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/homepage',
+        push: mockRouterPush,
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
+      });
+
+      jest.useRealTimers();
+
+      render(<ContentListPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should call router push to edit page', async () => {
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/homepage/2/edit');
     });
   });
 });

@@ -5,6 +5,7 @@ import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
 import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
 import AdminUser1Config from '@/src/mock/db/utils/getConfig/adminUserConfig1.json';
 import Machine1Config from '@/src/mock/db/utils/getConfig/machineConfig1.json';
+import Home1Config from '@/src/mock/db/utils/getConfig/homepageConfig1.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';
@@ -215,14 +216,6 @@ describe('ContentEditPage', () => {
       jest.resetAllMocks();
     });
 
-    it('should have 8 text areas fields with default values', async () => {
-      const textareas = screen.queryAllByRole('dialog');
-      expect(textareas).toHaveLength(8);
-      textareas.forEach((textarea, index) => {
-        expect(textarea).toHaveValue(Machine1Config.data.field[index].default);
-      });
-    });
-
     it('should have disabled submitButton', async () => {
       (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
       const submitButton = screen.getByRole('button', { name: '確定' });
@@ -246,6 +239,89 @@ describe('ContentEditPage', () => {
         method: 'PUT',
         body: expectBody,
       });
+    });
+
+    it('should submit with default values', async () => {
+      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      await waitFor(async () => {
+        expect(submitButton).toBeEnabled();
+      });
+      await userEvent.click(submitButton);
+      const body = Machine1Config.data.field.reduce((acc, cur) => {
+        return { ...acc, [cur.model]: cur.default };
+      }, {});
+      const expectBody = JSON.stringify({
+        ...body,
+      });
+      expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine/1', {
+        method: 'PUT',
+        body: expectBody,
+      });
+    });
+
+    it('should disabled submit button if clear up required field', async () => {
+      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      const textareas = screen.queryAllByRole('dialog');
+      await userEvent.clear(textareas[0]);
+      await waitFor(async () => {
+        expect(submitButton).toBeDisabled();
+      });
+    });
+
+    it('should submit with all required fields filled and default value with not required fields', async () => {
+      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      const inputs = screen.queryAllByRole('textbox') as HTMLInputElement[];
+      await userEvent.clear(inputs[0]);
+      await waitFor(async () => {
+        expect(submitButton).toBeEnabled();
+      });
+      await userEvent.click(submitButton);
+      expect(requestUtils.request).toHaveBeenCalledTimes(1);
+      const body = Machine1Config.data.field.reduce((acc, cur) => {
+        return { ...acc, [cur.model]: cur.model === 'tabel_column_title_1' ? '' : cur.default };
+      }, {});
+      const expectBody = JSON.stringify({
+        ...body,
+      });
+      expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine/1', {
+        method: 'PUT',
+        body: expectBody,
+      });
+    });
+  });
+
+  describe('Homepage 1', () => {
+    beforeEach(() => {
+      mockAsPath.mockReturnValue('/homepage/1/edit');
+      mockQuery.mockReturnValue({ editId: '1' });
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('/homepage/1/getConfig') ? Home1Config : {},
+      }));
+
+      render(<EditContentPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should not have list link', async () => {
+      const listButton = screen.queryByRole('button', { name: '首頁設定列表' });
+      expect(listButton).not.toBeInTheDocument();
+    });
+
+    it('should not call router push to list page after submit', async () => {
+      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
+      const submitButton = screen.getByRole('button', { name: '確定' });
+      await waitFor(async () => {
+        expect(submitButton).toBeEnabled();
+      });
+      await userEvent.click(submitButton);
+      expect(routerPush).not.toHaveBeenCalled();
     });
   });
 });
