@@ -46,7 +46,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
       ) : (
         <LayoutProvider>
           <Layout>
-            <Component {...pageProps} />
+            <Component key={router.asPath} {...pageProps} />
           </Layout>
         </LayoutProvider>
       )}

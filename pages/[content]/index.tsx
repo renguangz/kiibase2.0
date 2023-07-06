@@ -8,7 +8,6 @@ import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks'
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
-import { useEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './create';
 
@@ -30,7 +29,6 @@ export default function ContentListPage() {
     total: contentDataTotal,
     queryParams,
     setQueryParams,
-    resetQueryParams,
     handleChangePage,
     handleChangePerPage,
     handleUpdateList,
@@ -58,20 +56,8 @@ export default function ContentListPage() {
     });
   };
 
-  useEffect(() => {
-    const handleRouteChange = () => {
-      resetQueryParams();
-      tableForm.reset();
-      form.reset();
-    };
-    router.events.on('routeChangeComplete', handleRouteChange);
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [tableForm.reset, form.reset, router.events, resetQueryParams]);
-
   return (
-    <PageLayout key={asPath}>
+    <PageLayout>
       <ConfirmDialog />
       <ContentHeader
         text={`${data?.topic}列表`}
