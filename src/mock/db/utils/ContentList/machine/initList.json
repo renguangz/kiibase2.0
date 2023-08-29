@@ -1,0 +1,27 @@
+{
+  "status": 200,
+  "message": "success",
+  "data": {
+    "data": [
+      {
+        "id": 1,
+        "title": "日本．新幸\n印刷機",
+        "pic": "Machine/20230630_120652276-pic.png",
+        "order": 0,
+        "created_at": "2023-06-28 12:58:12",
+        "updated_at": "2023-06-28 12:58:12",
+        "machine_category_title": "印刷機",
+        "single_title": "日本．新幸 印刷機",
+        "pic_url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Machine/20230630_120652276-pic.png"
+      }
+    ],
+    "meta": {
+      "current_page": 1,
+      "last_page": 1,
+      "to": 1,
+      "from": 1,
+      "total": 1,
+      "per_page": 10
+    }
+  }
+}

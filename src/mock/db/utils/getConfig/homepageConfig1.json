@@ -1,0 +1,137 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": false,
+    "delete_button": false,
+    "list": [
+      {
+        "title": "ID",
+        "name": "id",
+        "type": "label",
+        "sort_field": "id"
+      },
+      {
+        "title": "Banner 標題",
+        "name": "banner_title",
+        "type": "label",
+        "sort_field": "banner_title"
+      },
+      {
+        "title": "Banner 封面圖",
+        "name": "banner_pic_url",
+        "type": "list-image",
+        "sort_field": "banner_pic"
+      },
+      {
+        "title": "建立時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "修改時間",
+        "name": "updated_at",
+        "type": "label",
+        "sort_field": "updated_at"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": false,
+    "date_filter_column": [],
+    "detailExtend": false,
+    "field": [
+      {
+        "type": "Textarea",
+        "label": "Banner 標題",
+        "model": "banner_title",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "紙類相關機械，整新機械銷售"
+      },
+      {
+        "type": "Textarea",
+        "label": "Banner 標題(英文)",
+        "model": "banner_title_en",
+        "required": true,
+        "readonly": false,
+        "rows": 4,
+        "hint": "此欄位必填",
+        "default": "Paper production\nequipment &\nReconditioned machine\nsales"
+      },
+      {
+        "type": "Textarea",
+        "label": "Banner 敘述",
+        "model": "banner_description",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "全機整體細部整新。電控軟硬體全新設計開發。零件備品齊全。減少購機預算，賦予機器新生命， 享受即時服務。延續日本好的機器品質。"
+      },
+      {
+        "type": "Textarea",
+        "label": "Banner 敘述(英文)",
+        "model": "banner_description_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "The overall details of the whole machine are refurbished. New design and development of electronic control software and hardware. The spare parts are complete. Reduce the purchase budget, give the machine new life, and enjoy instant service. Continuation of Japan's good machine quality."
+      },
+      {
+        "type": "ImageUpload",
+        "label": "封面圖",
+        "model": "banner_pic",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "Homepage/20230630_185607908-banner_pic.webp",
+        "url": "https://s3.ap-northeast-3.amazonaws.com/herfon-dev/s3/Homepage/20230630_185607908-banner_pic.webp"
+      },
+      {
+        "type": "Textarea",
+        "label": "精緻服務 標題",
+        "model": "service_title",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "禾豐精緻服務"
+      },
+      {
+        "type": "Textarea",
+        "label": "精緻服務 標題(英文)",
+        "model": "service_title_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "HERFON Exquisite Service"
+      },
+      {
+        "type": "Textarea",
+        "label": "精緻服務 敘述",
+        "model": "service_description",
+        "required": true,
+        "readonly": false,
+        "rows": 2,
+        "hint": "此欄位必填",
+        "default": "多元化經營，創造一流產品。\n堅持嚴格品質控管及技術革新，提供客戶最完善的服務。"
+      },
+      {
+        "type": "Textarea",
+        "label": "精緻服務 敘述(英文)",
+        "model": "service_description_en",
+        "required": true,
+        "readonly": false,
+        "rows": 3,
+        "hint": "此欄位必填",
+        "default": "Diversified operation, creating first-class products.\nAdhere to strict quality control and technological innovation,\nProvide customers with the most complete service."
+      }
+    ],
+    "repeatField": [],
+    "topic": "首頁設定",
+    "is_single_data": true
+  }
+}

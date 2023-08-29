@@ -1,0 +1,50 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": [
+    {
+      "id": 1,
+      "name": "權限管理",
+      "is_menu": true,
+      "items": [
+        {
+          "id": 2,
+          "name": "後台管理者角色",
+          "is_menu": false,
+          "route": "role"
+        },
+        {
+          "id": 3,
+          "name": "後台管理者",
+          "is_menu": false,
+          "route": "adminUser"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "選單模組管理",
+      "is_menu": true,
+      "items": [
+        {
+          "id": 5,
+          "name": "選單",
+          "is_menu": false,
+          "route": "menuResource"
+        },
+        {
+          "id": 6,
+          "name": "模組",
+          "is_menu": false,
+          "route": "modelResource"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Banner",
+      "is_menu": false,
+      "route": "banner"
+    }
+  ]
+}

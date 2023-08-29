@@ -1,0 +1,10 @@
+{
+  "searchInputs": [
+    {
+      "allowClear": true,
+      "size": "middle",
+      "suffix": "search icon",
+      "showCount": true
+    }
+  ]
+}

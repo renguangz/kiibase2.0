@@ -1,0 +1,150 @@
+{
+  "topic": "電子型錄",
+  "routes": "catalog",
+  "canBeCreate": true,
+  "canBeDelete": true,
+  "canBeCopy": false,
+  "listExtend": false,
+  "filter": [],
+  "index_join": [],
+  "select_column": [],
+  "list": [
+    {
+      "name": "__checkbox",
+      "titleClass": "center aligned",
+      "dataClass": "center aligned"
+    },
+    {
+      "title": "ID",
+      "name": "id",
+      "sortField": "id"
+    },
+    {
+      "title": "名稱",
+      "name": "name",
+      "sortField": "name"
+    },
+    {
+      "title": "英文名稱",
+      "name": "name_en",
+      "sortField": "name_en"
+    },
+    {
+      "title": "縮圖",
+      "name": "__component:list-image",
+      "sortField": "pic",
+      "dataClass": "center aligned"
+    },
+    {
+      "title": "英文縮圖",
+      "name": "__component:list-image",
+      "sortField": "pic_en",
+      "dataClass": "center aligned"
+    },
+    {
+      "title": "發佈日期",
+      "name": "published_at",
+      "sortField": "published_at"
+    },
+    {
+      "title": "狀態",
+      "name": "__component:list-select",
+      "sortField": "status",
+      "options": ["ONLINE", "OFFLINE"]
+    },
+    {
+      "title": "權重",
+      "name": "__component:list-input",
+      "sortField": "order"
+    },
+    {
+      "title": "操作",
+      "name": "__slot:actions",
+      "dataClass": "center aligned"
+    }
+  ],
+  "listOrder": [
+    {
+      "field": "__component:list-input",
+      "sortField": "id",
+      "direction": "desc"
+    }
+  ],
+  "date_filter": false,
+  "date_filter_column": [],
+  "search_map": [],
+  "appends": [],
+  "excel": {
+    "export": false,
+    "title": [
+      "id",
+      "name",
+      "name_en",
+      "file",
+      "file_en",
+      "pic",
+      "pic_en",
+      "published_at",
+      "status",
+      "order",
+      "created_at",
+      "updated_at"
+    ],
+    "join": [[]],
+    "column": [
+      "id",
+      "name",
+      "name_en",
+      "file",
+      "file_en",
+      "pic",
+      "pic_en",
+      "published_at",
+      "status",
+      "order",
+      "created_at",
+      "updated_at"
+    ]
+  },
+  "module": [
+    {
+      "modelName": "Catalog",
+      "tableName": "catalogs",
+      "isSelf": true,
+      "type": "VueForm",
+      "extend": false,
+      "relation": "",
+      "with": [],
+      "appends": [],
+      "data": {
+        "name": "",
+        "name_en": "",
+        "file": "",
+        "file_en": "",
+        "pic": "",
+        "pic_en": "",
+        "published_at": "",
+        "status": "ONLINE",
+        "order": 0
+      },
+      "schema": {
+        "fields": []
+      },
+      "formOptions": {
+        "validateAfterLoad": true,
+        "validateAfterChanged": true
+      },
+      "defaultData": {
+        "name": "",
+        "name_en": "",
+        "file": "",
+        "file_en": "",
+        "pic": "",
+        "pic_en": "",
+        "published_at": "",
+        "status": "ONLINE",
+        "order": 0
+      }
+    }
+  ]
+}

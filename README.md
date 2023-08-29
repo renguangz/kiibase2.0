@@ -1,29 +1,31 @@
-# Next.js + Jest
+- 使用 docker
 
-This example shows how to configure Jest to work with Next.js.
+1. 拉下專案之後請更新 env file
 
-This includes Next.js' built-in support for Global CSS, CSS Modules and TypeScript.
-
-## How to Use
-
-Quickly get started using [Create Next App](https://github.com/vercel/next.js/tree/canary/packages/create-next-app#readme)!
-
-In your terminal, run the following command:
-
-```bash
-npx create-next-app --example with-jest with-jest-app
+```
+cp .env.local.template .env.local
 ```
 
-```bash
-yarn create next-app --example with-jest with-jest-app
+2. 使用 docker 指令即可
+
+```
+$ docker build -t kiibase .
+$ docker run -d -p 3000:3000 kiibase
 ```
 
-```bash
-pnpm create next-app --example with-jest with-jest-app
+---
+
+- 若要 run 在 local 端
+
+1. 拉下專案之後請更新 env file
+
+```
+cp .env.local.template .env.local
 ```
 
-## Run Jest Tests
+2. 使用 npm 指令
 
-```bash
-npm test
+```
+$ npm ci --legacy-peer-deps
+$ npm run dev
 ```

@@ -1,0 +1,57 @@
+[
+  {
+    "label": "",
+    "icon": "",
+    "items": [
+      {
+        "label": "權限管理",
+        "icon": "",
+        "items": [
+          {
+            "label": "後台管理者角色",
+            "icon": "",
+            "to": "/role"
+          },
+          {
+            "label": "後台管理者",
+            "icon": "",
+            "to": "/adminUser"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "",
+    "icon": "",
+    "items": [
+      {
+        "label": "選單模組管理",
+        "icon": "",
+        "items": [
+          {
+            "label": "選單",
+            "icon": "",
+            "to": "/menuResource"
+          },
+          {
+            "label": "模組",
+            "icon": "",
+            "to": "/modelResource"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "label": "",
+    "icon": "",
+    "items": [
+      {
+        "label": "Banner",
+        "icon": "",
+        "to": "/banner"
+      }
+    ]
+  }
+]
