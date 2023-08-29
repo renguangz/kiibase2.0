@@ -1,0 +1,27 @@
+replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+secretVolume:
+  enabled: false
+  #secretName: kiitzu-dts-cms-client-dev-config
+  #mountPath: "/var/www/html/.env"
+  #subPath: ".env"
+
+ingress:
+  annotations:
+    alb.ingress.kubernetes.io/actions.ssl-redirect: '{ "Type" : "redirect", "RedirectConfig": { "Protocol" : "HTTPS", "Port" : "443", "StatusCode" : "HTTP_301" } }'
+    alb.ingress.kubernetes.io/certificate-arn: arn:aws:acm:ap-northeast-1:115634363511:certificate/e341442a-713c-484f-99c8-86d3b021562a
+    alb.ingress.kubernetes.io/group.name: profyu-dev-public
+    alb.ingress.kubernetes.io/healthcheck-path: /api/healthz
+    alb.ingress.kubernetes.io/listen-ports: '[{ "HTTP" : 80 }, { "HTTPS" : 443 }]'
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: ip
+    kubernetes.io/ingress.class: alb
+  hosts:
+    - host: cms.dev.kiitzu-dts.profcoo.com
+      paths:
+        - path: /*
+          pathType: ImplementationSpecific

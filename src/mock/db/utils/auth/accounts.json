@@ -1,0 +1,6 @@
+{
+  "data": [
+    { "account": "registereduser", "password": "registeredpassword" },
+    { "account": "superuser", "password": "superpassword" }
+  ]
+}

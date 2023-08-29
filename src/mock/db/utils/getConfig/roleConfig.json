@@ -1,0 +1,45 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": true,
+    "delete_button": true,
+    "list": [
+      {
+        "title": "",
+        "type": "__checkbox"
+      },
+      {
+        "title": "ID",
+        "name": "id",
+        "type": "label",
+        "sort_field": "id"
+      },
+      {
+        "title": "名稱",
+        "name": "name",
+        "type": "label",
+        "sort_field": "name"
+      },
+      {
+        "title": "建立時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "更新時間",
+        "name": "updated_at",
+        "type": "label",
+        "sort_field": "updated_at"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": true,
+    "date_filter_column": [],
+    "topic": "後台管理者角色"
+  }
+}

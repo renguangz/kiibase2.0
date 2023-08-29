@@ -1,0 +1,65 @@
+[
+  {
+    "type": "Input",
+    "label": "標題",
+    "model": "title",
+    "required": true,
+    "readonly": false,
+    "hint": "此欄位必填"
+  },
+  {
+    "type": "ImageUpload",
+    "label": "封面圖",
+    "model": "pic",
+    "required": true,
+    "readonly": false,
+    "hint": "此欄位必填",
+    "folder": "banner",
+    "help": "<p>檔案類型：.jpg</p><p>桌機版上傳尺寸：1920 x 500px</p><p>手機版上傳尺寸：414 x 460px</p>"
+  },
+  {
+    "type": "SingleSelect",
+    "label": "所在位置",
+    "model": "device",
+    "required": true,
+    "readonly": false,
+    "hint": "此欄位必填",
+    "options": [
+      {
+        "id": "PC",
+        "name": "桌機版"
+      },
+      {
+        "id": "MOBILE",
+        "name": "手機版"
+      }
+    ]
+  },
+  {
+    "type": "SingleSelect",
+    "label": "狀態",
+    "model": "status",
+    "required": true,
+    "readonly": false,
+    "hint": "此欄位必填",
+    "options": [
+      {
+        "id": "online",
+        "name": "上架"
+      },
+      {
+        "id": "offline",
+        "name": "下架"
+      }
+    ]
+  },
+  {
+    "type": "Input",
+    "inputType": "number",
+    "label": "權重",
+    "model": "order",
+    "required": true,
+    "readonly": false,
+    "hint": "此欄位必填"
+  }
+]
