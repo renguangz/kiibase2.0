@@ -10,12 +10,12 @@
           {
             "label": "後台管理者角色",
             "icon": "",
-            "to": "role"
+            "to": "/role"
           },
           {
             "label": "後台管理者",
             "icon": "",
-            "to": "adminUser"
+            "to": "/adminUser"
           }
         ]
       }
@@ -32,12 +32,12 @@
           {
             "label": "選單",
             "icon": "",
-            "to": "menuResource"
+            "to": "/menuResource"
           },
           {
             "label": "模組",
             "icon": "",
-            "to": "modelResource"
+            "to": "/modelResource"
           }
         ]
       }
@@ -50,7 +50,7 @@
       {
         "label": "Banner",
         "icon": "",
-        "to": "banner"
+        "to": "/banner"
       }
     ]
   }

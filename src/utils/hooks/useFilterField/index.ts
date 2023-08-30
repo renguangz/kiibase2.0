@@ -57,8 +57,9 @@ export function useFilterField(
     if (!selectedRow) return;
     const payload = selectedRow.map((row) => row.id);
     await request(deleteAllUrl, requestOptionsTemplate('DELETE', payload));
+    setSelectedRow(null);
     await mutateContentList();
-  }, [request, requestOptionsTemplate, selectedRow, deleteAllUrl]);
+  }, [request, requestOptionsTemplate, selectedRow, deleteAllUrl, setSelectedRow]);
 
   useEffect(() => {
     form.reset();

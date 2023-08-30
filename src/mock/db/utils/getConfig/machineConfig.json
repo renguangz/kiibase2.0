@@ -1,0 +1,336 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": true,
+    "delete_button": true,
+    "list": [
+      {
+        "title": "",
+        "type": "__checkbox"
+      },
+      {
+        "title": "ID",
+        "name": "id",
+        "type": "label",
+        "sort_field": "id"
+      },
+      {
+        "title": "種類",
+        "name": "machine_category_single_title",
+        "type": "label",
+        "sort_field": "machine_category_title"
+      },
+      {
+        "title": "標題",
+        "name": "single_title",
+        "type": "label",
+        "sort_field": "title"
+      },
+      {
+        "title": "封面圖",
+        "name": "pic_url",
+        "type": "list-image",
+        "sort_field": "pic"
+      },
+      {
+        "title": "權重",
+        "name": "order",
+        "type": "__component:list-input_number",
+        "sort_field": "order"
+      },
+      {
+        "title": "建立時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "修改時間",
+        "name": "updated_at",
+        "type": "label",
+        "sort_field": "updated_at"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": false,
+    "date_filter_column": [],
+    "detailExtend": false,
+    "field": [
+      {
+        "type": "SingleSelect",
+        "label": "機台種類",
+        "model": "machine_category_id",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "options": [
+          {
+            "id": 1,
+            "name": "印刷機"
+          },
+          {
+            "id": 2,
+            "name": "平軋機"
+          },
+          {
+            "id": 3,
+            "name": "柔版預印機"
+          },
+          {
+            "id": 4,
+            "name": "雙片貼合機"
+          },
+          {
+            "id": 5,
+            "name": "製版設備"
+          }
+        ],
+        "options_calss": "App\\Repositories\\MachineCategoryRepository",
+        "options_function": "findMachineCategoriesBySelect",
+        "default": null
+      },
+      {
+        "type": "Textarea",
+        "label": "標題",
+        "model": "title",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "標題(英文)",
+        "model": "title_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "敘述",
+        "model": "description",
+        "required": true,
+        "readonly": false,
+        "rows": 8,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "敘述(英文)",
+        "model": "description_en",
+        "required": true,
+        "readonly": false,
+        "rows": 8,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "副標題",
+        "model": "subtitle",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "副標題(英文)",
+        "model": "subtitle_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "副敘述",
+        "model": "subdescription",
+        "required": true,
+        "readonly": false,
+        "rows": 8,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Textarea",
+        "label": "副敘述(英文)",
+        "model": "subdescription_en",
+        "required": true,
+        "readonly": false,
+        "rows": 8,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "ImageUpload",
+        "label": "封面圖",
+        "model": "pic",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
+        "type": "ImageUpload",
+        "label": "產品內容說明圖片",
+        "model": "content_pic",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
+        "type": "ImageUpload",
+        "label": "產品內容說明圖片(英文)",
+        "model": "content_pic_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
+        "type": "ImageUpload",
+        "label": "產品內容說明手機圖片",
+        "model": "content_pic_mobile",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
+        "type": "ImageUpload",
+        "label": "產品內容說明手機圖片(英文)",
+        "model": "content_pic_mobile_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null,
+        "url": null
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第一欄標題",
+        "model": "tabel_column_title_1",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第一欄標題(英文)",
+        "model": "tabel_column_title_1_en",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第二欄標題",
+        "model": "tabel_column_title_2",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第二欄標題(英文)",
+        "model": "tabel_column_title_2_en",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第三欄標題",
+        "model": "tabel_column_title_3",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第三欄標題(英文)",
+        "model": "tabel_column_title_3_en",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第四欄標題",
+        "model": "tabel_column_title_4",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第四欄標題(英文)",
+        "model": "tabel_column_title_4_en",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第五欄標題",
+        "model": "tabel_column_title_5",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "表格第五欄標題(英文)",
+        "model": "tabel_column_title_5_en",
+        "required": false,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": ""
+      },
+      {
+        "type": "Input",
+        "inputType": "number",
+        "label": "權重",
+        "model": "order",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": 0
+      }
+    ],
+    "topic": "機台",
+    "is_single_data": false
+  }
+}

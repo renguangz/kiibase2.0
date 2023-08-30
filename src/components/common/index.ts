@@ -30,7 +30,7 @@ type StyledButtonType = {
 };
 
 export const StyledButton = styled.button<StyledButtonType>`
-  cursor: ${(props) => (props.disabled ? 'pointer' : 'auto')};
+  cursor: ${(props) => (props.disabled ? 'auto' : 'pointer')};
   outline: none;
   border: 1px solid
     ${(props) =>
@@ -53,7 +53,7 @@ export const StyledButton = styled.button<StyledButtonType>`
       ? 'none'
       : props.disabled
       ? COLORS.disabledBackground
-      : COLORS.primary};
+      : mapColorFromConfig(props.color ?? 'primary')};
   color: ${(props) =>
     !props.variant || props.variant === 'contained'
       ? '#fff'

@@ -8,7 +8,7 @@ interface DropdownFieldProps extends FieldProps<any> {
   options: { value: string; label: string }[];
 }
 
-export function DropdownField({ form, options, name, hint, placeholder }: DropdownFieldProps) {
+export function DropdownField({ form, options, name, required, placeholder }: DropdownFieldProps) {
   const { control } = form;
 
   return (
@@ -16,7 +16,7 @@ export function DropdownField({ form, options, name, hint, placeholder }: Dropdo
       <Controller
         name={name}
         control={control}
-        rules={{ required: hint }}
+        rules={{ required }}
         render={({ field }) => (
           <Select
             placeholder={placeholder ?? '請選擇'}

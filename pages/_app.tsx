@@ -10,11 +10,19 @@ import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '@/styles/layout/layout.scss';
 import '@/styles/demo/Demos.scss';
+import { useMemo } from 'react';
+import { useRouter } from 'next/router';
+import { AuthLayout } from '@/src/layouts/AuthLayout';
 
 export default function MyApp({ Component, pageProps }: AppProps) {
-  // const router = useRouter();
+  const router = useRouter();
 
-  // const isNotDefaultLayout = useMemo(() => router.asPath === '/auth/login', [router]);
+  const authLayoutRoutes = useMemo(() => ['/auth/login', '/auth/signup'], []);
+
+  const isAuthLayout = useMemo(
+    () => authLayoutRoutes.some((route) => router.asPath.includes(route)),
+    [authLayoutRoutes, router],
+  );
 
   return (
     <SWRConfig
@@ -22,14 +30,26 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         refreshInterval: 0,
         shouldRetryOnError: false,
         fetcher: request,
-        // onError: () => router.push('/auth/login'),
+        onError: (error) => {
+          if (error === 'Unauthorized') {
+            router.push('/auth/login');
+          } else {
+            router.push('/');
+          }
+        },
       }}
     >
-      <LayoutProvider>
-        <Layout>
+      {isAuthLayout ? (
+        <AuthLayout>
           <Component {...pageProps} />
-        </Layout>
-      </LayoutProvider>
+        </AuthLayout>
+      ) : (
+        <LayoutProvider>
+          <Layout>
+            <Component key={router.asPath} {...pageProps} />
+          </Layout>
+        </LayoutProvider>
+      )}
     </SWRConfig>
   );
 }

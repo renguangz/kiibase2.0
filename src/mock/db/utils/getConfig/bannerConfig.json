@@ -16,9 +16,9 @@
         "sort_field": "id"
       },
       {
-        "title": "圖片",
+        "title": "封面圖",
         "name": "pic",
-        "type": "label",
+        "type": "list-image",
         "sort_field": "pic"
       },
       {
@@ -62,6 +62,46 @@
     ],
     "date_filter": false,
     "date_filter_column": [],
+    "field": [
+      {
+        "type": "ImageUpload",
+        "label": "封面圖",
+        "model": "pic",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": null
+      },
+      {
+        "type": "SingleSelect",
+        "label": "狀態",
+        "model": "status",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "options": [
+          {
+            "id": "ONLINE",
+            "name": "上架"
+          },
+          {
+            "id": "OFFLINE",
+            "name": "下架"
+          }
+        ],
+        "default": "ONLINE"
+      },
+      {
+        "type": "Input",
+        "inputType": "number",
+        "label": "權重",
+        "model": "order",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": 0
+      }
+    ],
     "topic": "Banner"
   }
 }

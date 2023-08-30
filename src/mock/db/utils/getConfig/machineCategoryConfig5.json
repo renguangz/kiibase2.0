@@ -1,0 +1,64 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": false,
+    "delete_button": false,
+    "list": [
+      {
+        "title": "ID",
+        "name": "id",
+        "type": "label",
+        "sort_field": "id"
+      },
+      {
+        "title": "標題",
+        "name": "title",
+        "type": "label",
+        "sort_field": "title"
+      },
+      {
+        "title": "建立時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "更新時間",
+        "name": "updated_at",
+        "type": "label",
+        "sort_field": "updated_at"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": false,
+    "date_filter_column": [],
+    "detailExtend": false,
+    "field": [
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "標題",
+        "model": "title",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "製版設備"
+      },
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "標題(英文)",
+        "model": "title_en",
+        "required": true,
+        "readonly": false,
+        "hint": "此欄位必填",
+        "default": "Platemaking Equipment"
+      }
+    ],
+    "topic": "機台種類"
+  }
+}

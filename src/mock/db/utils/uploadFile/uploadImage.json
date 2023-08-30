@@ -1,5 +1,8 @@
 {
-  "filename": "testimageresponse",
-  "original_filename": "update_image_name.png",
-  "url": "s3_url"
+  "data": {
+    "filePath": "testimageresponse",
+    "fileUrl": "testimageurl"
+  },
+  "message": "success",
+  "status": 200
 }

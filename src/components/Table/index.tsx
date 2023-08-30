@@ -34,7 +34,8 @@ type IsStatusColumn = (field: Field) => boolean;
 const isStatusColumn: IsStatusColumn = (field) => field.name === 'status';
 
 type IsInputColumn = (field: Field) => boolean;
-const isInputColumn: IsInputColumn = (field) => field.name === '__component:list-input';
+const isInputColumn: IsInputColumn = (field) =>
+  field.name === '__component:list-input' || field.name === '__component:list-input_number';
 
 type IsSelectColumn = (field: Field) => boolean;
 const isSelectColumn: IsSelectColumn = (field) => field.name === '__component:list-select';
@@ -48,6 +49,7 @@ export type TableFieldProps = {
   selectedRow: any;
   setSeletedRow: any;
   currentPage: number;
+  cannotDelete?: boolean;
   handleChangePage: (currentPage: number) => void;
   handleChangePerPage: (pageSize: number) => void;
   handleDeleteModelList?: (id: string | number) => void;
@@ -62,6 +64,7 @@ export function TableField({
   selectedRow,
   setSeletedRow,
   currentPage,
+  cannotDelete,
   handleChangePage,
   handleChangePerPage,
   handleDeleteModelList,
@@ -74,14 +77,14 @@ export function TableField({
           : isRowEditor(column)
           ? {
               ...column,
-              body: editColumnTemplate(handleDeleteModelList ? handleDeleteModelList : () => {}),
+              body: editColumnTemplate(handleDeleteModelList ? handleDeleteModelList : () => {}, cannotDelete),
             }
           : isStatusColumn(column)
           ? { ...column, body: statusTemplate(column) }
           : isInputColumn(column)
           ? {
               ...column,
-              body: inputTemplate(column, form, column.field?.includes('number') ?? false),
+              body: inputTemplate(column, form, column.name.includes('number') ?? false),
             }
           : isSelectColumn(column)
           ? {
@@ -103,6 +106,7 @@ export function TableField({
       isSelectColumn,
       selectTemplate,
       handleDeleteModelList,
+      dataSource,
     ],
   );
 
@@ -124,8 +128,8 @@ export function TableField({
 
   return (
     <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
-      <ConfirmDialog />
       <DataTable
+        style={{ fontSize: 14 }}
         value={dataSource}
         rows={perPage}
         dataKey="id"
@@ -156,11 +160,10 @@ function checkboxColumnTemplate() {
 function fullImageColumnTemplate(column: Field) {
   return (data: any) => {
     const imgData = useMemo(() => (column.field ? data[column.field] : null), [column, data]);
-    const srcUrl = useMemo(() => `${combineStorageUrl('')}/${imgData}`, [combineStorageUrl, imgData]);
 
     return (
       <div>
-        <img src={srcUrl} alt={srcUrl} role="img" width={200} height={150} />
+        <img src={imgData} alt={imgData} role="img" width={200} height={150} style={{ maxWidth: 100, maxHeight: 75 }} />
       </div>
     );
   };
@@ -173,7 +176,7 @@ const EditColumnWrapper = styled.div`
   width: 115px;
 `;
 
-function editColumnTemplate(handleDelete: (id: string | number) => void) {
+function editColumnTemplate(handleDelete: (id: string | number) => void, cannotDelete?: boolean) {
   return (data: { id: string | number }) => {
     const router = useRouter();
     const { asPath } = router;
@@ -195,40 +198,15 @@ function editColumnTemplate(handleDelete: (id: string | number) => void) {
             編輯
           </Link>
         </StyledButton>
-        <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
-          刪除
-        </StyledButton>
+        {cannotDelete ? null : (
+          <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
+            刪除
+          </StyledButton>
+        )}
       </EditColumnWrapper>
     );
   };
 }
-
-// function editColumnTemplate(data: { id: string | number }) {
-//   const router = useRouter();
-//   const { asPath } = router;
-//
-//   const confirm2 = () => {
-//     confirmDialog({
-//       header: '確定要刪除嗎',
-//       acceptClassName: 'p-button-danger',
-//       rejectLabel: '取消',
-//       acceptLabel: '確定',
-//     });
-//   };
-//
-//   return (
-//     <EditColumnWrapper>
-//       <StyledButton type="button" color="primary">
-//         <Link href={`${asPath}/${data.id}/edit`} role="link" style={{ color: '#fff' }}>
-//           編輯
-//         </Link>
-//       </StyledButton>
-//       <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
-//         刪除
-//       </StyledButton>
-//     </EditColumnWrapper>
-//   );
-// }
 
 export type StatusType = 'success' | 'danger' | 'warning' | undefined;
 
@@ -247,10 +225,11 @@ function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isN
   return (data: any) => {
     useEffect(() => {
       form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
-    }, []);
+    }, [data]);
 
     return (
       <InputTextField
+        width={100}
         inputType={isNumberInput ? 'number' : undefined}
         form={form}
         name={`${column.field}-${data.id}`}
@@ -270,7 +249,7 @@ function selectTemplate(column: Field, form: UseFormReturn<FieldValues, any>) {
 
     useEffect(() => {
       form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
-    }, []);
+    }, [data]);
 
     return (
       <SelectField

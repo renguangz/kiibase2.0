@@ -1,4 +1,6 @@
+import { COLORS } from '@/src/utils';
 import React from 'react';
+import styled from 'styled-components';
 import { AutoCompleteField } from './AutoCompleteField';
 import { CalendarField } from './CalendarField';
 import { DropdownField } from './DropDownField';
@@ -6,6 +8,7 @@ import { EditorField } from './EditorField';
 import { ImageUploadField } from './ImageUploadField';
 import { InputTextField } from './InputTextField';
 import { NotFoundField } from './NotFoundField';
+import { TextareaField } from './TextareaField';
 
 const mapping = [
   { name: 'AutoCompleteComponent', component: AutoCompleteField },
@@ -13,6 +16,7 @@ const mapping = [
     name: 'InputTextComponent',
     component: InputTextField,
   },
+  { name: 'TextareaComponent', component: TextareaField },
   { name: 'CalendarComponent', component: CalendarField },
   { name: 'SingleSelectComponent', component: DropdownField },
   { name: 'ImageUploadComponent', component: ImageUploadField },
@@ -21,26 +25,48 @@ const mapping = [
 
 type MapStringToComponent = (name: string) => any;
 
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+`;
+
+const TitleWrapper = styled.div`
+  display: flex;
+  gap: 6px;
+`;
+
+interface TitleProps {
+  danger?: boolean;
+}
+
+const Title = styled.h4<TitleProps>`
+  margin: 0;
+  font-size: 16px;
+  color: ${(props) => (props.danger ? COLORS.danger : '#000')};
+`;
+
 export const mapStringToComponent: MapStringToComponent = (name) =>
   mapping.find((item) => item.name === name)?.component ?? NotFoundField;
 
-export type EnhanceFilterFieldProps = Record<'label' | string, any>;
+export type EnhanceFilterFieldProps = Record<'label' | 'required' | string, any>;
 
 export function enhanceFilterField(component: string) {
   const Component = mapStringToComponent(component);
 
   return function (props: EnhanceFilterFieldProps) {
     return (
-      <div>
+      <Wrapper>
         {props.label && (
-          <div>
-            <h2 role="heading">{props.label}</h2>
-          </div>
+          <TitleWrapper>
+            <Title role="heading">{props.label}</Title>
+            {props.required && <Title danger>*</Title>}
+          </TitleWrapper>
         )}
         <div>
           <Component {...props} />
         </div>
-      </div>
+      </Wrapper>
     );
   };
 }

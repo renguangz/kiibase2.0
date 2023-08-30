@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import { request, requestOptionsTemplate } from '../../request';
 import { useRouter } from 'next/router';
 import { useSWRConfig } from 'swr';
+import { ResponseMessageType } from '../useCreateContent';
 
 type UserType = {
   id: number;
@@ -30,6 +31,7 @@ export function useLogin() {
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [data, setData] = useState<GenericDataType<ResponseDataType | null> | null>(null);
+  const [loginResponseMessage, setLoginResponseMessage] = useState<ResponseMessageType>(null);
 
   const loginDisabled = useMemo(() => account.trim() === '' || password.trim() === '', [account, password]);
 
@@ -40,14 +42,16 @@ export function useLogin() {
     setData(result);
 
     if (result.status === 200) {
+      setLoginResponseMessage({ type: 'success', message: '登入成功' });
       const token = result.data.token;
       Cookies.set('token', token, { expires: 7 });
-      push('/');
+      push('/adminUser');
       setAccount('');
       mutate('/menuItemNavi');
       mutate('/subMenuNavi');
+    } else {
+      setLoginResponseMessage({ type: 'error', message: result?.message ?? '' });
     }
-
     setPassword('');
   }, [account, password, push]);
 
@@ -60,5 +64,6 @@ export function useLogin() {
     handleLogin,
     data,
     loginDisabled,
+    loginResponseMessage,
   };
 }

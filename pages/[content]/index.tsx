@@ -6,10 +6,11 @@ import { PageLayout } from '@/src/layouts';
 import { COLORS } from '@/src/utils';
 import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { useEffect } from 'react';
+import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
+import { useLayoutEffect } from 'react';
 import styled from 'styled-components';
+import { StyledLink } from './create';
 
 const FilterFieldWrapper = styled.div`
   width: 100%;
@@ -18,7 +19,7 @@ const FilterFieldWrapper = styled.div`
 
 export default function ContentListPage() {
   const router = useRouter();
-  const { asPath } = router;
+  const { asPath, push } = router;
 
   const { data, columns, canUpdate } = useGetConfig(asPath);
 
@@ -46,15 +47,34 @@ export default function ContentListPage() {
     handleDeleteAll,
   } = useFilterField(asPath, setQueryParams, mutate);
 
-  useEffect(() => {
-    form.reset();
-  }, [form]);
+  const confirm = (type: 'DELETE' | 'UPDATE') => {
+    confirmDialog({
+      header: type === 'DELETE' ? '確定要刪除嗎' : '確定要更新嗎',
+      acceptClassName: 'p-button-danger',
+      rejectLabel: '取消',
+      acceptLabel: '確定',
+      accept: type === 'DELETE' ? () => handleDeleteAll() : () => handleUpdateList(),
+    });
+  };
+
+  useLayoutEffect(() => {
+    if (data?.is_single_data) {
+      push(`${asPath}/${data?.single_data_id ?? 1}/edit`);
+    }
+  }, [data, asPath]);
 
   return (
     <PageLayout>
+      <ConfirmDialog />
       <ContentHeader
         text={`${data?.topic}列表`}
-        button={data?.create_button && <Link href={`${asPath}/create`}>建立新的{data.topic}</Link>}
+        button={
+          data?.create_button && (
+            <StyledButton variant="outline">
+              <StyledLink href={`${asPath}/create`}>建立新的{data.topic}</StyledLink>
+            </StyledButton>
+          )
+        }
       />
       <FilterFieldWrapper>
         <FilterField
@@ -68,7 +88,7 @@ export default function ContentListPage() {
                 color="warning"
                 variant="outline"
                 disabled={updateButtonDisabled}
-                onClick={handleUpdateList}
+                onClick={() => confirm('UPDATE')}
               >
                 批次更新
               </StyledButton>
@@ -81,7 +101,7 @@ export default function ContentListPage() {
                 color="danger"
                 variant="outline"
                 disabled={disableListDeleteButton}
-                onClick={handleDeleteAll}
+                onClick={() => confirm('DELETE')}
               >
                 批次刪除
               </StyledButton>
@@ -100,6 +120,7 @@ export default function ContentListPage() {
         columns={columns ?? []}
         dataSource={contentData ?? []}
         total={contentDataTotal ?? 0}
+        cannotDelete={!data?.delete_button}
         handleDeleteModelList={handleDeleteModel}
       />
     </PageLayout>

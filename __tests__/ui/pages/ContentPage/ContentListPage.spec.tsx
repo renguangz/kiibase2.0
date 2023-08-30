@@ -3,8 +3,11 @@ import useSWR from 'swr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
+import machineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
 import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
+import homeConfig from '@/src/mock/db/utils/getConfig/homepageConfig.json';
 import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
+import machineListData from '@/src/mock/db/utils/ContentList/machine/initList.json';
 import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
 import roleListEmptyData from '@/src/mock/db/utils/ContentList/role/filter/emptyList.json';
 import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
@@ -19,6 +22,8 @@ global.matchMedia =
       removeListener: jest.fn(),
     };
   };
+
+const mockRouterPush = jest.fn();
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
@@ -51,6 +56,10 @@ describe('ContentListPage', () => {
 
       (useRouter as jest.Mock).mockReturnValue({
         asPath: '/role',
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
       });
 
       render(<ContentListPage />);
@@ -262,6 +271,16 @@ describe('ContentListPage', () => {
 
       expect(deleteButton).toBeEnabled();
       await userEvent.click(deleteButton);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(deleteButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+
       const body = JSON.stringify([51, 50]);
       expect(requestUtils.request).toHaveBeenCalledTimes(1);
       expect(requestUtils.request).toHaveBeenCalledWith('/model/role/deleteList', {
@@ -270,12 +289,30 @@ describe('ContentListPage', () => {
       });
     });
 
-    it('should have delete buttons and ', async () => {
+    it('should have delete buttons', async () => {
       const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
       expect(deleteButtons).toHaveLength(10);
 
       const firstDelete = deleteButtons[0];
       await userEvent.click(firstDelete);
+    });
+
+    it('should be disabled after clicking  confirm button', async () => {
+      const deleteButton = screen.queryByRole('button', { name: '批次刪除' }) as HTMLButtonElement;
+
+      const checkboxes = screen.queryAllByRole('checkbox');
+      expect(checkboxes).toHaveLength(roleListData.data.data.length + 1);
+
+      await userEvent.click(checkboxes[1]);
+      await userEvent.click(checkboxes[2]);
+
+      expect(deleteButton).toBeEnabled();
+      await userEvent.click(deleteButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+
+      expect(deleteButton).toBeDisabled();
     });
 
     it('will open confirm model and will call api `/model/role/:id` when click it', async () => {
@@ -324,6 +361,11 @@ describe('ContentListPage', () => {
 
       (useRouter as jest.Mock).mockReturnValue({
         asPath: '/banner',
+        push: mockRouterPush,
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
       });
 
       jest.useRealTimers();
@@ -398,6 +440,15 @@ describe('ContentListPage', () => {
       await userEvent.type(inputFields[0], '35');
       await userEvent.type(inputFields[1], '36');
       await userEvent.click(updateButton);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(updateButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
       expect(requestUtils.request).toHaveBeenCalled();
       const expectPayload = [
         { id: 20, order: '35' },
@@ -428,6 +479,16 @@ describe('ContentListPage', () => {
       await userEvent.type(inputFields[1], '36');
 
       await userEvent.click(updateButton);
+
+      const cancelButton = screen.queryByRole('button', { name: '取消' }) as HTMLButtonElement;
+      expect(cancelButton).toBeInTheDocument();
+      await userEvent.click(cancelButton);
+
+      await userEvent.click(updateButton);
+      const confirmButton = screen.queryByRole('button', { name: '確定' }) as HTMLButtonElement;
+      expect(confirmButton).toBeInTheDocument();
+      await userEvent.click(confirmButton);
+
       expect(requestUtils.request).toHaveBeenCalled();
       const expectPayload = [
         { id: 20, status: 'OFFLINE', order: '35' },
@@ -441,10 +502,85 @@ describe('ContentListPage', () => {
     });
 
     it('should not have any delete buttons', async () => {
+      setup();
       const deleteMultipleButton = screen.queryByRole('button', { name: '批次刪除' });
       const deleteButtons = screen.queryAllByRole('button', { name: '刪除' });
       expect(deleteMultipleButton).not.toBeInTheDocument();
       expect(deleteButtons).toHaveLength(0);
+    });
+  });
+
+  describe('Machine', () => {
+    const setup = () => {
+      render(<ContentListPage />);
+
+      const inputFields = screen.queryAllByRole('textbox').filter((field) => field.className.includes('p-inputtext'));
+      inputFields.shift();
+      const updateButton = screen.getByRole('button', { name: /更新/ });
+      const selectFields = document.querySelectorAll('.p-dropdown');
+      return { inputFields, updateButton, selectFields };
+    };
+
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig') ? machineConfig : machineListData,
+      }));
+
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/machine',
+        push: mockRouterPush,
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
+      });
+
+      jest.useRealTimers();
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should have disabled updateButton', async () => {
+      const { updateButton } = setup();
+      expect(updateButton).toBeDisabled();
+    });
+  });
+
+  describe('Homepage', () => {
+    beforeEach(() => {
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+      jest.resetAllMocks();
+
+      (useSWR as jest.Mock).mockImplementation((url: string) => ({
+        data: url.includes('getConfig') ? homeConfig : machineListData,
+      }));
+
+      (useRouter as jest.Mock).mockReturnValue({
+        asPath: '/homepage',
+        push: mockRouterPush,
+        events: {
+          on: jest.fn(),
+          off: jest.fn(),
+        },
+      });
+
+      jest.useRealTimers();
+
+      render(<ContentListPage />);
+    });
+
+    afterEach(() => {
+      jest.resetAllMocks();
+    });
+
+    it('should call router push to edit page', async () => {
+      expect(mockRouterPush).toHaveBeenCalledTimes(1);
+      expect(mockRouterPush).toHaveBeenCalledWith('/homepage/2/edit');
     });
   });
 });

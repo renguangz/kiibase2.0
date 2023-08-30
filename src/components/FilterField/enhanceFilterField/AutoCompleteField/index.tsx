@@ -6,12 +6,13 @@ interface AutoCompleteFieldProps extends FieldProps<any> {
   options: any[];
 }
 
-export function AutoCompleteField({ form, options }: AutoCompleteFieldProps) {
+export function AutoCompleteField({ form, options, required }: AutoCompleteFieldProps) {
   return (
     <div>
       <Controller
         name="value"
         control={form.control}
+        rules={{ required }}
         render={({ field }) => (
           <div>
             <AutoComplete

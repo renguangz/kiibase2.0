@@ -12,6 +12,18 @@ export type ConfigListType = {
   options?: Array<Record<'key' | 'value', string>>;
 };
 
+export type ConfigDataFieldType = {
+  type: 'ImageUploadComponent' | 'SingleSelectComponent' | 'Input';
+  label: string;
+  model: string;
+  required: boolean;
+  readonly: boolean;
+  hint: string;
+  default?: string | number | null;
+  options: Array<{ id: string; name: string }>;
+  inputType?: 'number';
+};
+
 export type ConfigDataType = {
   create_button: boolean;
   delete_button: boolean;
@@ -19,6 +31,9 @@ export type ConfigDataType = {
   date_filter: boolean;
   date_filter_column: boolean;
   topic: string;
+  field: ConfigDataFieldType[];
+  is_single_data?: boolean;
+  single_data_id?: string | number;
 };
 
 type AddGetConfig = (route: string) => string;
@@ -37,7 +52,7 @@ export function useGetConfig(asPath: string) {
   const columns = useMemo(
     () =>
       apiData?.list
-        .map((item) => ({
+        ?.map((item) => ({
           field: item.name ?? '',
           name: item.type ?? item.sort_field ?? '',
           header: item.title,

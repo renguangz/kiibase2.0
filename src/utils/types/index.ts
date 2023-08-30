@@ -19,6 +19,7 @@ export type FieldProps<D> = {
   form: UseFormReturn<any, any>;
   required: boolean;
   name: string;
+  disabled?: boolean;
   hint?: string;
   placeholder?: string;
   control?: Control<FieldValues, any>;
