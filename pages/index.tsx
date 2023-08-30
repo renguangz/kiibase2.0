@@ -9,7 +9,6 @@ export default function Home() {
   useEffect(() => {
     replace('/adminUser');
   }, []);
-  console.log('test');
   return (
     <div>
       <Head>
