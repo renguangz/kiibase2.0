@@ -3,6 +3,7 @@ import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
 import '@/styles/global.css';
 import { SWRConfig } from 'swr';
+import MSWConfig from '/src/contexts/msw';
 import { request } from '@/src/utils/request';
 import { RwdConfig } from '@/src/contexts/rwd-config';
 import Layout from '@/src/layouts/layout/layout';
@@ -34,7 +35,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <SWRConfig value={generateSWRConfig(router)}>
-      {getLayout(<Component key={router.asPath} {...pageProps} />)}
+      <MSWConfig>{getLayout(<Component key={router.asPath} {...pageProps} />)}</MSWConfig>
     </SWRConfig>
   );
 }

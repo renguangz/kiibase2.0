@@ -1,7 +1,7 @@
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { ImageUploadField } from '.';
 import * as requestUtils from '@/src/utils/request';
-import ImageUploadResponse from '@/src/mock/db/utils/uploadFile/uploadImage.json';
+import ImageUploadResponse from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
 jest.mock('@/src/utils/request', () => ({

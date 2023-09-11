@@ -1,11 +1,11 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import ContentCreatePage from '@/pages/[content]/create';
 import userEvent from '@testing-library/user-event';
-import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
-import UploadImageData from '@/src/mock/db/utils/uploadFile/uploadImage.json';
-import BannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
-import MachineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
-import AdminUserConfig from '@/src/mock/db/utils/getConfig/adminUserConfig.json';
+import CreateBannerSuccess from '@/src/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
+import UploadImageData from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
+import BannerConfig from '@/src/mocks/db/utils/getConfig/bannerConfig.json';
+import MachineConfig from '@/src/mocks/db/utils/getConfig/machineConfig.json';
+import AdminUserConfig from '@/src/mocks/db/utils/getConfig/adminUserConfig.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';

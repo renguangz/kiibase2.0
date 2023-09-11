@@ -1,11 +1,11 @@
 import EditContentPage from '@/pages/[content]/[editId]/edit';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
-import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
-import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
-import AdminUser1Config from '@/src/mock/db/utils/getConfig/adminUserConfig1.json';
-import Machine1Config from '@/src/mock/db/utils/getConfig/machineConfig1.json';
-import Home1Config from '@/src/mock/db/utils/getConfig/homepageConfig1.json';
+import CreateBannerSuccess from '@/src/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
+import BannerConfig73 from '@/src/mocks/db/utils/getConfig/bannerConfig73.json';
+import MachineCategoryConfig5 from '@/src/mocks/db/utils/getConfig/machineCategoryConfig5.json';
+import AdminUser1Config from '@/src/mocks/db/utils/getConfig/adminUserConfig1.json';
+import Machine1Config from '@/src/mocks/db/utils/getConfig/machineConfig1.json';
+import Home1Config from '@/src/mocks/db/utils/getConfig/homepageConfig1.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
 import * as requestUtils from '@/src/utils/request';

@@ -1,7 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { TableField, TableFieldProps } from '.';
-import bannerList from '@/src/mock/db/utils/ContentList/banner/initList.json';
-import searchLogList from '@/src/mock/db/utils/ContentList/searchLog/initList.json';
+import bannerList from '@/src/mocks/db/utils/ContentList/banner/initList.json';
+import searchLogList from '@/src/mocks/db/utils/ContentList/searchLog/initList.json';
 import userEvent from '@testing-library/user-event';
 
 Object.defineProperty(window, 'matchMedia', {

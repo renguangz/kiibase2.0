@@ -1,8 +1,8 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Loginform } from '.';
-import authAccounts from '@/src/mock/db/utils/auth/accounts.json';
-import successfullLogin from '@/src/mock/db/utils/auth/successLogin.json';
-import failLogin from '@/src/mock/db/utils/auth/failLogin.json';
+import authAccounts from '@/src/mocks/db/utils/auth/accounts.json';
+import successfullLogin from '@/src/mocks/db/utils/auth/successLogin.json';
+import failLogin from '@/src/mocks/db/utils/auth/failLogin.json';
 import * as requestUtils from '@/src/utils/request';
 
 jest.mock('@/src/utils/request', () => ({
