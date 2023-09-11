@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
 import { useGetConfig } from '.';
-import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
+import roleConfig from '@/src/mocks/db/utils/getConfig/roleConfig.json';
 
 jest.mock('swr');
 

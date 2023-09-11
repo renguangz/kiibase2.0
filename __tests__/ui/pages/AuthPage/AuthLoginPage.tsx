@@ -1,8 +1,8 @@
 import AuthLoginPage from '@/pages/auth/login';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SuccessLogin from '@/src/mock/db/utils/auth/successLogin.json';
-import FailLogin from '@/src/mock/db/utils/auth/failLogin.json';
+import SuccessLogin from '@/src/mocks/db/utils/auth/successLogin.json';
+import FailLogin from '@/src/mocks/db/utils/auth/failLogin.json';
 import * as requestUtils from '@/src/utils/request';
 
 jest.mock('@/src/utils/request', () => ({

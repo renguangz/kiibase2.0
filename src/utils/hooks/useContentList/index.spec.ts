@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react-hooks';
 import { useContentList } from '.';
 import useSWR from 'swr';
-import initRole from '@/src/mock/db/utils/ContentList/role/initList.json';
+import initRole from '@/src/mocks/db/utils/ContentList/role/initList.json';
 
 jest.mock('swr');
 

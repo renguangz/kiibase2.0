@@ -2,7 +2,7 @@ import { renderHook } from '@testing-library/react';
 import { useImageUpload } from '.';
 import * as requestUtils from '@/src/utils/request';
 import { act } from '@testing-library/react-hooks';
-import UploadImageData from '@/src/mock/db/utils/uploadFile/uploadImage.json';
+import UploadImageData from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
 import { useForm } from 'react-hook-form';
 
 jest.mock('@/src/utils/request', () => ({
