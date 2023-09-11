@@ -4,6 +4,7 @@ import type { ReactElement, ReactNode } from 'react';
 import '@/styles/global.css';
 import { SWRConfig } from 'swr';
 import MSWConfig from '/src/contexts/msw';
+import AuthContext from '/src/contexts/auth';
 import { request } from '@/src/utils/request';
 import { RwdConfig } from '@/src/contexts/rwd-config';
 import Layout from '@/src/layouts/layout/layout';
@@ -25,17 +26,19 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
-  const DefaultLayout = (page: ReactElement) => (
-    <RwdConfig>
-      <Layout>{page}</Layout>
-    </RwdConfig>
+  const DashboardLayout = (page: ReactElement) => (
+    <AuthContext>
+      <RwdConfig>
+        <Layout>{page}</Layout>
+      </RwdConfig>
+    </AuthContext>
   );
 
-  const getLayout = Component.getLayout ?? DefaultLayout;
+  const getLayout = Component.getLayout ?? DashboardLayout;
 
   return (
     <SWRConfig value={generateSWRConfig(router)}>
-      <MSWConfig>{getLayout(<Component key={router.asPath} {...pageProps} />)}</MSWConfig>
+      <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
     </SWRConfig>
   );
 }
