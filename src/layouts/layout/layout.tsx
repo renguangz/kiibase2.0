@@ -4,15 +4,15 @@ import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
 import { classNames } from 'primereact/utils';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
-import { RwdConfig } from '../../contexts/rwd-config';
+import { useRwdConfig } from '@/src/contexts/rwd-config';
 import PrimeReact from 'primereact/api';
 import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/src/types/types';
 
 const Layout = ({ children }: ChildContainerProps) => {
-  const { layoutConfig, layoutState, setLayoutState } = useContext(RwdConfig);
+  const { layoutConfig, layoutState, setLayoutState } = useRwdConfig();
   const topbarRef = useRef<AppTopbarRef>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
