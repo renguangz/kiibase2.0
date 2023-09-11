@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import { classNames } from 'primereact/utils';
-import React, { forwardRef, useContext, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { AppTopbarRef } from '@/src/types/types';
-import { LayoutContext } from './context/layoutcontext';
+import { useRwdConfig } from '@/src/contexts/rwd-config';
 import styled from 'styled-components';
 import { OutsideClickHandler } from '@/src/components';
 import { useRouter } from 'next/router';
@@ -70,7 +70,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
   const [mouseenterMenuButton, setMouseenterMenubutton] = useState(false);
   const [mouseenterProfileButton, setMouseenterProfilebutton] = useState(false);
 
-  const { layoutState, onMenuToggle } = useContext(LayoutContext);
+  const { layoutState, onMenuToggle } = useRwdConfig();
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);

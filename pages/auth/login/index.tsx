@@ -1,8 +1,11 @@
+import type {ReactElement} from 'react';
+import type {NextPageWithLayout} from '@/pages/_app';
 import { Loginform } from '@/src/components/LoginForm';
 import { LogoImg, Wrapper } from '@/src/layouts/layout/AppTopbar';
 import Logo from '@/public/Logo.svg';
+import { AuthLayout } from '@/src/layouts/AuthLayout';
 
-export default function AuthLoginPage() {
+const AuthLoginPage: NextPageWithLayout = () => {
   return (
     <div>
       <Wrapper className="layout-topbar">
@@ -12,3 +15,10 @@ export default function AuthLoginPage() {
     </div>
   );
 }
+
+AuthLoginPage.getLayout = function getLayout(page: ReactElement) {
+  return <AuthLayout>{page}</AuthLayout>
+};
+
+
+export default AuthLoginPage;

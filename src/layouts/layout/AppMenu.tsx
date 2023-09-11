@@ -1,6 +1,6 @@
 import React from 'react';
 import AppMenuitem from './AppMenuitem';
-import { MenuProvider } from './context/menucontext';
+import { MenuProvider } from '../../contexts/menucontext';
 import { useSidebar } from '@/src/utils/hooks';
 
 const AppMenu = () => {
