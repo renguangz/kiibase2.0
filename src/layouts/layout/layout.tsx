@@ -7,12 +7,12 @@ import { classNames } from 'primereact/utils';
 import React, { useContext, useEffect, useRef } from 'react';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
-import { LayoutContext } from '../../contexts/layoutcontext';
+import { RwdConfig } from '../../contexts/rwd-config';
 import PrimeReact from 'primereact/api';
 import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/src/types/types';
 
 const Layout = ({ children }: ChildContainerProps) => {
-  const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
+  const { layoutConfig, layoutState, setLayoutState } = useContext(RwdConfig);
   const topbarRef = useRef<AppTopbarRef>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 

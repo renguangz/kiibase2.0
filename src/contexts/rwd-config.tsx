@@ -1,6 +1,6 @@
 import React, { useState, createContext } from 'react';
 import { LayoutState, ChildContainerProps, LayoutConfig, LayoutContextProps } from '@/src/types/types';
-export const LayoutContext = createContext({} as LayoutContextProps);
+export const RwdConfig = createContext({} as LayoutContextProps);
 
 export const LayoutProvider = ({ children }: ChildContainerProps) => {
   const [layoutConfig, setLayoutConfig] = useState<LayoutConfig>({
@@ -66,5 +66,5 @@ export const LayoutProvider = ({ children }: ChildContainerProps) => {
     showProfileSidebar,
   };
 
-  return <LayoutContext.Provider value={value}>{children}</LayoutContext.Provider>;
+  return <RwdConfig.Provider value={value}>{children}</RwdConfig.Provider>;
 };

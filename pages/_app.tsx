@@ -4,7 +4,7 @@ import type { ReactElement, ReactNode } from 'react';
 import '@/styles/global.css';
 import { SWRConfig } from 'swr';
 import { request } from '@/src/utils/request';
-import { LayoutProvider } from '@/src/contexts/layoutcontext';
+import { LayoutProvider } from '@/src/contexts/rwd-config';
 import Layout from '@/src/layouts/layout/layout';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
