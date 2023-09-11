@@ -7,7 +7,7 @@ import { classNames } from 'primereact/utils';
 import React, { useContext, useEffect, useRef } from 'react';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
-import { LayoutContext } from './context/layoutcontext';
+import { LayoutContext } from '../../contexts/layoutcontext';
 import PrimeReact from 'primereact/api';
 import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/src/types/types';
 

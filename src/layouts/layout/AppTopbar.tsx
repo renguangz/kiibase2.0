@@ -2,7 +2,7 @@
 import { classNames } from 'primereact/utils';
 import React, { forwardRef, useContext, useImperativeHandle, useMemo, useRef, useState } from 'react';
 import { AppTopbarRef } from '@/src/types/types';
-import { LayoutContext } from './context/layoutcontext';
+import { LayoutContext } from '../../contexts/layoutcontext';
 import styled from 'styled-components';
 import { OutsideClickHandler } from '@/src/components';
 import { useRouter } from 'next/router';
