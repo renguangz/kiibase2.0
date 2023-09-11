@@ -3,6 +3,7 @@
   "scripts": {
     "dev": "next dev",
     "dev:test": "export NODE_ENV=\"test\" && next dev",
+    "dev:mock": "NEXT_PUBLIC_APP_MOCK=true next dev",
     "build": "next build",
     "build:test": "export NODE_ENV=\"test\" && next build",
     "start": "next start",
