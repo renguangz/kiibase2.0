@@ -1,4 +1,4 @@
-import Home from '@/pages/';
+import Home from '/pages/';
 import { act, render } from '@testing-library/react';
 
 const mockReplace = jest.fn();
