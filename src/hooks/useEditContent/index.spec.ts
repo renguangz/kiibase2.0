@@ -3,9 +3,9 @@ import EditBanner4 from '@/mocks/db/utils/EditContent/EditBanner4.json';
 import CreateBannerFieldsDataApi from '@/mocks/db/utils/getFields/bannerFieldsApi.json';
 import CreateBannerSuccess from '@/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
 import { renderHook } from '@testing-library/react-hooks';
-import { useEditContent } from '.';
+import { useEditContent } from './index';
 import { act } from '@testing-library/react';
-import * as requestUtils from '../../request';
+import * as requestUtils from '@/utils/request';
 
 jest.mock('swr');
 
@@ -16,7 +16,7 @@ jest.mock('next/router', () => ({
   }),
 }));
 
-jest.mock('../../request');
+jest.mock('@/utils/request');
 
 describe('useEditContent', () => {
   beforeEach(() => {

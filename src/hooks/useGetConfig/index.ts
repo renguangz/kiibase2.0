@@ -2,7 +2,7 @@ import { ApiDataType } from '@/types/data';
 import { pipe } from 'fp-ts/lib/function';
 import { useMemo } from 'react';
 import useSWR from 'swr';
-import { isNotContentDynamicRouteYet } from '../../functions';
+import { isNotContentDynamicRouteYet } from '@/utils/functions';
 
 export type ConfigListType = {
   title: string;

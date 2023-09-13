@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react';
-import { useImageUpload } from '.';
+import { useImageUpload } from './index';
 import * as requestUtils from '@/utils/request';
 import { act } from '@testing-library/react-hooks';
 import UploadImageData from '@/mocks/db/utils/uploadFile/uploadImage.json';

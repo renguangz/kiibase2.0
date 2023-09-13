@@ -3,9 +3,9 @@ import { useRouter } from 'next/router';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as A from 'fp-ts/Array';
-import { formatDateForm, formatNumberForm, isNotContentDynamicRouteYet } from '../../functions';
-import { request, requestOptionsTemplate } from '../../request';
-import { GenericDataType } from '../../types';
+import { formatDateForm, formatNumberForm, isNotContentDynamicRouteYet } from '@/utils/functions';
+import { request, requestOptionsTemplate } from '@/utils/request';
+import { GenericDataType } from '@/utils/types';
 import { formatSelectData, isFieldsApiData, mapNameToComponent, ResponseMessageType } from '../useCreateContent';
 import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
 

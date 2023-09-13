@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { GenericDataType } from '../../types';
+import { GenericDataType } from '@/utils/types';
 import Cookies from 'js-cookie';
-import { request, requestOptionsTemplate } from '../../request';
+import { request, requestOptionsTemplate } from '@/utils/request';
 import { useRouter } from 'next/router';
 import { useSWRConfig } from 'swr';
 import { ResponseMessageType } from '../useCreateContent';

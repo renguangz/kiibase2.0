@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { isNotContentDynamicRouteYet } from '../../functions';
+import { isNotContentDynamicRouteYet } from '@/utils/functions';
 import useSWR from 'swr';
 import { ApiDataResponse, ApiDataType } from '@/types/data';
 import { useForm } from 'react-hook-form';
-import { request, requestOptionsTemplate } from '../../request';
+import { request, requestOptionsTemplate } from '@/utils/request';
 import { useRouter } from 'next/router';
 
 export type ContentDataType = {

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
-import { request } from '../../request';
-import { GenericDataType } from '../../types';
+import { request } from '@/utils/request';
+import { GenericDataType } from '@/utils/types';
 
 type UploadImageResponseType = GenericDataType<{ filePath: string; fileUrl: string }>;
 

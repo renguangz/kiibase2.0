@@ -3,7 +3,7 @@ import { StyledButton } from '@/components/common';
 import { ContentHeader } from '@/components/Content';
 import { PageLayout } from '@/layouts';
 import { COLORS } from '@/utils';
-import { useCreateContent } from '@/utils/hooks/useCreateContent';
+import { useCreateContent } from '@/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';

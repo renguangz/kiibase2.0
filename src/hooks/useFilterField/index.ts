@@ -2,8 +2,8 @@ import { ApiDataType } from '@/types/data';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { KeyedMutator } from 'swr';
-import { combineApiUrl, pipeFormatObject } from '../../functions';
-import { request, requestOptionsTemplate } from '../../request';
+import { combineApiUrl, pipeFormatObject } from '@/utils/functions';
+import { request, requestOptionsTemplate } from '@/utils/request';
 import { ContentDataType } from '../useContentList';
 import { useGetConfig } from '../useGetConfig';
 

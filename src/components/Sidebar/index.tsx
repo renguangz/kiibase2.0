@@ -1,4 +1,4 @@
-import { useSidebar } from '@/utils/hooks';
+import { useSidebar } from '@/hooks';
 import { PanelMenu } from 'primereact/panelmenu';
 
 export function SidebarComponent() {

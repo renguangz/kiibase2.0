@@ -1,5 +1,5 @@
 import { act, renderHook } from '@testing-library/react-hooks';
-import { useLogin } from '.';
+import { useLogin } from './index';
 import authAccounts from '@/mocks/db/utils/auth/accounts.json';
 import successfullLogin from '@/mocks/db/utils/auth/successLogin.json';
 import failLogin from '@/mocks/db/utils/auth/failLogin.json';

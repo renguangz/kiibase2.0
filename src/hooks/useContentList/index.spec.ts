@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useContentList } from '.';
+import { useContentList } from './index';
 import useSWR from 'swr';
 import initRole from '@/mocks/db/utils/ContentList/role/initList.json';
 

@@ -1,5 +1,5 @@
 import { renderHook } from '@testing-library/react-hooks';
-import { useFilterField } from '.';
+import { useFilterField } from './index';
 import { useGetConfig } from '../useGetConfig';
 
 jest.mock('../useGetConfig/');

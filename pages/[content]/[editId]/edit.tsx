@@ -2,7 +2,7 @@ import { ContentUpdateField } from '@/components';
 import { StyledButton } from '@/components/common';
 import { ContentHeader } from '@/components/Content';
 import { PageLayout } from '@/layouts';
-import { useEditContent } from '@/utils/hooks';
+import { useEditContent } from '@/hooks';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { Message } from 'primereact/message';

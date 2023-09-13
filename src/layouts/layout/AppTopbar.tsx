@@ -6,7 +6,7 @@ import { useRwdConfig } from '@/contexts/rwd-config';
 import styled from 'styled-components';
 import { OutsideClickHandler } from '@/components';
 import { useRouter } from 'next/router';
-import { useLogout } from '@/utils/hooks';
+import { useLogout } from '@/hooks';
 import { COLORS } from '@/utils';
 import { StyledButton } from '@/components/common';
 import Logo from '/public/Logo.svg';

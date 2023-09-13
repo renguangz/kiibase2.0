@@ -4,7 +4,7 @@ import { FilterField } from '@/components/FilterField';
 import { TableField } from '@/components/Table';
 import { PageLayout } from '@/layouts';
 import { COLORS } from '@/utils';
-import { useContentList, useFilterField, useGetConfig } from '@/utils/hooks';
+import { useContentList, useFilterField, useGetConfig } from '@/hooks';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';

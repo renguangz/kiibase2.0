@@ -1,8 +1,8 @@
-import { formatOptions, formatSelectData } from '.';
+import { formatOptions, formatSelectData } from './index';
 
 jest.mock('swr');
 
-jest.mock('../../request');
+jest.mock('@/utils/request');
 
 const mockRouterPush = jest.fn();
 jest.mock('next/router', () => ({

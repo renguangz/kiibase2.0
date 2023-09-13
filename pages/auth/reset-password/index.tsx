@@ -1,6 +1,6 @@
 import { StyledButton } from '@/components/common';
 import { ButtonWrapper, Input, InputWrapper, Label, Title, TitleWrapper } from '@/components/LoginForm';
-import { useResetPassword } from '@/utils/hooks';
+import { useResetPassword } from '@/hooks';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`

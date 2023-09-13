@@ -1,12 +1,12 @@
 import { pipe } from 'fp-ts/lib/function';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { formatDateForm, formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '../../functions';
+import { formatDateForm, formatNumberForm, getContentPath, isNotContentDynamicRouteYet } from '@/utils/functions';
 import * as A from 'fp-ts/Array';
 import * as O from 'fp-ts/Option';
 import { toLowerCase } from 'fp-ts/lib/string';
 import { useForm } from 'react-hook-form';
-import { request, requestOptionsTemplate } from '../../request';
-import { GenericDataType } from '../../types';
+import { request, requestOptionsTemplate } from '@/utils/request';
+import { GenericDataType } from '@/utils/types';
 import { useRouter } from 'next/router';
 import { ConfigDataFieldType, useGetConfig } from '../useGetConfig';
 

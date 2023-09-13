@@ -1,4 +1,4 @@
-import { useSidebar } from '.';
+import { useSidebar } from './index';
 import { renderHook } from '@testing-library/react';
 import naviItem from '@/mocks/db/utils/sidebar/naviItem.json';
 import displayNaviItem from '@/mocks/db/utils/sidebar/displaNaviItem.json';

@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useState } from 'react';
-import { hasEmptyString } from '../../functions';
-import { request, requestOptionsTemplate } from '../../request';
+import { hasEmptyString } from '@/utils/functions';
+import { request, requestOptionsTemplate } from '@/utils/request';
 
 export function useResetPassword() {
   const [oldPassword, setOldPassword] = useState('');

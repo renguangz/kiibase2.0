@@ -1,7 +1,7 @@
 import { renderHook } from '@testing-library/react';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { useLogout } from '.';
+import { useLogout } from './index';
 
 jest.mock('next/router', () => ({
   useRouter: jest.fn(),
