@@ -13,7 +13,6 @@ import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '@/styles/layout/layout.scss';
-import '@/styles/demo/Demos.scss';
 import { useRouter } from 'next/router';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
