@@ -1,15 +1,15 @@
 /* eslint-disable @next/next/no-img-element */
 import { classNames } from 'primereact/utils';
 import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { AppTopbarRef } from '@/src/types/types';
-import { useRwdConfig } from '@/src/contexts/rwd-config';
+import { AppTopbarRef } from '@/types/types';
+import { useRwdConfig } from '@/contexts/rwd-config';
 import styled from 'styled-components';
-import { OutsideClickHandler } from '@/src/components';
+import { OutsideClickHandler } from '@/components';
 import { useRouter } from 'next/router';
-import { useLogout } from '@/src/utils/hooks';
-import { COLORS } from '@/src/utils';
-import { StyledButton } from '@/src/components/common';
-import Logo from '@/public/Logo.svg';
+import { useLogout } from '@/utils/hooks';
+import { COLORS } from '@/utils';
+import { StyledButton } from '@/components/common';
+import Logo from '/public/Logo.svg';
 import Link from 'next/link';
 
 export const Wrapper = styled.div`

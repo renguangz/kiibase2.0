@@ -1,12 +1,12 @@
 import { renderHook } from '@testing-library/react';
 import { useImageUpload } from '.';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 import { act } from '@testing-library/react-hooks';
-import UploadImageData from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
+import UploadImageData from '@/mocks/db/utils/uploadFile/uploadImage.json';
 import { useForm } from 'react-hook-form';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

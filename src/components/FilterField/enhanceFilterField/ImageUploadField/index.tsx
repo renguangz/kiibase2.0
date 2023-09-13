@@ -1,5 +1,5 @@
-import { COLORS, FieldProps } from '@/src/utils';
-import { useImageUpload } from '@/src/utils/hooks/useImageUpload';
+import { COLORS, FieldProps } from '@/utils';
+import { useImageUpload } from '@/utils/hooks/useImageUpload';
 import styled from 'styled-components';
 
 const DisplayImageWrapper = styled.div`

@@ -1,4 +1,4 @@
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import styled from 'styled-components';
 
 type FakeDivType = {

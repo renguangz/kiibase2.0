@@ -7,9 +7,9 @@ import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef } from 'react';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
-import { useRwdConfig } from '@/src/contexts/rwd-config';
+import { useRwdConfig } from '@/contexts/rwd-config';
 import PrimeReact from 'primereact/api';
-import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/src/types/types';
+import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/types/types';
 
 const Layout = ({ children }: ChildContainerProps) => {
   const { layoutConfig, layoutState, setLayoutState } = useRwdConfig();

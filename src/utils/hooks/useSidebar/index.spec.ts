@@ -1,7 +1,7 @@
 import { useSidebar } from '.';
 import { renderHook } from '@testing-library/react';
-import naviItem from '@/src/mocks/db/utils/sidebar/naviItem.json';
-import displayNaviItem from '@/src/mocks/db/utils/sidebar/displaNaviItem.json';
+import naviItem from '@/mocks/db/utils/sidebar/naviItem.json';
+import displayNaviItem from '@/mocks/db/utils/sidebar/displaNaviItem.json';
 import useSWR from 'swr';
 
 jest.mock('swr');

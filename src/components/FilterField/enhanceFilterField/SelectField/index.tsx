@@ -1,4 +1,4 @@
-import { FieldProps } from '@/src/utils';
+import { FieldProps } from '@/utils';
 import { Controller } from 'react-hook-form';
 import { Dropdown } from 'primereact/dropdown';
 

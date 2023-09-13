@@ -1,6 +1,6 @@
 import { Controller } from 'react-hook-form';
 import { AutoComplete } from 'primereact/autocomplete';
-import { FieldProps } from '@/src/utils';
+import { FieldProps } from '@/utils';
 
 interface AutoCompleteFieldProps extends FieldProps<any> {
   options: any[];

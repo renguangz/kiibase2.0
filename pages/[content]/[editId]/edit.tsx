@@ -1,8 +1,8 @@
-import { ContentUpdateField } from '@/src/components';
-import { StyledButton } from '@/src/components/common';
-import { ContentHeader } from '@/src/components/Content';
-import { PageLayout } from '@/src/layouts';
-import { useEditContent } from '@/src/utils/hooks';
+import { ContentUpdateField } from '@/components';
+import { StyledButton } from '@/components/common';
+import { ContentHeader } from '@/components/Content';
+import { PageLayout } from '@/layouts';
+import { useEditContent } from '@/utils/hooks';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { Message } from 'primereact/message';

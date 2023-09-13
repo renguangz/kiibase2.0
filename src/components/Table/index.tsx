@@ -1,4 +1,4 @@
-import { combineStorageUrl, SPACES } from '@/src/utils';
+import { combineStorageUrl, SPACES } from '@/utils';
 import { Form, Pagination } from 'antd';
 import { DataTable } from 'primereact/datatable';
 import { Tag } from 'primereact/tag';

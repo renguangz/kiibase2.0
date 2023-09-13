@@ -1,7 +1,7 @@
 import useSWR from 'swr';
-import EditBanner4 from '@/src/mocks/db/utils/EditContent/EditBanner4.json';
-import CreateBannerFieldsDataApi from '@/src/mocks/db/utils/getFields/bannerFieldsApi.json';
-import CreateBannerSuccess from '@/src/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
+import EditBanner4 from '@/mocks/db/utils/EditContent/EditBanner4.json';
+import CreateBannerFieldsDataApi from '@/mocks/db/utils/getFields/bannerFieldsApi.json';
+import CreateBannerSuccess from '@/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
 import { renderHook } from '@testing-library/react-hooks';
 import { useEditContent } from '.';
 import { act } from '@testing-library/react';

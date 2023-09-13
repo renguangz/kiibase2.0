@@ -3,9 +3,9 @@ import { UseFormReturn } from 'react-hook-form';
 import styled from 'styled-components';
 import { enhanceFilterField, EnhanceFilterFieldProps } from './enhanceFilterField';
 import { StyledButton } from '../common';
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import Image from 'next/image';
-import ChevronUp from '@/public/ChevronUp.svg';
+import ChevronUp from '/public/ChevronUp.svg';
 
 const Wrapper = styled.div`
   background: #fff;

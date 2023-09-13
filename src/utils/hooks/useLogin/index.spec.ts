@@ -1,12 +1,12 @@
 import { act, renderHook } from '@testing-library/react-hooks';
 import { useLogin } from '.';
-import authAccounts from '@/src/mocks/db/utils/auth/accounts.json';
-import successfullLogin from '@/src/mocks/db/utils/auth/successLogin.json';
-import failLogin from '@/src/mocks/db/utils/auth/failLogin.json';
-import * as requestUtils from '@/src/utils/request';
+import authAccounts from '@/mocks/db/utils/auth/accounts.json';
+import successfullLogin from '@/mocks/db/utils/auth/successLogin.json';
+import failLogin from '@/mocks/db/utils/auth/failLogin.json';
+import * as requestUtils from '@/utils/request';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

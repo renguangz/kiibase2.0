@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
-import testingPageFields from '@/src/mocks/db/utils/getFields/testingPageFields.json';
+import testingPageFields from '@/mocks/db/utils/getFields/testingPageFields.json';
 import { formatSelectData, isFieldsApiData, mapNameToComponent } from '../useCreateContent';
 import { pipe } from 'fp-ts/lib/function';
 

@@ -1,11 +1,11 @@
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { ImageUploadField } from '.';
-import * as requestUtils from '@/src/utils/request';
-import ImageUploadResponse from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
+import * as requestUtils from '@/utils/request';
+import ImageUploadResponse from '@/mocks/db/utils/uploadFile/uploadImage.json';
 import { useForm, UseFormReturn } from 'react-hook-form';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 describe('ImageUploadField', () => {

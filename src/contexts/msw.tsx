@@ -12,7 +12,7 @@ export default function MSWConfig({ children }: Props) {
     if (process.env.NODE_ENV === 'development' && process.env.NEXT_PUBLIC_APP_MOCK === 'true') {
       // worker.start() is asynchronous,
       // so use condition render to make user API call after mocks server ready.
-      import('@/src/mocks/browser').then(({ worker }) => worker.start()).then(() => setLoaded(true));
+      import('@/mocks/browser').then(({ worker }) => worker.start()).then(() => setLoaded(true));
     } else {
       setLoaded(true);
     }

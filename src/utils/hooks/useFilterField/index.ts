@@ -1,4 +1,4 @@
-import { ApiDataType } from '@/src/types/data';
+import { ApiDataType } from '@/types/data';
 import { Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { KeyedMutator } from 'swr';

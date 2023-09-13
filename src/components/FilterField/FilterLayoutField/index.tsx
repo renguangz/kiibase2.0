@@ -1,4 +1,4 @@
-import { SPACES } from '@/src/utils';
+import { SPACES } from '@/utils';
 import { Typography } from 'antd';
 import { FakeDiv, Wrapper } from '../../common';
 

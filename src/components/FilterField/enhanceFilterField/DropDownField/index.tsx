@@ -1,6 +1,6 @@
 // NOTE: 慢慢轉移使用 SelectField
 
-import { FieldProps } from '@/src/utils';
+import { FieldProps } from '@/utils';
 import { Controller } from 'react-hook-form';
 import { Select } from 'antd';
 

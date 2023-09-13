@@ -4,7 +4,7 @@ import { Wrapper } from '../common';
 import { UserOutlined, DownOutlined } from '@ant-design/icons';
 import { Button } from '../Button';
 import { useCallback, useState } from 'react';
-import { useLogout } from '@/src/utils/hooks';
+import { useLogout } from '@/utils/hooks';
 
 const { Header } = Layout;
 

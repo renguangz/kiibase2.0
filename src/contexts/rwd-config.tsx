@@ -1,4 +1,4 @@
-import type { LayoutContextProps } from '@/src/types/types';
+import type { LayoutContextProps } from '@/types/types';
 import type { ComponentProps } from 'react';
 import { useState, createContext, useContext } from 'react';
 

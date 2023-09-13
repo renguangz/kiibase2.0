@@ -1,4 +1,4 @@
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
 import { AutoCompleteField } from './AutoCompleteField';

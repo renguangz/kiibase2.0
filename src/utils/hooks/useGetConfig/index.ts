@@ -1,4 +1,4 @@
-import { ApiDataType } from '@/src/types/data';
+import { ApiDataType } from '@/types/data';
 import { pipe } from 'fp-ts/lib/function';
 import { useMemo } from 'react';
 import useSWR from 'swr';

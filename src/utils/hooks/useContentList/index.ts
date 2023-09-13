@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { isNotContentDynamicRouteYet } from '../../functions';
 import useSWR from 'swr';
-import { ApiDataResponse, ApiDataType } from '@/src/types/data';
+import { ApiDataResponse, ApiDataType } from '@/types/data';
 import { useForm } from 'react-hook-form';
 import { request, requestOptionsTemplate } from '../../request';
 import { useRouter } from 'next/router';

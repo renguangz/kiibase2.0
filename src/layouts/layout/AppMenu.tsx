@@ -1,7 +1,7 @@
 import React from 'react';
 import AppMenuitem from './AppMenuitem';
 import { MenuProvider } from '../../contexts/menucontext';
-import { useSidebar } from '@/src/utils/hooks';
+import { useSidebar } from '@/utils/hooks';
 
 const AppMenu = () => {
   const { naviItemData } = useSidebar();
