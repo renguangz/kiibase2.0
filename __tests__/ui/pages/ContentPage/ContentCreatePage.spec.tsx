@@ -1,15 +1,15 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import ContentCreatePage from '@/pages/[content]/create';
+import ContentCreatePage from '/pages/[content]/create';
 import userEvent from '@testing-library/user-event';
-import CreateBannerSuccess from '@/src/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
-import UploadImageData from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
-import BannerConfig from '@/src/mocks/db/utils/getConfig/bannerConfig.json';
-import MachineConfig from '@/src/mocks/db/utils/getConfig/machineConfig.json';
-import AdminUserConfig from '@/src/mocks/db/utils/getConfig/adminUserConfig.json';
+import CreateBannerSuccess from '@/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
+import UploadImageData from '@/mocks/db/utils/uploadFile/uploadImage.json';
+import BannerConfig from '@/mocks/db/utils/getConfig/bannerConfig.json';
+import MachineConfig from '@/mocks/db/utils/getConfig/machineConfig.json';
+import AdminUserConfig from '@/mocks/db/utils/getConfig/adminUserConfig.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
 window.watchMedia = jest.fn().mockImplementation(() => {
   return {
@@ -30,8 +30,8 @@ jest.mock('next/router', () => ({
 
 jest.mock('swr', () => jest.fn());
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

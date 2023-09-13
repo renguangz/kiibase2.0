@@ -1,4 +1,4 @@
-import { Wrapper } from '@/src/components/common';
+import { Wrapper } from '@/components/common';
 import styled from 'styled-components';
 
 const PageLayoutWrapper = styled(Wrapper)`

@@ -1,4 +1,4 @@
-import { HeaderComponent, SidebarComponent } from '@/src/components';
+import { HeaderComponent, SidebarComponent } from '@/components';
 import styled from 'styled-components';
 
 interface DefaultLayoutProps {

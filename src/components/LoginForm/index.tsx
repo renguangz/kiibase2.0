@@ -1,6 +1,6 @@
-import { MessageWrapper } from '@/pages/[content]/create';
-import { COLORS } from '@/src/utils';
-import { useLogin } from '@/src/utils/hooks';
+import { MessageWrapper } from '/pages/[content]/create';
+import { COLORS } from '@/utils';
+import { useLogin } from '@/hooks';
 import { Message } from 'primereact/message';
 import styled from 'styled-components';
 import { StyledButton } from '../common';

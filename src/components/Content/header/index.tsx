@@ -1,4 +1,4 @@
-import { SPACES } from '@/src/utils';
+import { SPACES } from '@/utils';
 import styled from 'styled-components';
 import { BottomBorder, Wrapper } from '../../common';
 

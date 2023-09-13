@@ -1,4 +1,4 @@
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import { FieldValues, UseFormReturn } from 'react-hook-form';
 import styled from 'styled-components';
 import { enhanceFilterField } from '../FilterField/enhanceFilterField';

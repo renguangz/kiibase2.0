@@ -1,9 +1,9 @@
 import type { ComponentProps, Dispatch, SetStateAction } from 'react';
 import type { NextRouter } from 'next/router';
 import { createContext, useEffect, useState } from 'react';
-import getNavItem from '@/src/api/v2/get-navi-item';
+import getNavItem from '@/api/v2/get-navi-item';
 import { useRouter } from 'next/router';
-import Loading from '@/src/components/Loading';
+import Loading from '@/components/Loading';
 
 const Context = createContext<string>(null!);
 

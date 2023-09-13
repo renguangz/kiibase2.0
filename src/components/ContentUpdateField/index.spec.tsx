@@ -1,14 +1,14 @@
 import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library/react';
 import { ContentUpdateField } from '.';
-import BannerFields from '@/src/mocks/db/utils/getFields/bannerFields.json';
-import ImageUploadResponse from '@/src/mocks/db/utils/uploadFile/uploadImage.json';
+import BannerFields from '@/mocks/db/utils/getFields/bannerFields.json';
+import ImageUploadResponse from '@/mocks/db/utils/uploadFile/uploadImage.json';
 import { useForm } from 'react-hook-form';
 import { pipe } from 'fp-ts/lib/function';
-import { formatSelectData, mapNameToComponent } from '@/src/utils/hooks/useCreateContent';
-import * as requestUtils from '@/src/utils/request';
+import { formatSelectData, mapNameToComponent } from '@/hooks/useCreateContent';
+import * as requestUtils from '@/utils/request';
 import { act } from 'react-dom/test-utils';
 
-jest.mock('@/src/utils/request');
+jest.mock('@/utils/request');
 
 describe('ContentUpdateField', () => {
   describe('Banner', () => {

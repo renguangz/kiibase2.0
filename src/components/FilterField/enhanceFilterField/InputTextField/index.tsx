@@ -1,6 +1,6 @@
 import { Controller } from 'react-hook-form';
 import { InputText } from 'primereact/inputtext';
-import { FieldProps } from '@/src/utils';
+import { FieldProps } from '@/utils';
 
 interface InputTextFieldProps extends FieldProps<string> {
   inputType?: 'number';

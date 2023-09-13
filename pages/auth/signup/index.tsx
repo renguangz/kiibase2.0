@@ -1,7 +1,7 @@
 import type { ReactElement } from 'react';
-import type { NextPageWithLayout } from '@/pages/_app';
-import { AuthLayout } from '@/src/layouts/AuthLayout';
-import { useSignup } from '@/src/utils/hooks';
+import type { NextPageWithLayout } from '/pages/_app';
+import { AuthLayout } from '@/layouts/AuthLayout';
+import { useSignup } from '@/hooks';
 import Link from 'next/link';
 
 const SignupPage: NextPageWithLayout = () => {

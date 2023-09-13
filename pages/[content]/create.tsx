@@ -1,9 +1,9 @@
-import { ContentUpdateField } from '@/src/components';
-import { StyledButton } from '@/src/components/common';
-import { ContentHeader } from '@/src/components/Content';
-import { PageLayout } from '@/src/layouts';
-import { COLORS } from '@/src/utils';
-import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
+import { ContentUpdateField } from '@/components';
+import { StyledButton } from '@/components/common';
+import { ContentHeader } from '@/components/Content';
+import { PageLayout } from '@/layouts';
+import { COLORS } from '@/utils';
+import { useCreateContent } from '@/hooks/useCreateContent';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';

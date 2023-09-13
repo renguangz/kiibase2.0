@@ -1,18 +1,18 @@
-import ContentListPage from '@/pages/[content]';
+import ContentListPage from '/pages/[content]';
 import useSWR from 'swr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import roleConfig from '@/src/mocks/db/utils/getConfig/roleConfig.json';
-import machineConfig from '@/src/mocks/db/utils/getConfig/machineConfig.json';
-import bannerConfig from '@/src/mocks/db/utils/getConfig/bannerConfig.json';
-import homeConfig from '@/src/mocks/db/utils/getConfig/homepageConfig.json';
-import roleListData from '@/src/mocks/db/utils/ContentList/role/initList.json';
-import machineListData from '@/src/mocks/db/utils/ContentList/machine/initList.json';
-import bannerListData from '@/src/mocks/db/utils/ContentList/banner/initList.json';
-import roleListEmptyData from '@/src/mocks/db/utils/ContentList/role/filter/emptyList.json';
-import searchListFilterData from '@/src/mocks/db/utils/ContentList/searchLog/filterData/filter_haha.json';
+import roleConfig from '@/mocks/db/utils/getConfig/roleConfig.json';
+import machineConfig from '@/mocks/db/utils/getConfig/machineConfig.json';
+import bannerConfig from '@/mocks/db/utils/getConfig/bannerConfig.json';
+import homeConfig from '@/mocks/db/utils/getConfig/homepageConfig.json';
+import roleListData from '@/mocks/db/utils/ContentList/role/initList.json';
+import machineListData from '@/mocks/db/utils/ContentList/machine/initList.json';
+import bannerListData from '@/mocks/db/utils/ContentList/banner/initList.json';
+import roleListEmptyData from '@/mocks/db/utils/ContentList/role/filter/emptyList.json';
+import searchListFilterData from '@/mocks/db/utils/ContentList/searchLog/filterData/filter_haha.json';
 import { useRouter } from 'next/router';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
 global.matchMedia =
   global.matchMedia ||
@@ -31,8 +31,8 @@ jest.mock('next/router', () => ({
 
 jest.mock('swr');
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

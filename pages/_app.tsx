@@ -1,19 +1,20 @@
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
+import Meta from '@/components/Meta';
+import ResourceBase from '/resources/base.json';
 import '@/styles/global.css';
 import { SWRConfig } from 'swr';
-import MSWConfig from '/src/contexts/msw';
-import AuthContext from '/src/contexts/auth';
-import { request } from '@/src/utils/request';
-import { RwdConfig } from '@/src/contexts/rwd-config';
-import Layout from '@/src/layouts/layout/layout';
+import MSWConfig from '@/contexts/msw';
+import AuthContext from '@/contexts/auth';
+import { request } from '@/utils/request';
+import { RwdConfig } from '@/contexts/rwd-config';
+import Layout from '@/layouts/layout/layout';
 import 'primereact/resources/primereact.css';
 import 'primereact/resources/themes/lara-light-indigo/theme.css';
 import 'primeflex/primeflex.css';
 import 'primeicons/primeicons.css';
 import '@/styles/layout/layout.scss';
-import '@/styles/demo/Demos.scss';
 import { useRouter } from 'next/router';
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
@@ -37,9 +38,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? DashboardLayout;
 
   return (
-    <SWRConfig value={generateSWRConfig(router)}>
-      <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
-    </SWRConfig>
+    <>
+      <SWRConfig value={generateSWRConfig(router)}>
+        <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
+      </SWRConfig>
+      <Meta {...ResourceBase} />
+    </>
   );
 }
 

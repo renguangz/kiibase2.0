@@ -17,10 +17,7 @@
     "baseUrl": ".",
     "paths": {
       "/*": ["./*"],
-      "@/src/*": ["src/*"],
-      "@/pages/*": ["pages/*"],
-      "@/styles/*": ["styles/*"],
-      "@/public/*": ["public/*"]
+      "@/*": ["./src/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "types.d.ts", "pages/test_list"],

@@ -1,4 +1,4 @@
-import { FieldProps } from '@/src/utils';
+import { FieldProps } from '@/utils';
 import { render } from '@testing-library/react';
 import { renderHook } from '@testing-library/react-hooks';
 import { useForm } from 'react-hook-form';
