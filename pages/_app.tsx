@@ -1,6 +1,8 @@
 import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
 import type { ReactElement, ReactNode } from 'react';
+import Meta from '@/components/Meta';
+import ResourceBase from '/resources/base.json';
 import '@/styles/global.css';
 import { SWRConfig } from 'swr';
 import MSWConfig from '@/contexts/msw';
@@ -36,9 +38,12 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? DashboardLayout;
 
   return (
-    <SWRConfig value={generateSWRConfig(router)}>
-      <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
-    </SWRConfig>
+    <>
+      <SWRConfig value={generateSWRConfig(router)}>
+        <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
+      </SWRConfig>
+      <Meta {...ResourceBase} />
+    </>
   );
 }
 
