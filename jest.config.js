@@ -9,8 +9,6 @@ const createJestConfig = nextJest({
 const customJestConfig = {
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   moduleNameMapper: {
-    // '^@/src/(.*)$': '<rootDir>/src/$1',
-    // '^@/pages/(.*)$': '<rootDir>/pages/$1',
     '^/(.*)$': '<rootDir>/$1',
     '^@/(.*)$': '<rootDir>/$1'
   },
