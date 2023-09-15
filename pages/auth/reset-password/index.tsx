@@ -1,7 +1,9 @@
+import type { ReactElement } from 'react';
 import { StyledButton } from '@/components/common';
+import styled from 'styled-components';
 import { ButtonWrapper, Input, InputWrapper, Label, Title, TitleWrapper } from '@/components/LoginForm';
 import { useResetPassword } from '@/hooks';
-import styled from 'styled-components';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 const Wrapper = styled.div`
   width: 268px;
@@ -64,4 +66,8 @@ export default function ResetPasswordPage() {
       </ButtonWrapper>
     </Wrapper>
   );
+}
+
+ResetPasswordPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>
 }
