@@ -13,7 +13,7 @@ import Layout from '@/layouts/layout/layout';
 
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
-import 'primereact/resources/themes/fluent-light/theme.css';
+import '@/styles/theme-primereact/themes/fluent/fluent-light/theme.scss';
 import '@/styles/globals.css';
 import '@/styles/layout/layout.scss';
 
