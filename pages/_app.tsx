@@ -8,8 +8,6 @@ import { SWRConfig } from 'swr';
 import RwdConfig from '@/contexts/rwd-config';
 import MSWConfig from '@/contexts/msw';
 import AuthConfig from '@/contexts/auth';
-import { request } from '@/utils/request';
-import Layout from '@/layouts/layout/layout';
 
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
@@ -27,9 +25,8 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
-  const DashboardLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
-  const getLayout = Component.getLayout ?? DashboardLayout;
+  const getLayout = Component.getLayout || ((page) => page);
 
   return (
     <>
@@ -45,6 +42,8 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   );
 }
 
+
+import { request } from '@/utils/request';
 function generateSWRConfig(router: ReturnType<typeof useRouter>) {
   return {
     refreshInterval: 0,
