@@ -7,7 +7,7 @@ import ResourceBase from '/resources/base.json';
 import { SWRConfig } from 'swr';
 import { RwdConfig } from '@/contexts/rwd-config';
 import MSWConfig from '@/contexts/msw';
-import AuthContext from '@/contexts/auth';
+import AuthConfig from '@/contexts/auth';
 import { request } from '@/utils/request';
 import Layout from '@/layouts/layout/layout';
 
@@ -27,21 +27,19 @@ type AppPropsWithLayout = AppProps & {
 
 export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
-  const DashboardLayout = (page: ReactElement) => (
-    <AuthContext>
-      <RwdConfig>
-        <Layout>{page}</Layout>
-      </RwdConfig>
-    </AuthContext>
-  );
+  const DashboardLayout = (page: ReactElement) => <Layout>{page}</Layout>;
 
   const getLayout = Component.getLayout ?? DashboardLayout;
 
   return (
     <>
-      <SWRConfig value={generateSWRConfig(router)}>
-        <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
-      </SWRConfig>
+      <AuthConfig>
+        <RwdConfig>
+          <SWRConfig value={generateSWRConfig(router)}>
+            <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
+          </SWRConfig>
+        </RwdConfig>
+      </AuthConfig>
       <Meta {...ResourceBase} />
     </>
   );

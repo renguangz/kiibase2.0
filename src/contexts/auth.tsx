@@ -9,7 +9,7 @@ const Context = createContext<string>(null!);
 
 type Props = Omit<ComponentProps<typeof Context.Provider>, 'value'>;
 
-export default function AuthContext({ children }: Props) {
+export default function AuthConfig({ children }: Props) {
   const [permission, setPermission] = useState(false);
   const router = useRouter();
 
