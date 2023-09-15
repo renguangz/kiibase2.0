@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { ContentUpdateField } from '@/components';
 import { StyledButton } from '@/components/common';
 import { ContentHeader } from '@/components/Content';
@@ -9,6 +10,7 @@ import { Message } from 'primereact/message';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { ConfirmButtonWrapper, MessageWrapper, StyledLink } from '../create';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 const ContentHeaderButtonsWrapper = styled.div`
   display: flex;
@@ -82,4 +84,8 @@ export default function EditContentPage() {
       </ConfirmButtonWrapper>
     </PageLayout>
   );
+}
+
+EditContentPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>
 }

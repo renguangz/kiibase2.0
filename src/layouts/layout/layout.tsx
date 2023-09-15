@@ -126,12 +126,6 @@ const Layout = ({ children }: ChildContainerProps) => {
 
   return (
     <React.Fragment>
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
-      </Head>
-
       <div className={containerClass}>
         <AppTopbar ref={topbarRef} />
         <div ref={sidebarRef} className="layout-sidebar">

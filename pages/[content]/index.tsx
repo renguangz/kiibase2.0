@@ -1,3 +1,4 @@
+import type { ReactElement } from 'react';
 import { StyledButton } from '@/components/common';
 import { ContentHeader } from '@/components/Content';
 import { FilterField } from '@/components/FilterField';
@@ -11,6 +12,7 @@ import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './create';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 const FilterFieldWrapper = styled.div`
   width: 100%;
@@ -139,3 +141,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
     fallback: true,
   };
 };
+
+ContentListPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>
+}

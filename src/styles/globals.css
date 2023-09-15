@@ -1,0 +1,16 @@
+:root {
+  --doc-height: 100%;
+}
+
+html,
+body {
+  height: var(--doc-height);
+  position: relative;
+  font-family: var(--font-family);
+}
+
+// fix: just set css into element inside confirm-dialog
+.p-confirm-dialog {
+  width: 400px;
+  border-radius: 0;
+}

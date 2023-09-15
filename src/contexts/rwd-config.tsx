@@ -24,7 +24,7 @@ export const RwdContext = createContext<LayoutContextProps>(null!);
 
 type Props = Omit<ComponentProps<typeof RwdContext.Provider>, 'value'>;
 
-export function RwdConfig({ children }: Props) {
+export default function RwdConfig({ children }: Props) {
   const [layoutConfig, setLayoutConfig] = useState({ ...initialLayoutConfig });
 
   const [layoutState, setLayoutState] = useState({ ...initialLayoutState });
