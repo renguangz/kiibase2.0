@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import Meta from '@/components/Meta';
 import ResourceBase from '/resources/base.json';
 import { SWRConfig } from 'swr';
-import { RwdConfig } from '@/contexts/rwd-config';
+import RwdConfig from '@/contexts/rwd-config';
 import MSWConfig from '@/contexts/msw';
 import AuthConfig from '@/contexts/auth';
 import { request } from '@/utils/request';
