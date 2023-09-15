@@ -39,7 +39,7 @@ export function createFetchWithCallback(
   };
 }
 
-function cloneRequest(req: RequestInfo | URL) {
+function cloneRequest(req: RequestInfo) {
   return req instanceof Request ? req.clone() : req;
 }
 
