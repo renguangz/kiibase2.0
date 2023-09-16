@@ -1,5 +1,8 @@
 {
-  "private": true,
+  "name": "kiibase",
+  "version": "2.0.0",
+  "private": "true",
+  "description": "",
   "scripts": {
     "dev": "next dev",
     "dev:test": "export NODE_ENV=\"test\" && next dev",
