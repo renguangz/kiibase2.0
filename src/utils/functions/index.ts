@@ -12,7 +12,7 @@ export const isDate = (value: unknown): value is Date => value instanceof Date;
 
 export const isEmptyString = (value: string) => value.trim() === '';
 
-export const hasTitleRule = <T>(item: T) => 'title' in item;
+export const hasTitleRule = <T extends object>(item: T) => 'title' in item;
 
 export const isEveryItemHasTitle = isEvery(hasTitleRule);
 
