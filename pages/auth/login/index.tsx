@@ -1,5 +1,5 @@
-import type {ReactElement} from 'react';
-import type {NextPageWithLayout} from '/pages/_app';
+import type { ReactElement } from 'react';
+import type { NextPageWithLayout } from '/pages/_app';
 import { Loginform } from '@/components/LoginForm';
 import { LogoImg, Wrapper } from '@/layouts/layout/AppTopbar';
 import Logo from '/public/Logo.svg';
@@ -14,11 +14,10 @@ const AuthLoginPage: NextPageWithLayout = () => {
       <Loginform />
     </div>
   );
-}
-
-AuthLoginPage.getLayout = function getLayout(page: ReactElement) {
-  return <AuthLayout>{page}</AuthLayout>
 };
 
+AuthLoginPage.getLayout = function getLayout(page: ReactElement) {
+  return <AuthLayout>{page}</AuthLayout>;
+};
 
 export default AuthLoginPage;

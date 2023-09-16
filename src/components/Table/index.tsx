@@ -158,7 +158,7 @@ function checkboxColumnTemplate() {
 }
 
 function fullImageColumnTemplate(column: Field) {
-  return (data: any) => {
+  return function FullImageColumnTemplate(data: any) {
     const imgData = useMemo(() => (column.field ? data[column.field] : null), [column, data]);
 
     return (
@@ -177,7 +177,7 @@ const EditColumnWrapper = styled.div`
 `;
 
 function editColumnTemplate(handleDelete: (id: string | number) => void, cannotDelete?: boolean) {
-  return (data: { id: string | number }) => {
+  return function EditColumnTemplate(data: { id: string | number }) {
     const router = useRouter();
     const { asPath } = router;
 
@@ -211,7 +211,7 @@ function editColumnTemplate(handleDelete: (id: string | number) => void, cannotD
 export type StatusType = 'success' | 'danger' | 'warning' | undefined;
 
 function statusTemplate(column: Field) {
-  return (data: any) => {
+  return function StatusTemplate(data: any) {
     const tagData: { value: string; status: StatusType } | null = useMemo(
       () => (column.field ? data[column.field] : null),
       [column, data],
@@ -222,7 +222,7 @@ function statusTemplate(column: Field) {
 }
 
 function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isNumberInput: boolean) {
-  return (data: any) => {
+  return function InputeTemplate(data: any) {
     useEffect(() => {
       form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
     }, [data]);
@@ -241,7 +241,7 @@ function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isN
 }
 
 function selectTemplate(column: Field, form: UseFormReturn<FieldValues, any>) {
-  return (data: any) => {
+  return function SelectTemplate(data: any) {
     const options = useMemo(
       () => column.options?.map((option) => ({ value: option.key, label: option.value })) ?? [],
       [column],

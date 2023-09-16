@@ -24,7 +24,7 @@ export function withFilterField(component: FilterComponentType) {
 
   return function (componentTestId?: string) {
     return function (label?: string) {
-      return function (props: any) {
+      return function FilterLayout(props: any) {
         return (
           <FilterLayoutField label={label}>
             <Component data-testid={componentTestId} {...props} />

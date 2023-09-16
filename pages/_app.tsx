@@ -7,7 +7,6 @@ import ResourceBase from '/resources/base.json';
 import { SWRConfig } from 'swr';
 import RwdConfig from '@/contexts/rwd-config';
 import MSWConfig from '@/contexts/msw';
-import AuthConfig from '@/contexts/auth';
 
 import 'primeicons/primeicons.css';
 import 'primereact/resources/primereact.css';
@@ -30,18 +29,15 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <AuthConfig>
-        <RwdConfig>
-          <SWRConfig value={generateSWRConfig(router)}>
-            <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
-          </SWRConfig>
-        </RwdConfig>
-      </AuthConfig>
+      <RwdConfig>
+        <SWRConfig value={generateSWRConfig(router)}>
+          <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
+        </SWRConfig>
+      </RwdConfig>
       <Meta {...ResourceBase} />
     </>
   );
 }
-
 
 import { request } from '@/utils/request';
 function generateSWRConfig(router: ReturnType<typeof useRouter>) {
