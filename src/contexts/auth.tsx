@@ -1,7 +1,7 @@
 import type { ComponentProps, Dispatch, SetStateAction } from 'react';
 import type { NextRouter } from 'next/router';
 import { createContext, useContext, useEffect, useState } from 'react';
-import getNavItem from '@/api/v2/get-navi-item';
+import getMe from '@/api/v2/get-me';
 import { useRouter } from 'next/router';
 import Loading from '@/components/Loading';
 
@@ -19,7 +19,7 @@ export default function AuthConfig({ children }: Props) {
   const router = useRouter();
 
   useEffect(() => {
-    httpNaviItemGET(setPermission, router);
+    httpMeGET(setPermission, router);
   }, []);
 
   const context = {
@@ -36,8 +36,8 @@ export function useAuthConfig() {
   return useContext(Context);
 }
 
-async function httpNaviItemGET(setPermission: Dispatch<SetStateAction<boolean>>, router: NextRouter) {
-  await getNavItem({
+async function httpMeGET(setPermission: Dispatch<SetStateAction<boolean>>, router: NextRouter) {
+  await getMe({
     successCallback: (response, request) => {
       setPermission(true);
     },
