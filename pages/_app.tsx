@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 import Meta from '@/components/Meta';
 import ResourceBase from '/resources/base.json';
 import { SWRConfig } from 'swr';
+import AuthConfig from '/src/contexts/auth';
 import RwdConfig from '@/contexts/rwd-config';
 import MSWConfig from '@/contexts/msw';
 
@@ -29,11 +30,13 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <>
-      <RwdConfig>
-        <SWRConfig value={generateSWRConfig(router)}>
-          <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
-        </SWRConfig>
-      </RwdConfig>
+      <AuthConfig>
+        <RwdConfig>
+          <SWRConfig value={generateSWRConfig(router)}>
+            <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
+          </SWRConfig>
+        </RwdConfig>
+      </AuthConfig>
       <Meta {...ResourceBase} />
     </>
   );
