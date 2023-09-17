@@ -5,6 +5,14 @@ const nextConfig = {
     styledComponents: true,
   },
   reactStrictMode: true,
+  async rewrites() {
+    return [
+      {
+        source: '/',
+        destination: '/auth/login',
+      },
+    ];
+  },
 };
 
 module.exports = nextConfig;
