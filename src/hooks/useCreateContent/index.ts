@@ -22,6 +22,7 @@ const mapping: MappingType[] = [
   { name: 'input', component: 'InputTextComponent' },
   { name: 'textarea', component: 'TextareaComponent' },
   { name: 'singleselect', component: 'SingleSelectComponent' },
+  { name: 'multipleselect', component: 'MultipleSelectComponent' },
   { name: 'imageupload', component: 'ImageUploadComponent' },
   { name: 'datepicker', component: 'CalendarComponent' },
   { name: 'editor', component: 'EditorComponent' },
