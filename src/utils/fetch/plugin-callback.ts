@@ -1,38 +1,25 @@
-export function createFetchWithCallback(
-  fetch: Fetch,
-  callback?: FetchCallback
-): Fetch {
+export function createFetchWithCallback(fetch: Fetch, callback?: FetchCallback): Fetch {
   return function (url, options) {
-    const {
-      successCallback,
-      errorCallback,
-      successAsync,
-      errorAsync,
-      exceptionCallback,
-    } = callback ?? {};
+    const { successCallback, errorCallback, successAsync, errorAsync, exceptionCallback } = callback ?? {};
 
     return fetch(cloneRequest(url), options)
-      .then(response => {
+      .then((response) => {
         if (response.ok) {
-          successCallback &&
-            successCallback(cloneResponse(response), cloneRequest(url));
+          successCallback && successCallback(cloneResponse(response), cloneRequest(url));
         } else {
-          errorCallback &&
-            errorCallback(cloneResponse(response), cloneRequest(url));
+          errorCallback && errorCallback(cloneResponse(response), cloneRequest(url));
         }
         return response;
       })
-      .then(async response => {
+      .then(async (response) => {
         if (response.ok) {
-          successAsync &&
-            (await successAsync(cloneResponse(response), cloneRequest(url)));
+          successAsync && (await successAsync(cloneResponse(response), cloneRequest(url)));
         } else {
-          errorAsync &&
-            (await errorAsync(cloneResponse(response), cloneRequest(url)));
+          errorAsync && (await errorAsync(cloneResponse(response), cloneRequest(url)));
         }
         return response;
       })
-      .catch(error => {
+      .catch((error) => {
         exceptionCallback && exceptionCallback(error);
         return error;
       });

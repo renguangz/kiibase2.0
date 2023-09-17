@@ -56,7 +56,7 @@ export type EnhanceFilterFieldProps = Record<'label' | 'required' | string, any>
 export function enhanceFilterField(component: string) {
   const Component = mapStringToComponent(component);
 
-  return function (props: EnhanceFilterFieldProps) {
+  return function EnhanceFilterField(props: EnhanceFilterFieldProps) {
     return (
       <Wrapper>
         {props.label && (
