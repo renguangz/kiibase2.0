@@ -7,7 +7,7 @@ import { useRouter } from 'next/router';
 type AuthConfigType = {
   permission: boolean;
   setPermission: Dispatch<SetStateAction<boolean>>;
-  handlePermissionUpdate: () => void;
+  handlePermissionUpdate: () => Promise<Response>;
 };
 
 const Context = createContext<AuthConfigType>(null!);
@@ -34,7 +34,7 @@ export function useAuthConfig() {
 }
 
 async function httpMeGET(setPermission: Dispatch<SetStateAction<boolean>>, router: NextRouter) {
-  await getMe({
+  return await getMe({
     successCallback: (response, request) => {
       setPermission(true);
     },
