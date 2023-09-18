@@ -1,9 +1,9 @@
 import { PUBLIC_API_TIMEOUT, PUBLIC_JWT_COOKIE_NAME } from '/config/env';
-import { endpointNaviItemGET } from './base/endpoint';
+import { endpointMeGET } from './base/endpoint';
 import createFetchWithPlugins from '/src/utils/fetch';
 import Cookies from 'js-cookie';
 
-export default function getNaviItem(callback?: FetchPluginOptions['callback']) {
+export default function getMe(callback?: FetchPluginOptions['callback']) {
   const fetchPlus = createFetchWithPlugins({
     timeout: PUBLIC_API_TIMEOUT,
     callback,
@@ -13,7 +13,7 @@ export default function getNaviItem(callback?: FetchPluginOptions['callback']) {
     }),
   });
 
-  const request = new Request(endpointNaviItemGET());
+  const request = new Request(endpointMeGET());
 
   return fetchPlus(request);
 }
