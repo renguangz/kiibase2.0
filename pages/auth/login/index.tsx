@@ -5,7 +5,7 @@ import { useRouter } from 'next/router';
 import { Loginform } from '@/components/LoginForm';
 import { LogoImg, Wrapper } from '@/layouts/layout/AppTopbar';
 import Logo from '/public/Logo.svg';
-import { AuthLayout } from '@/layouts/AuthLayout';
+import AuthLayout from '@/layouts/AuthLayout';
 import { useAuthConfig } from '/src/contexts/auth';
 import Loading from '/src/components/Loading';
 

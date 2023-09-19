@@ -63,32 +63,44 @@ export function Loginform() {
 
   return (
     <Wrapper>
-      <LoginMessageWrapper>
-        <MessageWrapper shouldDisplay={loginResponseMessage !== null}>
-          {loginResponseMessage && <Message severity={loginResponseMessage.type} text={loginResponseMessage.message} />}
-        </MessageWrapper>
-      </LoginMessageWrapper>
-      <TitleWrapper>
-        <Title>登入</Title>
-      </TitleWrapper>
-      <InputWrapper>
-        <Label>帳號</Label>
-        <Input data-testid="authAccount" value={account} onChange={(e) => setAccount(e.target.value)} />
-      </InputWrapper>
-      <InputWrapper>
-        <Label>密碼</Label>
-        <Input
-          data-testid="authPassword"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </InputWrapper>
-      <ButtonWrapper>
-        <StyledButton data-testid="authLogin" type="button" onClick={handleLogin} disabled={loginDisabled}>
-          登入
-        </StyledButton>
-      </ButtonWrapper>
+      <form style={{ display: 'contents' }}>
+        <LoginMessageWrapper>
+          <MessageWrapper shouldDisplay={loginResponseMessage !== null}>
+            {loginResponseMessage && (
+              <Message severity={loginResponseMessage.type} text={loginResponseMessage.message} />
+            )}
+          </MessageWrapper>
+        </LoginMessageWrapper>
+        <TitleWrapper>
+          <Title>登入</Title>
+        </TitleWrapper>
+        <InputWrapper>
+          <Label>帳號</Label>
+          <Input data-testid="authAccount" value={account} onChange={(e) => setAccount(e.target.value)} />
+        </InputWrapper>
+        <InputWrapper>
+          <Label>密碼</Label>
+          <Input
+            data-testid="authPassword"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </InputWrapper>
+        <ButtonWrapper>
+          <StyledButton
+            data-testid="authLogin"
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+            disabled={loginDisabled}
+          >
+            登入
+          </StyledButton>
+        </ButtonWrapper>
+      </form>
     </Wrapper>
   );
 }
