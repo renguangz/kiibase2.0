@@ -1,0 +1,119 @@
+{
+  "status": 200,
+  "message": "Success",
+  "data": {
+    "create_button": true,
+    "delete_button": true,
+    "list": [
+      {
+        "title": "",
+        "type": "__checkbox"
+      },
+      {
+        "title": "ID",
+        "name": "id",
+        "type": "label",
+        "sort_field": "id"
+      },
+      {
+        "title": "國家分類",
+        "name": "name",
+        "type": "label",
+        "sort_field": "name"
+      },
+      {
+        "title": "建立時間",
+        "name": "created_at",
+        "type": "label",
+        "sort_field": "created_at"
+      },
+      {
+        "title": "城市機場",
+        "type": "__slot:button"
+      },
+      {
+        "title": "操作",
+        "type": "__slot:actions"
+      }
+    ],
+    "date_filter": false,
+    "date_filter_column": [],
+    "detailExtend": true,
+    "field": [
+      {
+        "type": "Input",
+        "inputType": "text",
+        "label": "角色名稱",
+        "model": "name",
+        "required": true,
+        "readonly": false,
+        "disabled": false,
+        "hint": "無效的內容",
+        "default": ""
+      },
+      {
+        "default": "",
+        "hint": "此欄位必填",
+        "label": "模組",
+        "model": "modules",
+        "options": [
+          {
+            "id": "1",
+            "name": "出發地、抵達地搜尋選單"
+          },
+          {
+            "id": "2",
+            "name": "使用者管理"
+          }
+        ],
+        "readonly": false,
+        "required": true,
+        "type": "MultipleSelect"
+      },
+      {
+        "default": "",
+        "hint": "此欄位必填",
+        "label": "模組",
+        "model": "api_functions",
+        "options": [
+          {
+            "id": "1",
+            "name": "GET: /model/search-location"
+          },
+          {
+            "id": "2",
+            "name": "GET: /model/search-location/:id"
+          },
+          {
+            "id": "3",
+            "name": "POST: /model/auth/role/create"
+          },
+          {
+            "id": "4",
+            "name": "GET: /model/search-location/getConfig"
+          },
+          {
+            "id": "5",
+            "name": "PUT: /model/auth/role/:id"
+          },
+          {
+            "id": "6",
+            "name": "GET: /model/auth/role/getConfig"
+          }
+        ],
+        "readonly": false,
+        "required": true,
+        "type": "MultipleSelect"
+      }
+    ],
+    "repeatField": [
+      {
+        "field": "account",
+        "label": "帳號"
+      }
+    ],
+    "topic": "角色清單",
+    "is_single_data": false,
+    "single_data_id": null
+  }
+}

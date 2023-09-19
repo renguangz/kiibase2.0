@@ -6,6 +6,8 @@ import UploadImageData from '@/mocks/db/utils/uploadFile/uploadImage.json';
 import BannerConfig from '@/mocks/db/utils/getConfig/bannerConfig.json';
 import MachineConfig from '@/mocks/db/utils/getConfig/machineConfig.json';
 import AdminUserConfig from '@/mocks/db/utils/getConfig/adminUserConfig.json';
+import BigdragonRoleConfig from '@/mocks/db/utils/getConfig/bigdragon/roleConfig.json';
+import CreateBigdragonRoleSuccess from '@/mocks/db/utils/CreateContent/bigdragon/CreateRoleSuccess.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';
@@ -286,6 +288,62 @@ describe('ContentCreatePage', () => {
       expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine', {
         method: 'POST',
         body: expectBody,
+      });
+    });
+  });
+
+  describe('Bigdragon', () => {
+    describe('Role', () => {
+      let result: {
+        title: HTMLElement | null;
+        linkButton: HTMLLinkElement;
+        submitButton: HTMLButtonElement;
+        form: UseFormReturn<FieldValues, any>;
+      };
+
+      beforeEach(() => {
+        mockAsPath.mockReturnValue('/role/create');
+        result = setup('角色清單建立', '角色清單列表', BigdragonRoleConfig);
+      });
+
+      afterEach(() => {
+        jest.clearAllMocks();
+      });
+
+      it('should have two multiple select fields for module and api_function', async () => {
+        (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
+          url.includes('/model/role') ? CreateBigdragonRoleSuccess : undefined,
+        );
+
+        const { submitButton } = result;
+        const nameInput = screen.getByRole('textbox');
+        await userEvent.type(nameInput, 'testRole');
+        const multipleSelectBoxes = screen.getAllByRole('listbox');
+        expect(multipleSelectBoxes).toHaveLength(2);
+        const modulesSelect = multipleSelectBoxes[0];
+        const apiFunctionsSelect = multipleSelectBoxes[1];
+        await userEvent.click(modulesSelect);
+        const authModuleOption = screen.queryByText(/使用者管理/i) as HTMLButtonElement;
+        expect(authModuleOption).toBeInTheDocument();
+        await userEvent.click(authModuleOption);
+        await userEvent.click(apiFunctionsSelect);
+        const postRoleCreateOption = screen.queryByText(/post: \/model\/auth\/role\/create/i) as HTMLButtonElement;
+        const getRoleConfigOption = screen.queryByText(/get: \/model\/auth\/role\/getConfig/i) as HTMLButtonElement;
+        expect(postRoleCreateOption).toBeInTheDocument();
+        expect(getRoleConfigOption).toBeInTheDocument();
+        await userEvent.click(postRoleCreateOption);
+        await userEvent.click(getRoleConfigOption);
+        await userEvent.click(submitButton);
+
+        const body = JSON.stringify({
+          name: 'testRole',
+          modules: ['2'],
+          api_functions: ['3', '6'],
+        });
+        expect(requestUtils.request).toHaveBeenLastCalledWith('/model/role', {
+          method: 'POST',
+          body,
+        });
       });
     });
   });

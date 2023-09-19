@@ -7,6 +7,7 @@ import { DropdownField } from './DropDownField';
 import { EditorField } from './EditorField';
 import { ImageUploadField } from './ImageUploadField';
 import { InputTextField } from './InputTextField';
+import { MultipleSelectField } from './MulitpleSelectField';
 import { NotFoundField } from './NotFoundField';
 import { TextareaField } from './TextareaField';
 
@@ -19,6 +20,7 @@ const mapping = [
   { name: 'TextareaComponent', component: TextareaField },
   { name: 'CalendarComponent', component: CalendarField },
   { name: 'SingleSelectComponent', component: DropdownField },
+  { name: 'MultipleSelectComponent', component: MultipleSelectField },
   { name: 'ImageUploadComponent', component: ImageUploadField },
   { name: 'EditorComponent', component: EditorField },
 ];
