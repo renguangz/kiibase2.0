@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { Code, MarkdownTable, TogglePara } from '/src/components/Markdowns';
 import { CodeData } from '/src/utils/data/readme/codes';
 import { TableColumns, TableData } from '/src/utils/data/readme/tables';
+import { Button } from 'primereact/button';
 
 const Wrapper = styled.div`
   background: #0d1116;
@@ -48,9 +49,20 @@ export const CodeText = styled.code`
   fonit-size: 13px;
 `;
 
+const FixedButton = styled.a`
+  all: unset;
+  position: fixed;
+  z-index: 10;
+  bottom: 32px;
+  right: 32px;
+`;
+
 export default function ReadmePage() {
   return (
     <Wrapper>
+      <FixedButton target="_blank" href="/demo">
+        <Button type="button">Try it out</Button>
+      </FixedButton>
       <Title>KiiBase v2.0</Title>
       <Title2>What is this?</Title2>
       <Para>讓後端開發者可以透過 api 決定後台需要的元件，讓後端人員能夠更專注在處理後端邏輯</Para>
