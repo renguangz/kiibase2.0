@@ -57,7 +57,13 @@ export function MarkdownTable({ columns, dataSource }: MarkdownTableProps) {
               const value: TableDataContent = data[column.value];
               return (
                 <Td key={`${column.value}-${index}-${idx}`}>
-                  {areCodeTextType(value.content) ? <Code contents={value.content} /> : value.content}
+                  {areCodeTextType(value.content) ? (
+                    <div style={{ paddingTop: 12 }}>
+                      <Code contents={value.content} />
+                    </div>
+                  ) : (
+                    value.content
+                  )}
                 </Td>
               );
             })}

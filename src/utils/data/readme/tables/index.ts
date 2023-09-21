@@ -47,14 +47,26 @@ export const TableData: Record<string, Array<Record<string, TableDataContent>>> 
 
   detailPageComponent: [
     { component_type: { type: 'text', content: 'Label' }, content: { type: 'text', content: '純文字' } },
-    { component_type: { type: 'text', content: 'Textarea' }, content: { type: 'text', content: '勾選' } },
-    { component_type: { type: 'text', content: 'Input' }, content: { type: 'text', content: '下拉選單(單選)' } },
-    { component_type: { type: 'text', content: 'SingleSelect' }, content: { type: 'text', content: '數字輸入框' } },
-    { component_type: { type: 'text', content: 'MultipleSelect' }, content: { type: 'text', content: '數字輸入框' } },
-    { component_type: { type: 'text', content: 'ImageUpload' }, content: { type: 'text', content: '輸入框' } },
+    {
+      component_type: { type: 'text', content: 'Textarea' },
+      content: { type: 'text', content: CodeData.detailTextarea },
+    },
+    { component_type: { type: 'text', content: 'Input' }, content: { type: 'text', content: CodeData.detailInput } },
+    {
+      component_type: { type: 'text', content: 'SingleSelect' },
+      content: { type: 'text', content: CodeData.detailSingleSelect },
+    },
+    {
+      component_type: { type: 'text', content: 'MultipleSelect' },
+      content: { type: 'text', content: CodeData.detailMultipleSelect },
+    },
+    {
+      component_type: { type: 'text', content: 'ImageUpload' },
+      content: { type: 'text', content: CodeData.detailImageUpload },
+    },
     {
       component_type: { type: 'text', content: 'QuillEditor' },
-      content: { type: 'text', content: CodeData.getNaviItem },
+      content: { type: 'text', content: CodeData.detailEditor },
     },
   ],
 };
