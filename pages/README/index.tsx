@@ -1,7 +1,6 @@
 import styled from 'styled-components';
 import { Code, MarkdownTable, TogglePara } from '/src/components/Markdowns';
 import { CodeData } from '/src/utils/data/readme/codes';
-import { useReadme } from '/src/hooks';
 import { TableColumns, TableData } from '/src/utils/data/readme/tables';
 
 const Wrapper = styled.div`
@@ -58,16 +57,29 @@ export default function ReadmePage() {
       <Title2>Auth</Title2>
       <TogglePara element={<Code contents={CodeData.postLogin} />}>
         <Para>
-          登入：<CodeText>method: POST, endpoint: /api/login</CodeText>
+          登入 API Example：<CodeText>method: POST, endpoint: /api/login</CodeText>
         </Para>
       </TogglePara>
       <Title2>NavItem</Title2>
       <TogglePara element={<Code contents={CodeData.getNaviItem} />}>
         <Para>
-          側邊欄資料：<CodeText>method: GET, endpoint: /api/naviItem</CodeText>
+          側邊欄資料 API Example：<CodeText>method: GET, endpoint: /api/naviItem</CodeText>
         </Para>
       </TogglePara>
       <Para>目前路由都只能單一層</Para>
+      <Title2>getConfig</Title2>
+      <Para>
+        列表頁、新增頁渲染元件設定：<CodeText>method: GET, endpoint: /api/{'{model}'}/getConfig</CodeText>
+      </Para>
+      <Para>
+        編輯渲染元件設定：
+        <CodeText>
+          method: GET, endpoint: /api/{'{model}'}/{'{id}'}/getConfig
+        </CodeText>
+      </Para>
+      <TogglePara element={<Code contents={CodeData.getConfig} />}>
+        <Para>API Example</Para>
+      </TogglePara>
       <Title2>List Page</Title2>
       <Title2>Create Page</Title2>
       <Title2>Edit Page</Title2>

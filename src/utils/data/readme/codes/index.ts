@@ -7,6 +7,7 @@ import { detailMultipleSelect } from './detailMultipleSelect';
 import { detailEditor } from './detailEditor';
 import { detailTextarea } from './detailTextarea';
 import { detailImageUpload } from './detailImageUpload';
+import { getConfig } from './getConfig';
 
 export const CodeData: Record<string, CodeTextType[]> = {
   postLogin,
@@ -17,4 +18,5 @@ export const CodeData: Record<string, CodeTextType[]> = {
   detailEditor,
   detailTextarea,
   detailImageUpload,
+  getConfig,
 };
