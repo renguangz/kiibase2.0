@@ -1,4 +1,4 @@
-import { Button } from 'primereact/button';
+// import { Button } from 'primereact/button';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -11,13 +11,13 @@ const Wrapper = styled.div`
   margin-bottom: 16px;
 `;
 
-const PasteButton = styled(Button)`
-  position: absolute;
-  right: 40px;
-  transform: translate(0, -8px) rotate(90deg);
-  width: 32px;
-  height: 34px;
-`;
+// const PasteButton = styled(Button)`
+//   position: absolute;
+//   right: 40px;
+//   transform: translate(0, -8px) rotate(90deg);
+//   width: 32px;
+//   height: 34px;
+// `;
 
 const ContentWrapper = styled.div`
   display: flex;
@@ -65,7 +65,7 @@ export interface CodeProps {
 export function Code({ contents }: CodeProps) {
   return (
     <Wrapper>
-      <PasteButton type="button" outlined icon="pi pi-clone" severity="secondary"></PasteButton>
+      {/* <PasteButton type="button" outlined icon="pi pi-clone" severity="secondary"></PasteButton> */}
       <ContentWrapper>
         <pre>
           {contents.map((content, index) =>
