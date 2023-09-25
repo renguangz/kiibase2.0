@@ -111,7 +111,7 @@ export default function ReadmePage() {
       </TogglePara>
       <Title2>Create Page</Title2>
       <Para>
-        需呼叫 <CodeText>/api/{'{ model }'}/getConfig</CodeText>
+        需呼叫 <CodeText>/api/{'{model}'}/getConfig</CodeText>
       </Para>
       <TogglePara element={<Code contents={CodeData.postCreatePage} />}>
         <Para>
@@ -122,7 +122,7 @@ export default function ReadmePage() {
       <Para>
         需呼叫{' '}
         <CodeText>
-          /api/{'{ model }'}/{'id'}/getConfig
+          /api/{'{model}'}/{'id'}/getConfig
         </CodeText>
       </Para>
       <TogglePara element={<Code contents={CodeData.putUpdatePage} />}>
