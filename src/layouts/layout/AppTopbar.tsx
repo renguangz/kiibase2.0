@@ -9,7 +9,6 @@ import { useRouter } from 'next/router';
 import { useLogout } from '@/hooks';
 import { COLORS } from '@/utils';
 import { StyledButton } from '@/components/common';
-import Logo from '/public/Logo.svg';
 import Link from 'next/link';
 
 export const Wrapper = styled.div`
@@ -96,8 +95,8 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
 
   return (
     <Wrapper className="layout-topbar">
-      <Link href="/adminUser">
-        <LogoImg src={Logo.src} alt="logo" />
+      <Link href="/">
+        <LogoImg src="/logo.png" alt="logo" />
       </Link>
       <Button
         ref={menubuttonRef}

@@ -45,7 +45,7 @@ export function useLogin() {
       setLoginResponseMessage({ type: 'success', message: '登入成功' });
       const token = result.data.token;
       Cookies.set('token', token, { expires: 7 });
-      push('/adminUser');
+      push('/demo');
       setAccount('');
       mutate('/menuItemNavi');
       mutate('/subMenuNavi');

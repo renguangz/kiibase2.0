@@ -61,7 +61,7 @@ export default function ReadmePage() {
   return (
     <Wrapper>
       <FixedButton target="_blank" href="/demo">
-        <Button type="button">Try it out</Button>
+        <Button type="button">Demo</Button>
       </FixedButton>
       <Title>KiiBase v2.0</Title>
       <Para>
