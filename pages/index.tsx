@@ -1,7 +1,6 @@
 import Link from 'next/link';
 
 export default function HomePage() {
-  console.log('vercel');
   return (
     <div>
       <h1>TODO</h1>
