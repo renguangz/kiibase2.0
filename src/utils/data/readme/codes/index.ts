@@ -8,6 +8,11 @@ import { detailEditor } from './detailEditor';
 import { detailTextarea } from './detailTextarea';
 import { detailImageUpload } from './detailImageUpload';
 import { getConfig } from './getConfig';
+import { getListPage } from './getListPage';
+import { postCreatePage } from './postCreatePage';
+import { putUpdatePage } from './putUpdatePage';
+import { deleteData } from './deleteData';
+import { registerUser } from './registerUser';
 
 export const CodeData: Record<string, CodeTextType[]> = {
   postLogin,
@@ -19,4 +24,9 @@ export const CodeData: Record<string, CodeTextType[]> = {
   detailTextarea,
   detailImageUpload,
   getConfig,
+  getListPage,
+  postCreatePage,
+  putUpdatePage,
+  deleteData,
+  registerUser,
 };
