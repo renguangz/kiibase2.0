@@ -64,7 +64,6 @@ export default function ReadmePage() {
         <Button type="button">Try it out</Button>
       </FixedButton>
       <Title>KiiBase v2.0</Title>
-      {/* FIXME: 這邊讓使用者點擊滑到下面 */}
       <Para>
         Kiibase v2.0 是一個後台系統，透過 API
         傳遞設定檔，快速生成後台畫面，讓後端開發者能夠專注於後端開發，無需等待前端介入。只需簡單地創建模組並設定相關參數，就能輕鬆生成所需的後台界面，提高開發效率，節省時間和資源。這個系統的目的是讓開發流程更加順暢，減少前後端協作的瓶頸，讓開發工作更加高效。
@@ -76,7 +75,6 @@ export default function ReadmePage() {
         </Para>
       </TogglePara>
       <TogglePara element={<Code contents={CodeData.registerUser} />}>
-        {/* FIXME: 這邊讓使用者點擊滑到下面 */}
         <Para>
           註冊使用者(目前沒有在前端上面實作，若要創建使用者，前端可以在 Create Page 完成) API Example：
           <CodeText>method: POST, endpoint: /api/register</CodeText>
@@ -94,7 +92,6 @@ export default function ReadmePage() {
         列表頁、新增頁渲染元件設定：<CodeText>method: GET, endpoint: /api/{'{model}'}/getConfig</CodeText>
       </Para>
       <Para>
-        {/* FIXME: 這邊讓使用者點擊滑到下面 */}
         編輯渲染元件設定 API Example：
         <CodeText>
           method: GET, endpoint: /api/{'{model}'}/{'{id}'}/getConfig
