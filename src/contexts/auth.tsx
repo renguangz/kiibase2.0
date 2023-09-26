@@ -40,7 +40,7 @@ async function httpMeGET(setPermission: Dispatch<SetStateAction<boolean>>, route
     },
     errorCallback: (response, request) => {
       // FIXME: 這邊有問題，在進入內頁會是 `/[content]/create`
-      if (router.asPath.includes('/demo')) {
+      if (router.asPath.includes('/demo') || router.asPath.includes('/readme')) {
         setPermission(true);
         return;
       }
