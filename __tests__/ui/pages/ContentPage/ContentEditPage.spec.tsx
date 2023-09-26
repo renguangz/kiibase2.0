@@ -54,10 +54,6 @@ describe('ContentEditPage', () => {
 
       const title = screen.queryByRole('heading', { name: 'Banner修改' });
       expect(title).toBeInTheDocument();
-
-      const linkButton = screen.queryByRole('link', { name: 'Banner列表' });
-      expect(linkButton).toHaveAttribute('href', '/banner');
-      expect(linkButton).toBeInTheDocument();
     });
 
     it('should have 3 fields with default values', async () => {

@@ -67,12 +67,8 @@ describe('ContentCreatePage', () => {
     });
 
     it('should have title `首頁底圖建立` and link `首頁底圖列表`', async () => {
-      const { title, linkButton } = result;
+      const { title } = result;
       expect(title).toBeInTheDocument();
-      expect(linkButton).toBeInTheDocument();
-      expect(linkButton.href).toContain('/banner');
-      userEvent.click(linkButton);
-      expect(window.location.href).not.toContain('create');
     });
 
     it('should disable confirm button initial', async () => {

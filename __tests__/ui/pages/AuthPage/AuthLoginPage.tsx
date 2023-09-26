@@ -5,6 +5,15 @@ import SuccessLogin from '@/mocks/db/utils/auth/successLogin.json';
 import FailLogin from '@/mocks/db/utils/auth/failLogin.json';
 import * as requestUtils from '@/utils/request';
 
+jest.mock('@/contexts/auth', () => ({
+  useAuthConfig: () => ({
+    handlePermissionUpdate: () =>
+      Promise.resolve({
+        ok: false,
+      }),
+  }),
+}));
+
 jest.mock('@/utils/request', () => ({
   ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
