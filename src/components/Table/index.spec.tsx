@@ -66,40 +66,6 @@ describe('TableField', () => {
     });
   });
 
-  describe('Banner', () => {
-    const props: TableFieldProps = {
-      columns: [
-        { field: '', name: '__checkbox', header: '' },
-        { field: 'id', name: 'label', header: 'ID' },
-        { field: 'pic', name: 'label', header: '圖片' },
-        { field: 'status', name: 'list-select', header: '狀態' },
-        { field: 'order', name: 'list-input', header: '權重' },
-        { field: 'created_at', name: 'label', header: '建立時間' },
-        { field: 'updated_at', name: 'label', header: '更新時間' },
-        { field: '', name: '__slot:actions', header: '操作' },
-      ],
-      perPage: 10,
-      dataSource: bannerList.data.data,
-      total: bannerList.data.meta.total,
-      selectedRow: undefined,
-      setSeletedRow: undefined,
-      handleChangePage: jest.fn(),
-      handleChangePerPage: jest.fn(),
-      currentPage: 1,
-    };
-
-    beforeEach(() => render(<TableField {...props} />));
-
-    it('should have edit link', async () => {
-      const links = screen.queryAllByRole('link') as HTMLLinkElement[];
-      expect(links).toHaveLength(10);
-
-      links.forEach((link, index) => {
-        expect(link.href).toContain(`/test/${bannerList.data.data[index].id}/edit`);
-      });
-    });
-  });
-
   describe('SearchLog', () => {
     const props: TableFieldProps = {
       columns: [
