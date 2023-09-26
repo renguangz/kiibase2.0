@@ -49,7 +49,7 @@ function generateSWRConfig(router: ReturnType<typeof useRouter>) {
     shouldRetryOnError: false,
     fetcher: request,
     onError: (error: any) => {
-      if (router.asPath.includes('/demo') || router.asPath === '/readme') return;
+      if (router.asPath.includes('/demo')) return;
       error === 'Unauthorized' ? router.push('/auth/login') : router.push('/');
     },
   };
