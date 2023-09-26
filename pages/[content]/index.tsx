@@ -72,8 +72,8 @@ export default function ContentListPage() {
         text={`${data?.topic}列表`}
         button={
           data?.create_button && (
-            <StyledButton variant="outline">
-              <StyledLink href={`${asPath}/create`}>建立新的{data.topic}</StyledLink>
+            <StyledButton onClick={() => router.push(`${asPath}/create`)} variant="outline">
+              <StyledLink>建立新的{data.topic}</StyledLink>
             </StyledButton>
           )
         }
@@ -143,5 +143,5 @@ export const getStaticPaths: GetStaticPaths = async () => {
 };
 
 ContentListPage.getLayout = function (page: ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>
-}
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
