@@ -5,7 +5,6 @@ import { ContentHeader } from '@/components/Content';
 import { PageLayout } from '@/layouts';
 import { COLORS } from '@/utils';
 import { useCreateContent } from '@/hooks/useCreateContent';
-import Link from 'next/link';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { Message } from 'primereact/message';
@@ -32,7 +31,7 @@ export const MessageWrapper = styled.div<MessageWrapperProps>`
   justify-content: center;
 `;
 
-export const StyledLink = styled(Link)`
+export const StyledLink = styled.span`
   color: ${COLORS.primary};
 `;
 
@@ -60,8 +59,8 @@ export default function CreateContentPage() {
       <ContentHeader
         text={`${createConfigData?.topic ?? ''}建立`}
         button={
-          <StyledButton type="button" variant="outline">
-            <StyledLink href={`/${listPageUrl}`}>{createConfigData?.topic}列表</StyledLink>
+          <StyledButton type="button" variant="outline" onClick={() => router.push(`/${listPageUrl}`)}>
+            <StyledLink>{createConfigData?.topic}列表</StyledLink>
           </StyledButton>
         }
       />
@@ -81,5 +80,5 @@ export default function CreateContentPage() {
 }
 
 CreateContentPage.getLayout = function (page: ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>
-}
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

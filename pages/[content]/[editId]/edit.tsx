@@ -59,8 +59,8 @@ export default function EditContentPage() {
         button={
           <ContentHeaderButtonsWrapper>
             {data?.is_single_data ? null : (
-              <StyledButton type="button" variant="outline">
-                <StyledLink href={listPageUrl}>{title}列表</StyledLink>
+              <StyledButton onClick={() => router.push(listPageUrl)} type="button" variant="outline">
+                <StyledLink>{title}列表</StyledLink>
               </StyledButton>
             )}
             {data?.delete_button && (
@@ -87,5 +87,5 @@ export default function EditContentPage() {
 }
 
 EditContentPage.getLayout = function (page: ReactElement) {
-  return <DashboardLayout>{page}</DashboardLayout>
-}
+  return <DashboardLayout>{page}</DashboardLayout>;
+};
