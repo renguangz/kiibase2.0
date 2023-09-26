@@ -37,7 +37,7 @@ export default function HomePage() {
         <Image src="/banner.png" alt="banner" width={600} height={337} />
         <ButtonsWrapper>
           <Button
-            onClick={() => router.push('/readme')}
+            onClick={() => router.push('/doc')}
             type="button"
             outlined
             style={{ width: 100, display: 'flex', justifyContent: 'center', color: '#24526D', borderColor: '#24526D' }}
