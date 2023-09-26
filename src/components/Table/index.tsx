@@ -193,10 +193,8 @@ function editColumnTemplate(handleDelete: (id: string | number) => void, cannotD
 
     return (
       <EditColumnWrapper>
-        <StyledButton type="button" color="primary">
-          <Link href={`${asPath}/${data.id}/edit`} role="link" style={{ color: '#fff' }}>
-            編輯
-          </Link>
+        <StyledButton onClick={() => router.push(`${asPath}/${data.id}/edit`)} type="button" color="primary">
+          編輯
         </StyledButton>
         {cannotDelete ? null : (
           <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
