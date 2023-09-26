@@ -58,6 +58,7 @@ const FixedButton = styled.a`
 `;
 
 export default function ReadmePage() {
+  console.log('vercel');
   return (
     <Wrapper>
       <FixedButton target="_blank" href="/demo">
