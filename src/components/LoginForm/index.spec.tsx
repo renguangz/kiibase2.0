@@ -54,7 +54,7 @@ describe('LoginForm', () => {
 
     act(() => {
       expect(mockRouterPush).toHaveBeenCalledTimes(1);
-      expect(mockRouterPush).toHaveBeenCalledWith('/adminUser');
+      expect(mockRouterPush).toHaveBeenCalledWith('/demo');
       expect(account.value).toBe('');
       expect(password.value).toBe('');
     });

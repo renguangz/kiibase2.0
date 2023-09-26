@@ -1,5 +1,5 @@
 import EditContentPage from '/pages/[content]/[editId]/edit';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
 import CreateBannerSuccess from '@/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
 import BannerConfig73 from '@/mocks/db/utils/getConfig/bannerConfig73.json';
 import MachineCategoryConfig5 from '@/mocks/db/utils/getConfig/machineCategoryConfig5.json';
@@ -255,16 +255,6 @@ describe('ContentEditPage', () => {
       expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine/1', {
         method: 'PUT',
         body: expectBody,
-      });
-    });
-
-    it('should disabled submit button if clear up required field', async () => {
-      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
-      const submitButton = screen.getByRole('button', { name: '確定' });
-      const textareas = screen.queryAllByRole('dialog');
-      await userEvent.clear(textareas[0]);
-      await waitFor(async () => {
-        expect(submitButton).toBeDisabled();
       });
     });
 

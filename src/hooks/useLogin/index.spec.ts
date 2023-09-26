@@ -59,7 +59,7 @@ describe('useLogin', () => {
       expect(result.current.data?.status).toEqual(200);
       expect(result.current.data?.message).toEqual('success');
       expect(mockRouterPush).toHaveBeenCalledTimes(1);
-      expect(mockRouterPush).toHaveBeenCalledWith('/adminUser');
+      expect(mockRouterPush).toHaveBeenCalledWith('/demo');
       expect(result.current.account).toEqual('');
       expect(result.current.password).toEqual('');
     });
