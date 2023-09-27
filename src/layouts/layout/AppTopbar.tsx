@@ -10,6 +10,8 @@ import { useLogout } from '@/hooks';
 import { COLORS } from '@/utils';
 import { StyledButton } from '@/components/common';
 import Link from 'next/link';
+import { useAuthConfig } from '/src/contexts/auth';
+import { Button as PrimeReactButton } from 'primereact/button';
 
 export const Wrapper = styled.div`
   background: #2b3b44;
@@ -83,6 +85,8 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
 
   const { handleLogout } = useLogout();
 
+  const { isAuthenticated } = useAuthConfig();
+
   const [showProfileList, setShowProfileList] = useState(false);
 
   const profiles = useMemo(
@@ -121,21 +125,34 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
         })}
       >
         <div ref={wrapperRef}>
-          <Button
-            type="button"
-            className="p-link layout-topbar-button"
-            onClick={() => setShowProfileList((show) => !show)}
-            onMouseEnter={() => setMouseenterProfilebutton(true)}
-            onMouseOut={() => setMouseenterProfilebutton(false)}
-          >
-            <Icon
-              className="pi pi-user"
-              mouseenter={mouseenterProfileButton}
+          {isAuthenticated ? (
+            <Button
+              type="button"
+              className="p-link layout-topbar-button"
+              onClick={() => setShowProfileList((show) => !show)}
               onMouseEnter={() => setMouseenterProfilebutton(true)}
               onMouseOut={() => setMouseenterProfilebutton(false)}
-            ></Icon>
-            <span>Profile</span>
-          </Button>
+            >
+              <Icon
+                className="pi pi-user"
+                mouseenter={mouseenterProfileButton}
+                onMouseEnter={() => setMouseenterProfilebutton(true)}
+                onMouseOut={() => setMouseenterProfilebutton(false)}
+              ></Icon>
+              <span>Profile</span>
+            </Button>
+          ) : (
+            <PrimeReactButton
+              type="button"
+              className="p-link layout-menu-button"
+              outlined
+              severity="warning"
+              onClick={() => router.push('/auth/login')}
+            >
+              登入
+            </PrimeReactButton>
+          )}
+
           {showProfileList && (
             <OutsideClickHandler wrapperRef={wrapperRef} onOutsideClick={() => setShowProfileList(false)}>
               <ProfileListWrapper>

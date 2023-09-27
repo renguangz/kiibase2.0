@@ -29,7 +29,7 @@ const AuthLoginPage: NextPageWithLayout = () => {
   return (
     <div>
       <Wrapper className="layout-topbar">
-        <LogoImg src="/logo.png" alt="logo" />
+        <LogoImg src="/logo.png" alt="logo" onClick={() => router.push('/')} style={{ cursor: 'pointer' }} />
       </Wrapper>
       <Loginform />
     </div>
