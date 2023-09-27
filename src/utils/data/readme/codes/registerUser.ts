@@ -69,65 +69,6 @@ export const registerUser: CodeTextType[] = [
 
   /* start */
   { type: 'wrap', text: '' },
-  { type: 'text', tabs: 2, text: '"roles"', color: 'blue' },
-  { type: 'text', text: ': [' },
-  /* end */
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 3, text: '{' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 4, text: '"id"', color: 'blue' },
-  { type: 'text', text: ': ' },
-  { type: 'text', text: '"1"', color: 'orange' },
-  { type: 'text', text: ',' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 4, text: '"name"', color: 'blue' },
-  { type: 'text', text: ': ' },
-  { type: 'text', text: '"role"', color: 'orange' },
-  { type: 'text', text: ',' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 4, text: '"created_at"', color: 'blue' },
-  { type: 'text', text: ': ' },
-  { type: 'text', text: '"string"', color: 'orange' },
-  { type: 'text', text: ',' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 4, text: '"updated_at"', color: 'blue' },
-  { type: 'text', text: ': ' },
-  { type: 'text', text: '"string"', color: 'orange' },
-  { type: 'text', text: ',' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 4, text: '"deleted_at"', color: 'blue' },
-  { type: 'text', text: ': ' },
-  { type: 'text', text: '"string"', color: 'orange' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 3, text: '}' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 2, text: '],' },
-  /* end */
-
-  /* start */
-  { type: 'wrap', text: '' },
   { type: 'text', tabs: 2, text: '"created_at"', color: 'blue' },
   { type: 'text', text: ': ' },
   { type: 'text', text: '"string', color: 'orange' },
