@@ -80,6 +80,11 @@ export default function DocPage() {
           <CodeText>method: POST, endpoint: /api/register</CodeText>
         </Para>
       </TogglePara>
+      <TogglePara element={<Code contents={CodeData.resetPassword} />}>
+        <Para>
+          重設密碼 API Example：<CodeText>method: POST, endpoint: /api/resetPassword</CodeText>
+        </Para>
+      </TogglePara>
       <Title2>NavItem</Title2>
       <TogglePara element={<Code contents={CodeData.getNaviItem} />}>
         <Para>

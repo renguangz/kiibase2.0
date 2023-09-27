@@ -21,14 +21,6 @@ export const registerUser: CodeTextType[] = [
   { type: 'text', text: ',' },
   /* end */
 
-  /* start */
-  { type: 'wrap', text: '' },
-  { type: 'text', tabs: 1, text: '"roles"', color: 'blue' },
-  { type: 'text', text: ': [' },
-  { type: 'text', text: '1, 2', color: 'orange' },
-  { type: 'text', text: ']' },
-  /* end */
-
   { type: 'wrap', text: '' },
   { type: 'text', text: '}' },
 

@@ -13,6 +13,7 @@ import { postCreatePage } from './postCreatePage';
 import { putUpdatePage } from './putUpdatePage';
 import { deleteData } from './deleteData';
 import { registerUser } from './registerUser';
+import { resetPassword } from './resetPassword';
 
 export const CodeData: Record<string, CodeTextType[]> = {
   postLogin,
@@ -29,4 +30,5 @@ export const CodeData: Record<string, CodeTextType[]> = {
   putUpdatePage,
   deleteData,
   registerUser,
+  resetPassword,
 };
