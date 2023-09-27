@@ -34,7 +34,7 @@ export default function HomePage() {
   return (
     <Wrapper>
       <ContentWrapper>
-        <Image src="/banner.png" alt="banner" width={600} height={337} />
+        <Image src="/banner.jpg" alt="banner" width={600} height={337} />
         <ButtonsWrapper>
           <Button
             onClick={() => router.push('/doc')}
