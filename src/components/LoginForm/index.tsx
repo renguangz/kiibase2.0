@@ -1,9 +1,9 @@
 import { MessageWrapper } from '/pages/[content]/create';
 import { COLORS } from '@/utils';
 import { useLogin } from '@/hooks';
-import { Message } from 'primereact/message';
 import styled from 'styled-components';
 import { StyledButton } from '../common';
+import { Toast } from 'primereact/toast';
 
 const Wrapper = styled.div`
   display: flex;
@@ -59,18 +59,13 @@ export const ButtonWrapper = styled.div`
 `;
 
 export function Loginform() {
-  const { account, setAccount, password, setPassword, handleLogin, loginDisabled, loginResponseMessage } = useLogin();
+  const { toast, account, setAccount, password, setPassword, handleLogin, loginDisabled, loginResponseMessage } =
+    useLogin();
 
   return (
     <Wrapper>
+      <Toast ref={toast} />
       <form style={{ display: 'contents' }}>
-        <LoginMessageWrapper>
-          <MessageWrapper shouldDisplay={loginResponseMessage !== null}>
-            {loginResponseMessage && (
-              <Message severity={loginResponseMessage.type} text={loginResponseMessage.message} />
-            )}
-          </MessageWrapper>
-        </LoginMessageWrapper>
         <TitleWrapper>
           <Title>登入</Title>
         </TitleWrapper>
@@ -96,6 +91,7 @@ export function Loginform() {
               handleLogin();
             }}
             disabled={loginDisabled}
+            variant="contained"
           >
             登入
           </StyledButton>

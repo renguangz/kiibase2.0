@@ -1,10 +1,11 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { GenericDataType } from '@/utils/types';
 import Cookies from 'js-cookie';
 import { request, requestOptionsTemplate } from '@/utils/request';
 import { useRouter } from 'next/router';
 import { useSWRConfig } from 'swr';
-import { ResponseMessageType } from '../useCreateContent';
+import { Toast } from 'primereact/toast';
+import { useCommon } from '../useCommon';
 
 type UserType = {
   id: number;
@@ -25,37 +26,40 @@ type ResponseDataType = {
 export function useLogin() {
   const router = useRouter();
   const { push } = router;
+  const toast = useRef<Toast>(null);
+
+  const { showSuccess, showError } = useCommon();
 
   const { mutate } = useSWRConfig();
 
   const [account, setAccount] = useState('');
   const [password, setPassword] = useState('');
   const [data, setData] = useState<GenericDataType<ResponseDataType | null> | null>(null);
-  const [loginResponseMessage, setLoginResponseMessage] = useState<ResponseMessageType>(null);
 
   const loginDisabled = useMemo(() => account.trim() === '' || password.trim() === '', [account, password]);
 
   const hasLoginTokenInCookie = Cookies.get('token') !== undefined;
 
   const handleLogin = useCallback(async () => {
-    const result = await request('/login', requestOptionsTemplate('POST', { account, password }));
-    setData(result);
-
-    if (result.status === 200) {
-      setLoginResponseMessage({ type: 'success', message: '登入成功' });
+    try {
+      const result = await request('/login', requestOptionsTemplate('POST', { account, password }));
+      setData(result);
+      showSuccess(toast, { detail: '登入成功' });
       const token = result.data.token;
       Cookies.set('token', token, { expires: 7 });
       push('/demo');
       setAccount('');
       mutate('/menuItemNavi');
       mutate('/subMenuNavi');
-    } else {
-      setLoginResponseMessage({ type: 'error', message: result?.message ?? '' });
+    } catch (error) {
+      const detail = error instanceof Error ? JSON.parse(error.message).message : '登入失敗，請再試一次';
+      showError(toast, { detail });
     }
     setPassword('');
   }, [account, password, push]);
 
   return {
+    toast,
     hasLoginTokenInCookie,
     account,
     setAccount,
@@ -64,6 +68,5 @@ export function useLogin() {
     handleLogin,
     data,
     loginDisabled,
-    loginResponseMessage,
   };
 }

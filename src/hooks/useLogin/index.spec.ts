@@ -4,6 +4,7 @@ import authAccounts from '@/mocks/db/utils/auth/accounts.json';
 import successfullLogin from '@/mocks/db/utils/auth/successLogin.json';
 import failLogin from '@/mocks/db/utils/auth/failLogin.json';
 import * as requestUtils from '@/utils/request';
+import { waitFor } from '@testing-library/react';
 
 jest.mock('@/utils/request', () => ({
   ...jest.requireActual('@/utils/request'),
@@ -84,7 +85,7 @@ describe('useLogin', () => {
   });
 
   it('should fail login and do not clear account and password', async () => {
-    (requestUtils.request as jest.Mock).mockResolvedValue({ ...failLogin });
+    (requestUtils.request as jest.Mock).mockRejectedValue({ ...failLogin });
 
     const { result } = renderHook(() => useLogin());
 
@@ -104,7 +105,7 @@ describe('useLogin', () => {
     });
     expect(requestUtils.request).toHaveBeenCalledWith('/login', { method: 'POST', body });
 
-    act(() => {
+    waitFor(() => {
       expect(result.current.data?.status).toEqual(failLogin.status);
       expect(result.current.data?.message).toEqual(failLogin.message);
     });

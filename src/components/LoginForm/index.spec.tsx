@@ -61,21 +61,17 @@ describe('LoginForm', () => {
   });
 
   it('should not clean up account if failed login', async () => {
-    (requestUtils.request as jest.Mock).mockResolvedValue({ ...failLogin });
+    (requestUtils.request as jest.Mock).mockRejectedValue({ ...failLogin });
 
     const { account, password, submitButton } = setup();
 
     fireEvent.change(account, { target: { value: 'unregistereduser' } });
     fireEvent.change(password, { target: { value: 'unregistereduser' } });
+    fireEvent.click(submitButton);
+    await act(async () => {});
 
-    await act(async () => {
-      fireEvent.click(submitButton);
-    });
-
-    act(() => {
-      expect(account.value).toBe('unregistereduser');
-      expect(password.value).toBe('');
-    });
+    expect(account.value).toBe('unregistereduser');
+    expect(password.value).toBe('');
   });
 
   it('should disable submitButton after failing login', async () => {
