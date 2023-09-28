@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
 import { classNames } from 'primereact/utils';
@@ -10,8 +9,11 @@ import AppTopbar from './AppTopbar';
 import { useRwdConfig } from '@/contexts/rwd-config';
 import PrimeReact from 'primereact/api';
 import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/types/types';
+import { Toast } from 'primereact/toast';
+import { useCommon } from '/src/hooks';
 
 const Layout = ({ children }: ChildContainerProps) => {
+  const { layoutToast } = useCommon();
   const { layoutConfig, layoutState, setLayoutState } = useRwdConfig();
   const topbarRef = useRef<AppTopbarRef>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
@@ -132,7 +134,12 @@ const Layout = ({ children }: ChildContainerProps) => {
           <AppSidebar />
         </div>
         <div className="layout-main-container">
-          <div className="layout-main">{children}</div>
+          <div className="layout-main">
+            <React.Fragment>
+              <Toast ref={layoutToast} />
+              {children}
+            </React.Fragment>
+          </div>
         </div>
         <div className="layout-mask"></div>
       </div>

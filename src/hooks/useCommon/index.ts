@@ -1,5 +1,5 @@
 import { Toast } from 'primereact/toast';
-import { RefObject } from 'react';
+import { RefObject, useRef } from 'react';
 
 type ToastRefType = RefObject<Toast>;
 
@@ -17,15 +17,22 @@ type ToastShowOption = {
 };
 
 export function useCommon() {
-  const showSuccess = (toast: ToastRefType, options: ToastShowOption): void => {
-    toast.current?.show({ summary: '成功', life: 3000, ...options, severity: 'success' });
-  };
+  const layoutToast = useRef<Toast>(null);
 
-  const showError = (toast: ToastRefType, options: ToastShowOption): void => {
-    toast.current?.show({ summary: '錯誤', life: 3000, ...options, severity: 'error' });
-  };
+  const showHint =
+    (initSummary: string, severity: ESeverity) =>
+    (options: ToastShowOption, customToast?: ToastRefType): void => {
+      const { summary, detail, life } = options;
+      const show = (ref: ToastRefType) =>
+        ref.current?.show({ severity, summary: summary ?? initSummary, detail, life });
+      customToast ? show(customToast) : show(layoutToast);
+    };
+
+  const showSuccess = showHint('成功', ESeverity.SUCCESS);
+  const showError = showHint('失敗', ESeverity.ERROR);
 
   return {
+    layoutToast,
     showSuccess,
     showError,
   };

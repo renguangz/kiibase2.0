@@ -44,7 +44,7 @@ export function useLogin() {
     try {
       const result = await request('/login', requestOptionsTemplate('POST', { account, password }));
       setData(result);
-      showSuccess(toast, { detail: '登入成功' });
+      showSuccess({ detail: '登入成功' }, toast);
       const token = result.data.token;
       Cookies.set('token', token, { expires: 7 });
       push('/demo');
@@ -53,7 +53,7 @@ export function useLogin() {
       mutate('/subMenuNavi');
     } catch (error) {
       const detail = error instanceof Error ? JSON.parse(error.message).message : '登入失敗，請再試一次';
-      showError(toast, { detail });
+      showError({ detail }, toast);
     }
     setPassword('');
   }, [account, password, push]);

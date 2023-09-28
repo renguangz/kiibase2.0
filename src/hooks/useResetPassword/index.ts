@@ -1,8 +1,14 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from 'react';
 import { hasEmptyString } from '@/utils/functions';
 import { request, requestOptionsTemplate } from '@/utils/request';
+import { useCommon } from '../useCommon';
+import { Toast } from 'primereact/toast';
 
 export function useResetPassword() {
+  const { showSuccess, showError } = useCommon();
+
+  const toast = useRef<Toast>(null);
+
   const [oldPassword, setOldPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [newConfirmPassword, setNewConfirmPassword] = useState('');
@@ -16,16 +22,27 @@ export function useResetPassword() {
     if (newPassword !== newConfirmPassword) {
       setNewPassword('');
       setNewConfirmPassword('');
+      showError({ detail: '密碼不相符' }, toast);
       return;
     }
-    await request(
-      '/resetPassword',
-      requestOptionsTemplate('POST', {
-        old_password: oldPassword,
-        new_password: newPassword,
-        new_password_confirmation: newConfirmPassword,
-      }),
-    );
+
+    try {
+      await request(
+        '/resetPassword',
+        requestOptionsTemplate('POST', {
+          old_password: oldPassword,
+          new_password: newPassword,
+          new_password_confirmation: newConfirmPassword,
+        }),
+      );
+      showSuccess({ detail: '成功重設密碼' }, toast);
+    } catch (error) {
+      const detail = error instanceof Error ? JSON.parse(error.message) : '失敗，請再試一次';
+      showError({ detail }, toast);
+    }
+    setNewPassword('');
+    setNewConfirmPassword('');
+    setOldPassword('');
   }, [
     newPassword,
     newConfirmPassword,
@@ -37,6 +54,7 @@ export function useResetPassword() {
   ]);
 
   return {
+    toast,
     oldPassword,
     setOldPassword,
     newPassword,
