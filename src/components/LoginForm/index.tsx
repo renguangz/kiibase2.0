@@ -1,4 +1,3 @@
-import { MessageWrapper } from '/pages/[content]/create';
 import { COLORS } from '@/utils';
 import { useLogin } from '@/hooks';
 import styled from 'styled-components';
@@ -10,12 +9,6 @@ const Wrapper = styled.div`
   flex-direction: column;
   width: 268px;
   gap: 8px;
-`;
-
-const LoginMessageWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
 `;
 
 export const TitleWrapper = styled.div`
@@ -59,8 +52,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 export function Loginform() {
-  const { toast, account, setAccount, password, setPassword, handleLogin, loginDisabled, loginResponseMessage } =
-    useLogin();
+  const { toast, account, setAccount, password, setPassword, handleLogin, loginDisabled } = useLogin();
 
   return (
     <Wrapper>
