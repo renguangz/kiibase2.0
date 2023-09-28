@@ -1,6 +1,7 @@
 import { COLORS, FieldProps } from '@/utils';
 import { useImageUpload } from '@/hooks/useImageUpload';
 import styled from 'styled-components';
+import { Toast } from 'primereact/toast';
 
 const DisplayImageWrapper = styled.div`
   background: #fff;
@@ -24,10 +25,11 @@ interface ImageUploadFieldProps extends FieldProps<any> {
 }
 
 export function ImageUploadField({ form, name, folder, url }: ImageUploadFieldProps) {
-  const { displayImage, onImageChange } = useImageUpload(folder, form, name, url);
+  const { toast, displayImage, onImageChange } = useImageUpload(folder, form, name, url);
 
   return (
     <div>
+      <Toast ref={toast} />
       <input
         {...form.register(name, {
           validate: {},
