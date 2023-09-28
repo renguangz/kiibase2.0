@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { isNotContentDynamicRouteYet } from '@/utils/functions';
 import useSWR from 'swr';
 import { ApiDataResponse, ApiDataType } from '@/types/data';
 import { useForm } from 'react-hook-form';
 import { request, requestOptionsTemplate } from '@/utils/request';
-import { useRouter } from 'next/router';
+import { PaginatorPageChangeEvent } from 'primereact/paginator';
 
 export type ContentDataType = {
   data: Array<Record<string, string | number>>;
@@ -17,7 +17,6 @@ const INIT_QUERY_PARAMS = {
 };
 
 export function useContentList(asPath: string) {
-  const router = useRouter();
   const tableForm = useForm();
 
   const [queryParams, setQueryParams] = useState<Record<string, any>>(INIT_QUERY_PARAMS);
@@ -56,20 +55,6 @@ export function useContentList(asPath: string) {
 
   const updateButtonDisabled = useMemo(() => updatedListData.length === 0, [updatedListData]);
 
-  const handleChangePage = useCallback(
-    (currentPage: number) => {
-      setQueryParams((query) => ({ ...query, page: currentPage }));
-    },
-    [setQueryParams],
-  );
-
-  const handleChangePerPage = useCallback(
-    (pageSize: number) => {
-      setQueryParams((query) => ({ ...query, page: 1, per_page: pageSize }));
-    },
-    [setQueryParams],
-  );
-
   const handleUpdateList = useCallback(async () => {
     const result: ApiDataType<boolean> = await request(
       `${endpoint}/updateList`,
@@ -88,6 +73,10 @@ export function useContentList(asPath: string) {
     [endpoint, request, mutate],
   );
 
+  const handleTableFieldChangePage = (event: PaginatorPageChangeEvent) => {
+    setQueryParams((params) => ({ ...params, per_page: event.rows, page: event.page + 1 }));
+  };
+
   const resetQueryParams = () => {
     setQueryParams(INIT_QUERY_PARAMS);
   };
@@ -101,9 +90,8 @@ export function useContentList(asPath: string) {
     setQueryParams,
     queryParams,
     resetQueryParams,
-    handleChangePage,
-    handleChangePerPage,
     handleUpdateList,
     handleDeleteModel,
+    handleTableFieldChangePage,
   };
 }

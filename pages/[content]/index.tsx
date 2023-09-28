@@ -32,11 +32,10 @@ export default function ContentListPage() {
     total: contentDataTotal,
     queryParams,
     setQueryParams,
-    handleChangePage,
-    handleChangePerPage,
     handleUpdateList,
     handleDeleteModel,
     mutate,
+    handleTableFieldChangePage,
   } = useContentList(asPath);
 
   const {
@@ -112,11 +111,8 @@ export default function ContentListPage() {
         />
       </FilterFieldWrapper>
       <TableField
+        queryParams={queryParams}
         form={tableForm}
-        currentPage={queryParams['page']}
-        handleChangePage={handleChangePage}
-        handleChangePerPage={handleChangePerPage}
-        perPage={queryParams['per_page']}
         selectedRow={selectedRow}
         setSeletedRow={setSelectedRow}
         columns={columns ?? []}
@@ -124,6 +120,7 @@ export default function ContentListPage() {
         total={contentDataTotal ?? 0}
         cannotDelete={!data?.delete_button}
         handleDeleteModelList={handleDeleteModel}
+        onPageChange={handleTableFieldChangePage}
       />
     </PageLayout>
   );

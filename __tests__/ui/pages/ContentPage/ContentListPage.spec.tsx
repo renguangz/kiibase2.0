@@ -186,7 +186,7 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR after changing pages', async () => {
-      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
+      const page4 = screen.queryByText('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
       const params = {
@@ -197,10 +197,10 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR after changing `per_page', async () => {
-      const dropdown = screen.queryByTitle('10 / page') as HTMLDivElement;
+      const dropdown = document.querySelector('.p-dropdown-label.p-inputtext') as HTMLElement;
       expect(dropdown).toBeInTheDocument();
       await userEvent.click(dropdown);
-      const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
+      const option20 = screen.queryByLabelText('20') as HTMLElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
       const params = {
@@ -211,7 +211,7 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR when changing pages and will call useSWR with page=1 after search filter', async () => {
-      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
+      const page4 = screen.queryByText('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
@@ -228,14 +228,14 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR with `page=1` after changing per_page', async () => {
-      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
+      const page4 = screen.queryByText('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
-      const dropdown = screen.queryByTitle('10 / page') as HTMLDivElement;
+      const dropdown = document.querySelector('.p-dropdown-label.p-inputtext') as HTMLElement;
       expect(dropdown).toBeInTheDocument();
       await userEvent.click(dropdown);
-      const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
+      const option20 = screen.queryByLabelText('20') as HTMLElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
       const params = {
@@ -243,19 +243,6 @@ describe('ContentListPage', () => {
         per_page: 20,
       };
       expect(useSWR).toHaveBeenNthCalledWith(11, ['/model/role', { params }]);
-    });
-
-    it('should call useSWR after submitting in jumper', async () => {
-      const inputJumper = screen.queryByLabelText('Page') as HTMLInputElement;
-      expect(inputJumper).toBeVisible();
-      await userEvent.type(inputJumper, '22{enter}');
-      // FIXME: 應該要成功模擬使用者輸入玩按下 enter，目前前台會去 call api
-      // expect(inputJumper).toHaveValue('');
-      // expect(useSWR).toHaveBeenNthCalledWith(
-      //   8,
-      //   [expect.stringContaining('searchLog'), expect.stringContaining('page=22&per_page=10')],
-      //   fetchUtils.fetchDataWithQueries,
-      // );
     });
 
     it('should have delete button for deleting multiple table data', async () => {
@@ -411,7 +398,7 @@ describe('ContentListPage', () => {
 
     it('should have enabled update button after changing select value', async () => {
       const { selectFields, updateButton } = setup();
-      expect(selectFields).toHaveLength(10);
+      expect(selectFields).toHaveLength(11);
       const firstSelect = selectFields[0];
       await userEvent.click(firstSelect);
       const offline = screen.queryByLabelText(/下架/) as HTMLDivElement;
