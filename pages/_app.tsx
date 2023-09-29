@@ -33,7 +33,7 @@ export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
       <AuthConfig>
         <RwdConfig>
           <SWRConfig value={generateSWRConfig(router)}>
-            <MSWConfig>{getLayout(<Component {...pageProps} />)}</MSWConfig>
+            <MSWConfig>{getLayout(<Component key={router.asPath} {...pageProps} />)}</MSWConfig>
           </SWRConfig>
         </RwdConfig>
       </AuthConfig>
