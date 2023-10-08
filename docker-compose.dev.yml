@@ -1,0 +1,13 @@
+version: '3'
+services:
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: deps
+    ports:
+      - '4200:3000'
+    command: pnpm run dev
+    volumes:
+      - .:/app
+      - /app/node_modules
