@@ -1,5 +1,5 @@
-import { FieldProps } from '@/src/utils';
-import { request } from '@/src/utils/request';
+import { FieldProps } from '@/utils';
+import { request } from '@/utils/request';
 import { Editor, EditorTextChangeEvent } from 'primereact/editor';
 import { useCallback } from 'react';
 import { Controller } from 'react-hook-form';

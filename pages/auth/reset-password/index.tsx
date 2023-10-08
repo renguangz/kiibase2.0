@@ -1,7 +1,10 @@
-import { StyledButton } from '@/src/components/common';
-import { ButtonWrapper, Input, InputWrapper, Label, Title, TitleWrapper } from '@/src/components/LoginForm';
-import { useResetPassword } from '@/src/utils/hooks';
+import type { ReactElement } from 'react';
+import { StyledButton } from '@/components/common';
 import styled from 'styled-components';
+import { ButtonWrapper, Input, InputWrapper, Label, Title, TitleWrapper } from '@/components/LoginForm';
+import { useResetPassword } from '@/hooks';
+import DashboardLayout from '@/layouts/DashboardLayout';
+import { Toast } from 'primereact/toast';
 
 const Wrapper = styled.div`
   width: 268px;
@@ -15,6 +18,7 @@ const Wrapper = styled.div`
 
 export default function ResetPasswordPage() {
   const {
+    toast,
     oldPassword,
     setOldPassword,
     newPassword,
@@ -27,6 +31,7 @@ export default function ResetPasswordPage() {
 
   return (
     <Wrapper>
+      <Toast ref={toast} />
       <TitleWrapper>
         <Title>重設密碼</Title>
       </TitleWrapper>
@@ -58,10 +63,14 @@ export default function ResetPasswordPage() {
         />
       </InputWrapper>
       <ButtonWrapper>
-        <StyledButton type="button" disabled={disabledComfirmButton} onClick={handleReset}>
+        <StyledButton type="button" disabled={disabledComfirmButton} variant="contained" onClick={handleReset}>
           確認
         </StyledButton>
       </ButtonWrapper>
     </Wrapper>
   );
 }
+
+ResetPasswordPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

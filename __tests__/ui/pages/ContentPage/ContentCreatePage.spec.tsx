@@ -1,15 +1,17 @@
 import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
-import ContentCreatePage from '@/pages/[content]/create';
+import ContentCreatePage from '/pages/[content]/create';
 import userEvent from '@testing-library/user-event';
-import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
-import UploadImageData from '@/src/mock/db/utils/uploadFile/uploadImage.json';
-import BannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
-import MachineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
-import AdminUserConfig from '@/src/mock/db/utils/getConfig/adminUserConfig.json';
+import CreateBannerSuccess from '@/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
+import UploadImageData from '@/mocks/db/utils/uploadFile/uploadImage.json';
+import BannerConfig from '@/mocks/db/utils/getConfig/bannerConfig.json';
+import MachineConfig from '@/mocks/db/utils/getConfig/machineConfig.json';
+import AdminUserConfig from '@/mocks/db/utils/getConfig/adminUserConfig.json';
+import BigdragonRoleConfig from '@/mocks/db/utils/getConfig/bigdragon/roleConfig.json';
+import CreateBigdragonRoleSuccess from '@/mocks/db/utils/CreateContent/bigdragon/CreateRoleSuccess.json';
 import useSWR from 'swr';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { renderHook } from '@testing-library/react-hooks';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
 window.watchMedia = jest.fn().mockImplementation(() => {
   return {
@@ -30,8 +32,8 @@ jest.mock('next/router', () => ({
 
 jest.mock('swr', () => jest.fn());
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 
@@ -65,12 +67,8 @@ describe('ContentCreatePage', () => {
     });
 
     it('should have title `首頁底圖建立` and link `首頁底圖列表`', async () => {
-      const { title, linkButton } = result;
+      const { title } = result;
       expect(title).toBeInTheDocument();
-      expect(linkButton).toBeInTheDocument();
-      expect(linkButton.href).toContain('/banner');
-      userEvent.click(linkButton);
-      expect(window.location.href).not.toContain('create');
     });
 
     it('should disable confirm button initial', async () => {
@@ -286,6 +284,62 @@ describe('ContentCreatePage', () => {
       expect(requestUtils.request).toHaveBeenLastCalledWith('/model/machine', {
         method: 'POST',
         body: expectBody,
+      });
+    });
+  });
+
+  describe('Bigdragon', () => {
+    describe('Role', () => {
+      let result: {
+        title: HTMLElement | null;
+        linkButton: HTMLLinkElement;
+        submitButton: HTMLButtonElement;
+        form: UseFormReturn<FieldValues, any>;
+      };
+
+      beforeEach(() => {
+        mockAsPath.mockReturnValue('/role/create');
+        result = setup('角色清單建立', '角色清單列表', BigdragonRoleConfig);
+      });
+
+      afterEach(() => {
+        jest.clearAllMocks();
+      });
+
+      it('should have two multiple select fields for module and api_function', async () => {
+        (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
+          url.includes('/model/role') ? CreateBigdragonRoleSuccess : undefined,
+        );
+
+        const { submitButton } = result;
+        const nameInput = screen.getByRole('textbox');
+        await userEvent.type(nameInput, 'testRole');
+        const multipleSelectBoxes = screen.getAllByRole('listbox');
+        expect(multipleSelectBoxes).toHaveLength(2);
+        const modulesSelect = multipleSelectBoxes[0];
+        const apiFunctionsSelect = multipleSelectBoxes[1];
+        await userEvent.click(modulesSelect);
+        const authModuleOption = screen.queryByText(/使用者管理/i) as HTMLButtonElement;
+        expect(authModuleOption).toBeInTheDocument();
+        await userEvent.click(authModuleOption);
+        await userEvent.click(apiFunctionsSelect);
+        const postRoleCreateOption = screen.queryByText(/post: \/model\/auth\/role\/create/i) as HTMLButtonElement;
+        const getRoleConfigOption = screen.queryByText(/get: \/model\/auth\/role\/getConfig/i) as HTMLButtonElement;
+        expect(postRoleCreateOption).toBeInTheDocument();
+        expect(getRoleConfigOption).toBeInTheDocument();
+        await userEvent.click(postRoleCreateOption);
+        await userEvent.click(getRoleConfigOption);
+        await userEvent.click(submitButton);
+
+        const body = JSON.stringify({
+          name: 'testRole',
+          modules: ['2'],
+          api_functions: ['3', '6'],
+        });
+        expect(requestUtils.request).toHaveBeenLastCalledWith('/model/role', {
+          method: 'POST',
+          body,
+        });
       });
     });
   });

@@ -1,7 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react';
-import filtersData from '@/src/mock/db/filters.json';
+import filtersData from '@/mocks/db/filters.json';
 import { InputField } from '.';
-import { fetchMockData } from '@/src/mock/db/utils/fetchMockData';
+import { fetchMockData } from '@/mocks/db/utils/fetchMockData';
 import { InputProps } from 'antd';
 
 describe('InputField', () => {

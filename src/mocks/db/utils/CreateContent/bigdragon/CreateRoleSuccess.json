@@ -1,0 +1,39 @@
+{
+  "status": 200,
+  "message": "success",
+  "data": {
+    "name": "test",
+    "modules": [
+      {
+        "id": "1",
+        "name": "出發地、抵達地搜尋選單",
+        "endpoint": "/search-location",
+        "created_at": 1693624822,
+        "updated_at": 1693624822,
+        "deleted_at": null
+      }
+    ],
+    "apiFunctions": [
+      {
+        "id": "1",
+        "method": "GET",
+        "endpoint": "/model/search-location",
+        "created_at": 1694521403,
+        "updated_at": 1694521403,
+        "deleted_at": null
+      },
+      {
+        "id": "2",
+        "method": "GET",
+        "endpoint": "/model/search-location/:id",
+        "created_at": 1694714363,
+        "updated_at": 1694714363,
+        "deleted_at": null
+      }
+    ],
+    "deleted_at": null,
+    "id": "4",
+    "created_at": 1694927338,
+    "updated_at": 1694927338
+  }
+}

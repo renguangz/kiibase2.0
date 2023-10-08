@@ -1,14 +1,16 @@
-import { ContentUpdateField } from '@/src/components';
-import { StyledButton } from '@/src/components/common';
-import { ContentHeader } from '@/src/components/Content';
-import { PageLayout } from '@/src/layouts';
-import { useEditContent } from '@/src/utils/hooks';
+import type { ReactElement } from 'react';
+import { ContentUpdateField } from '@/components';
+import { StyledButton } from '@/components/common';
+import { ContentHeader } from '@/components/Content';
+import { PageLayout } from '@/layouts';
+import { useEditContent } from '@/hooks';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { Message } from 'primereact/message';
 import { useMemo } from 'react';
 import styled from 'styled-components';
 import { ConfirmButtonWrapper, MessageWrapper, StyledLink } from '../create';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 const ContentHeaderButtonsWrapper = styled.div`
   display: flex;
@@ -57,8 +59,8 @@ export default function EditContentPage() {
         button={
           <ContentHeaderButtonsWrapper>
             {data?.is_single_data ? null : (
-              <StyledButton type="button" variant="outline">
-                <StyledLink href={listPageUrl}>{title}列表</StyledLink>
+              <StyledButton onClick={() => router.push(listPageUrl)} type="button" variant="outline">
+                <StyledLink>{title}列表</StyledLink>
               </StyledButton>
             )}
             {data?.delete_button && (
@@ -83,3 +85,7 @@ export default function EditContentPage() {
     </PageLayout>
   );
 }
+
+EditContentPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

@@ -1,7 +1,10 @@
-import { useSignup } from '@/src/utils/hooks';
+import type { ReactElement } from 'react';
+import type { NextPageWithLayout } from '/pages/_app';
+import AuthLayout from '@/layouts/AuthLayout';
+import { useSignup } from '@/hooks';
 import Link from 'next/link';
 
-export default function SignupPage() {
+const SignupPage: NextPageWithLayout = () => {
   const {
     account,
     setAccount,
@@ -38,4 +41,10 @@ export default function SignupPage() {
       <Link href={'/auth/login'}>前往登入頁</Link>
     </div>
   );
-}
+};
+
+SignupPage.getLayout = function getLayout(page: ReactElement) {
+  return <AuthLayout>{page}</AuthLayout>;
+};
+
+export default SignupPage;

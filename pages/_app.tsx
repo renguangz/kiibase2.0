@@ -1,55 +1,56 @@
-import '@/styles/global.css';
+import type { NextPage } from 'next';
 import type { AppProps } from 'next/app';
-import { SWRConfig } from 'swr';
-import { request } from '@/src/utils/request';
-import { LayoutProvider } from '@/src/layouts/layout/context/layoutcontext';
-import Layout from '@/src/layouts/layout/layout';
-import 'primereact/resources/primereact.css';
-import 'primereact/resources/themes/lara-light-indigo/theme.css';
-import 'primeflex/primeflex.css';
-import 'primeicons/primeicons.css';
-import '@/styles/layout/layout.scss';
-import '@/styles/demo/Demos.scss';
-import { useMemo } from 'react';
+import type { ReactElement, ReactNode } from 'react';
 import { useRouter } from 'next/router';
-import { AuthLayout } from '@/src/layouts/AuthLayout';
+import Meta from '@/components/Meta';
+import ResourceBase from '/resources/base.json';
+import { SWRConfig } from 'swr';
+import AuthConfig from '/src/contexts/auth';
+import RwdConfig from '@/contexts/rwd-config';
+import MSWConfig from '@/contexts/msw';
 
-export default function MyApp({ Component, pageProps }: AppProps) {
+import 'primeicons/primeicons.css';
+import 'primereact/resources/primereact.css';
+import '@/styles/theme-primereact/themes/fluent/fluent-light/theme.scss';
+import '@/styles/globals.css';
+import '@/styles/layout/layout.scss';
+
+export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
+  getLayout?: (page: ReactElement) => ReactNode;
+};
+
+type AppPropsWithLayout = AppProps & {
+  Component: NextPageWithLayout;
+};
+
+export default function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   const router = useRouter();
 
-  const authLayoutRoutes = useMemo(() => ['/auth/login', '/auth/signup'], []);
-
-  const isAuthLayout = useMemo(
-    () => authLayoutRoutes.some((route) => router.asPath.includes(route)),
-    [authLayoutRoutes, router],
-  );
+  const getLayout = Component.getLayout || ((page) => page);
 
   return (
-    <SWRConfig
-      value={{
-        refreshInterval: 0,
-        shouldRetryOnError: false,
-        fetcher: request,
-        onError: (error) => {
-          if (error === 'Unauthorized') {
-            router.push('/auth/login');
-          } else {
-            router.push('/');
-          }
-        },
-      }}
-    >
-      {isAuthLayout ? (
-        <AuthLayout>
-          <Component {...pageProps} />
-        </AuthLayout>
-      ) : (
-        <LayoutProvider>
-          <Layout>
-            <Component key={router.asPath} {...pageProps} />
-          </Layout>
-        </LayoutProvider>
-      )}
-    </SWRConfig>
+    <>
+      <AuthConfig>
+        <RwdConfig>
+          <SWRConfig value={generateSWRConfig(router)}>
+            <MSWConfig>{getLayout(<Component key={router.asPath} {...pageProps} />)}</MSWConfig>
+          </SWRConfig>
+        </RwdConfig>
+      </AuthConfig>
+      <Meta {...ResourceBase} />
+    </>
   );
+}
+
+import { request } from '@/utils/request';
+function generateSWRConfig(router: ReturnType<typeof useRouter>) {
+  return {
+    refreshInterval: 0,
+    shouldRetryOnError: false,
+    fetcher: request,
+    onError: (error: any) => {
+      if (router.asPath.includes('/demo') || router.asPath === '/doc') return;
+      error === 'Unauthorized' ? router.push('/auth/login') : router.push('/');
+    },
+  };
 }

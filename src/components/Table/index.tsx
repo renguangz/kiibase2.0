@@ -1,10 +1,8 @@
-import { combineStorageUrl, SPACES } from '@/src/utils';
-import { Form, Pagination } from 'antd';
+import { SPACES } from '@/utils';
 import { DataTable } from 'primereact/datatable';
 import { Tag } from 'primereact/tag';
 import { Column } from 'primereact/column';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import Link from 'next/link';
+import { useEffect, useMemo } from 'react';
 import { useRouter } from 'next/router';
 import React from 'react';
 import { InputTextField } from '../FilterField/enhanceFilterField/InputTextField';
@@ -12,7 +10,28 @@ import { FieldValues, UseFormReturn } from 'react-hook-form';
 import { SelectField } from '../FilterField/enhanceFilterField/SelectField';
 import styled from 'styled-components';
 import { StyledButton } from '../common';
-import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { confirmDialog } from 'primereact/confirmdialog';
+import { Paginator, PaginatorPageChangeEvent } from 'primereact/paginator';
+
+const PaginatorWrapper = styled.div`
+  margin-top: 27px;
+  background: #fff;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 9px;
+`;
+
+export const PageInfo = styled.span`
+  color: #6c757d;
+  text-align: right;
+  font-family: Inter;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 21px;
+`;
 
 type Field = {
   field?: string;
@@ -41,33 +60,37 @@ type IsSelectColumn = (field: Field) => boolean;
 const isSelectColumn: IsSelectColumn = (field) => field.name === '__component:list-select';
 
 export type TableFieldProps = {
+  queryParams: Record<string, any>;
   form: UseFormReturn<FieldValues, any>;
-  perPage: number;
+  // perPage: number;
   columns: Array<Field>;
   dataSource: any[];
   total: number;
   selectedRow: any;
   setSeletedRow: any;
-  currentPage: number;
+  // currentPage: number;
   cannotDelete?: boolean;
-  handleChangePage: (currentPage: number) => void;
-  handleChangePerPage: (pageSize: number) => void;
+  // handleChangePage: (currentPage: number) => void;
+  // handleChangePerPage: (pageSize: number) => void;
   handleDeleteModelList?: (id: string | number) => void;
+  onPageChange: (event: PaginatorPageChangeEvent) => void;
 };
 
 export function TableField({
+  queryParams,
   form,
-  perPage,
+  // perPage,
   columns,
   dataSource,
   total,
   selectedRow,
   setSeletedRow,
-  currentPage,
+  // currentPage,
   cannotDelete,
-  handleChangePage,
-  handleChangePerPage,
+  // handleChangePage,
+  // handleChangePerPage,
   handleDeleteModelList,
+  onPageChange,
 }: TableFieldProps) {
   const displayColumns = useMemo(
     () =>
@@ -110,46 +133,41 @@ export function TableField({
     ],
   );
 
-  const [page, setPage] = useState(currentPage);
-  const [pageSize, setPageSize] = useState(perPage);
-  const onChange = useCallback(
-    (current: number, size: number) => {
-      if (current !== page) {
-        handleChangePage(current);
-        setPage(current);
-      }
-      if (size !== pageSize) {
-        handleChangePerPage(size);
-        setPageSize(size);
-      }
-    },
-    [page, setPage, handleChangePage, pageSize, setPageSize, handleChangePerPage],
-  );
-
   return (
-    <Form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
+    <form style={{ width: '100%', paddingTop: SPACES['space-24'] }}>
       <DataTable
         style={{ fontSize: 14 }}
         value={dataSource}
-        rows={perPage}
         dataKey="id"
         selectionMode="checkbox"
         selection={selectedRow}
         onSelectionChange={(e) => setSeletedRow(e.value)}
       >
-        {displayColumns.map((column) =>
-          isCheckboxColumn(column) ? checkboxColumnTemplate() : <Column key={`column-${Math.random()}`} {...column} />,
+        {displayColumns.map((column, index) =>
+          isCheckboxColumn(column) ? (
+            checkboxColumnTemplate()
+          ) : (
+            <Column key={`column-${column.name}-${index}`} {...column} />
+          ),
         )}
       </DataTable>
-      <Pagination
-        showQuickJumper
-        current={currentPage}
-        defaultCurrent={2}
-        total={total}
-        hideOnSinglePage
-        onChange={onChange}
-      />
-    </Form>
+      <PaginatorWrapper>
+        <PageInfo>
+          目前顯示 {(queryParams['page'] - 1) * 10 + 1} -{' '}
+          {queryParams['page'] * queryParams['per_page'] > total
+            ? total
+            : queryParams['page'] * queryParams['per_page']}{' '}
+          筆資料，共 {total} 筆資料
+        </PageInfo>
+        <Paginator
+          first={(queryParams['page'] - 1) * queryParams['per_page']}
+          rows={queryParams['per_page']}
+          totalRecords={total}
+          onPageChange={onPageChange}
+          rowsPerPageOptions={[5, 10, 20, 50]}
+        />
+      </PaginatorWrapper>
+    </form>
   );
 }
 
@@ -158,7 +176,7 @@ function checkboxColumnTemplate() {
 }
 
 function fullImageColumnTemplate(column: Field) {
-  return (data: any) => {
+  return function FullImageColumnTemplate(data: any) {
     const imgData = useMemo(() => (column.field ? data[column.field] : null), [column, data]);
 
     return (
@@ -177,7 +195,7 @@ const EditColumnWrapper = styled.div`
 `;
 
 function editColumnTemplate(handleDelete: (id: string | number) => void, cannotDelete?: boolean) {
-  return (data: { id: string | number }) => {
+  return function EditColumnTemplate(data: { id: string | number }) {
     const router = useRouter();
     const { asPath } = router;
 
@@ -193,10 +211,8 @@ function editColumnTemplate(handleDelete: (id: string | number) => void, cannotD
 
     return (
       <EditColumnWrapper>
-        <StyledButton type="button" color="primary">
-          <Link href={`${asPath}/${data.id}/edit`} role="link" style={{ color: '#fff' }}>
-            編輯
-          </Link>
+        <StyledButton onClick={() => router.push(`${asPath}/${data.id}/edit`)} type="button" color="primary">
+          編輯
         </StyledButton>
         {cannotDelete ? null : (
           <StyledButton type="button" color="danger" variant="outline" onClick={confirm2}>
@@ -211,7 +227,7 @@ function editColumnTemplate(handleDelete: (id: string | number) => void, cannotD
 export type StatusType = 'success' | 'danger' | 'warning' | undefined;
 
 function statusTemplate(column: Field) {
-  return (data: any) => {
+  return function StatusTemplate(data: any) {
     const tagData: { value: string; status: StatusType } | null = useMemo(
       () => (column.field ? data[column.field] : null),
       [column, data],
@@ -222,7 +238,7 @@ function statusTemplate(column: Field) {
 }
 
 function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isNumberInput: boolean) {
-  return (data: any) => {
+  return function InputeTemplate(data: any) {
     useEffect(() => {
       form.setValue(`${column.field}-${data.id}`, data[column.field ?? '']);
     }, [data]);
@@ -241,7 +257,7 @@ function inputTemplate(column: Field, form: UseFormReturn<FieldValues, any>, isN
 }
 
 function selectTemplate(column: Field, form: UseFormReturn<FieldValues, any>) {
-  return (data: any) => {
+  return function SelectTemplate(data: any) {
     const options = useMemo(
       () => column.options?.map((option) => ({ value: option.key, label: option.value })) ?? [],
       [column],

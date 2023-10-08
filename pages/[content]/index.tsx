@@ -1,16 +1,18 @@
-import { StyledButton } from '@/src/components/common';
-import { ContentHeader } from '@/src/components/Content';
-import { FilterField } from '@/src/components/FilterField';
-import { TableField } from '@/src/components/Table';
-import { PageLayout } from '@/src/layouts';
-import { COLORS } from '@/src/utils';
-import { useContentList, useFilterField, useGetConfig } from '@/src/utils/hooks';
+import type { ReactElement } from 'react';
+import { StyledButton } from '@/components/common';
+import { ContentHeader } from '@/components/Content';
+import { FilterField } from '@/components/FilterField';
+import { TableField } from '@/components/Table';
+import { PageLayout } from '@/layouts';
+import { COLORS } from '@/utils';
+import { useContentList, useFilterField, useGetConfig } from '@/hooks';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { useRouter } from 'next/router';
 import { confirmDialog, ConfirmDialog } from 'primereact/confirmdialog';
 import { useLayoutEffect } from 'react';
 import styled from 'styled-components';
 import { StyledLink } from './create';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 const FilterFieldWrapper = styled.div`
   width: 100%;
@@ -30,11 +32,10 @@ export default function ContentListPage() {
     total: contentDataTotal,
     queryParams,
     setQueryParams,
-    handleChangePage,
-    handleChangePerPage,
     handleUpdateList,
     handleDeleteModel,
     mutate,
+    handleTableFieldChangePage,
   } = useContentList(asPath);
 
   const {
@@ -70,8 +71,8 @@ export default function ContentListPage() {
         text={`${data?.topic}列表`}
         button={
           data?.create_button && (
-            <StyledButton variant="outline">
-              <StyledLink href={`${asPath}/create`}>建立新的{data.topic}</StyledLink>
+            <StyledButton onClick={() => router.push(`${asPath}/create`)} variant="outline">
+              <StyledLink>建立新的{data.topic}</StyledLink>
             </StyledButton>
           )
         }
@@ -110,11 +111,8 @@ export default function ContentListPage() {
         />
       </FilterFieldWrapper>
       <TableField
+        queryParams={queryParams}
         form={tableForm}
-        currentPage={queryParams['page']}
-        handleChangePage={handleChangePage}
-        handleChangePerPage={handleChangePerPage}
-        perPage={queryParams['per_page']}
         selectedRow={selectedRow}
         setSeletedRow={setSelectedRow}
         columns={columns ?? []}
@@ -122,6 +120,7 @@ export default function ContentListPage() {
         total={contentDataTotal ?? 0}
         cannotDelete={!data?.delete_button}
         handleDeleteModelList={handleDeleteModel}
+        onPageChange={handleTableFieldChangePage}
       />
     </PageLayout>
   );
@@ -138,4 +137,8 @@ export const getStaticPaths: GetStaticPaths = async () => {
     paths: [],
     fallback: true,
   };
+};
+
+ContentListPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
 };

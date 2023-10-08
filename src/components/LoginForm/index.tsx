@@ -1,21 +1,14 @@
-import { MessageWrapper } from '@/pages/[content]/create';
-import { COLORS } from '@/src/utils';
-import { useLogin } from '@/src/utils/hooks';
-import { Message } from 'primereact/message';
+import { COLORS } from '@/utils';
+import { useLogin } from '@/hooks';
 import styled from 'styled-components';
 import { StyledButton } from '../common';
+import { Toast } from 'primereact/toast';
 
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   width: 268px;
   gap: 8px;
-`;
-
-const LoginMessageWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  justify-content: center;
 `;
 
 export const TitleWrapper = styled.div`
@@ -59,36 +52,43 @@ export const ButtonWrapper = styled.div`
 `;
 
 export function Loginform() {
-  const { account, setAccount, password, setPassword, handleLogin, loginDisabled, loginResponseMessage } = useLogin();
+  const { toast, account, setAccount, password, setPassword, handleLogin, loginDisabled } = useLogin();
 
   return (
     <Wrapper>
-      <LoginMessageWrapper>
-        <MessageWrapper shouldDisplay={loginResponseMessage !== null}>
-          {loginResponseMessage && <Message severity={loginResponseMessage.type} text={loginResponseMessage.message} />}
-        </MessageWrapper>
-      </LoginMessageWrapper>
-      <TitleWrapper>
-        <Title>登入</Title>
-      </TitleWrapper>
-      <InputWrapper>
-        <Label>帳號</Label>
-        <Input data-testid="authAccount" value={account} onChange={(e) => setAccount(e.target.value)} />
-      </InputWrapper>
-      <InputWrapper>
-        <Label>密碼</Label>
-        <Input
-          data-testid="authPassword"
-          type="password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
-      </InputWrapper>
-      <ButtonWrapper>
-        <StyledButton data-testid="authLogin" type="button" onClick={handleLogin} disabled={loginDisabled}>
-          登入
-        </StyledButton>
-      </ButtonWrapper>
+      <Toast ref={toast} />
+      <form style={{ display: 'contents' }}>
+        <TitleWrapper>
+          <Title>登入</Title>
+        </TitleWrapper>
+        <InputWrapper>
+          <Label>帳號</Label>
+          <Input data-testid="authAccount" value={account} onChange={(e) => setAccount(e.target.value)} />
+        </InputWrapper>
+        <InputWrapper>
+          <Label>密碼</Label>
+          <Input
+            data-testid="authPassword"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </InputWrapper>
+        <ButtonWrapper>
+          <StyledButton
+            data-testid="authLogin"
+            type="submit"
+            onClick={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+            disabled={loginDisabled}
+            variant="contained"
+          >
+            登入
+          </StyledButton>
+        </ButtonWrapper>
+      </form>
     </Wrapper>
   );
 }

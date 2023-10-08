@@ -1,4 +1,4 @@
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import styled from 'styled-components';
 
 type FakeDivType = {
@@ -41,7 +41,7 @@ export const StyledButton = styled.button<StyledButtonType>`
         : 'transparent'};
 
   border-radius: none;
-  font-family: 'Inter';
+  font-family: var(--font-family);
   font-style: normal;
   font-weight: 700;
   font-size: 14px;

@@ -1,12 +1,21 @@
-import AuthLoginPage from '@/pages/auth/login';
+import AuthLoginPage from '/pages/auth/login';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import SuccessLogin from '@/src/mock/db/utils/auth/successLogin.json';
-import FailLogin from '@/src/mock/db/utils/auth/failLogin.json';
-import * as requestUtils from '@/src/utils/request';
+import SuccessLogin from '@/mocks/db/utils/auth/successLogin.json';
+import FailLogin from '@/mocks/db/utils/auth/failLogin.json';
+import * as requestUtils from '@/utils/request';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/contexts/auth', () => ({
+  useAuthConfig: () => ({
+    handlePermissionUpdate: () =>
+      Promise.resolve({
+        ok: false,
+      }),
+  }),
+}));
+
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

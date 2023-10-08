@@ -1,10 +1,10 @@
-import ResetPasswordPage from '@/pages/auth/reset-password';
+import ResetPasswordPage from '/pages/auth/reset-password';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

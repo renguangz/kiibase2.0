@@ -1,4 +1,4 @@
-import { ComponentTypes } from 'src/utils';
+import { ComponentTypes } from '@/utils';
 import { StyledButton } from '../common';
 
 interface ButtonProps extends ComponentTypes {

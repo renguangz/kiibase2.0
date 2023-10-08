@@ -1,18 +1,18 @@
-import ContentListPage from '@/pages/[content]';
+import ContentListPage from '/pages/[content]';
 import useSWR from 'swr';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import roleConfig from '@/src/mock/db/utils/getConfig/roleConfig.json';
-import machineConfig from '@/src/mock/db/utils/getConfig/machineConfig.json';
-import bannerConfig from '@/src/mock/db/utils/getConfig/bannerConfig.json';
-import homeConfig from '@/src/mock/db/utils/getConfig/homepageConfig.json';
-import roleListData from '@/src/mock/db/utils/ContentList/role/initList.json';
-import machineListData from '@/src/mock/db/utils/ContentList/machine/initList.json';
-import bannerListData from '@/src/mock/db/utils/ContentList/banner/initList.json';
-import roleListEmptyData from '@/src/mock/db/utils/ContentList/role/filter/emptyList.json';
-import searchListFilterData from '@/src/mock/db/utils/ContentList/searchLog/filterData/filter_haha.json';
+import roleConfig from '@/mocks/db/utils/getConfig/roleConfig.json';
+import machineConfig from '@/mocks/db/utils/getConfig/machineConfig.json';
+import bannerConfig from '@/mocks/db/utils/getConfig/bannerConfig.json';
+import homeConfig from '@/mocks/db/utils/getConfig/homepageConfig.json';
+import roleListData from '@/mocks/db/utils/ContentList/role/initList.json';
+import machineListData from '@/mocks/db/utils/ContentList/machine/initList.json';
+import bannerListData from '@/mocks/db/utils/ContentList/banner/initList.json';
+import roleListEmptyData from '@/mocks/db/utils/ContentList/role/filter/emptyList.json';
+import searchListFilterData from '@/mocks/db/utils/ContentList/searchLog/filterData/filter_haha.json';
 import { useRouter } from 'next/router';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
 global.matchMedia =
   global.matchMedia ||
@@ -31,8 +31,8 @@ jest.mock('next/router', () => ({
 
 jest.mock('swr');
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 
@@ -186,7 +186,7 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR after changing pages', async () => {
-      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
+      const page4 = screen.queryByText('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
       const params = {
@@ -197,10 +197,10 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR after changing `per_page', async () => {
-      const dropdown = screen.queryByTitle('10 / page') as HTMLDivElement;
+      const dropdown = document.querySelector('.p-dropdown-label.p-inputtext') as HTMLElement;
       expect(dropdown).toBeInTheDocument();
       await userEvent.click(dropdown);
-      const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
+      const option20 = screen.queryByLabelText('20') as HTMLElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
       const params = {
@@ -211,7 +211,7 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR when changing pages and will call useSWR with page=1 after search filter', async () => {
-      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
+      const page4 = screen.queryByText('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
@@ -228,14 +228,14 @@ describe('ContentListPage', () => {
     });
 
     it('should call useSWR with `page=1` after changing per_page', async () => {
-      const page4 = screen.queryByTitle('4') as HTMLButtonElement;
+      const page4 = screen.queryByText('4') as HTMLButtonElement;
       expect(page4).toBeInTheDocument();
       await userEvent.click(page4);
 
-      const dropdown = screen.queryByTitle('10 / page') as HTMLDivElement;
+      const dropdown = document.querySelector('.p-dropdown-label.p-inputtext') as HTMLElement;
       expect(dropdown).toBeInTheDocument();
       await userEvent.click(dropdown);
-      const option20 = screen.queryByTitle('20 / page') as HTMLOptionElement;
+      const option20 = screen.queryByLabelText('20') as HTMLElement;
       expect(option20).toBeInTheDocument();
       await userEvent.click(option20);
       const params = {
@@ -243,19 +243,6 @@ describe('ContentListPage', () => {
         per_page: 20,
       };
       expect(useSWR).toHaveBeenNthCalledWith(11, ['/model/role', { params }]);
-    });
-
-    it('should call useSWR after submitting in jumper', async () => {
-      const inputJumper = screen.queryByLabelText('Page') as HTMLInputElement;
-      expect(inputJumper).toBeVisible();
-      await userEvent.type(inputJumper, '22{enter}');
-      // FIXME: 應該要成功模擬使用者輸入玩按下 enter，目前前台會去 call api
-      // expect(inputJumper).toHaveValue('');
-      // expect(useSWR).toHaveBeenNthCalledWith(
-      //   8,
-      //   [expect.stringContaining('searchLog'), expect.stringContaining('page=22&per_page=10')],
-      //   fetchUtils.fetchDataWithQueries,
-      // );
     });
 
     it('should have delete button for deleting multiple table data', async () => {
@@ -411,7 +398,7 @@ describe('ContentListPage', () => {
 
     it('should have enabled update button after changing select value', async () => {
       const { selectFields, updateButton } = setup();
-      expect(selectFields).toHaveLength(10);
+      expect(selectFields).toHaveLength(11);
       const firstSelect = selectFields[0];
       await userEvent.click(firstSelect);
       const offline = screen.queryByLabelText(/下架/) as HTMLDivElement;

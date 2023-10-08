@@ -1,16 +1,17 @@
 /* eslint-disable @next/next/no-img-element */
 import { classNames } from 'primereact/utils';
-import React, { forwardRef, useContext, useImperativeHandle, useMemo, useRef, useState } from 'react';
-import { AppTopbarRef } from '@/src/types/types';
-import { LayoutContext } from './context/layoutcontext';
+import React, { forwardRef, useImperativeHandle, useMemo, useRef, useState } from 'react';
+import { AppTopbarRef } from '@/types/types';
+import { useRwdConfig } from '@/contexts/rwd-config';
 import styled from 'styled-components';
-import { OutsideClickHandler } from '@/src/components';
+import { OutsideClickHandler } from '@/components';
 import { useRouter } from 'next/router';
-import { useLogout } from '@/src/utils/hooks';
-import { COLORS } from '@/src/utils';
-import { StyledButton } from '@/src/components/common';
-import Logo from '@/public/Logo.svg';
+import { useLogout } from '@/hooks';
+import { COLORS } from '@/utils';
+import { StyledButton } from '@/components/common';
 import Link from 'next/link';
+import { useAuthConfig } from '/src/contexts/auth';
+import { Button as PrimeReactButton } from 'primereact/button';
 
 export const Wrapper = styled.div`
   background: #2b3b44;
@@ -70,7 +71,7 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
   const [mouseenterMenuButton, setMouseenterMenubutton] = useState(false);
   const [mouseenterProfileButton, setMouseenterProfilebutton] = useState(false);
 
-  const { layoutState, onMenuToggle } = useContext(LayoutContext);
+  const { layoutState, onMenuToggle } = useRwdConfig();
   const menubuttonRef = useRef(null);
   const topbarmenuRef = useRef(null);
   const topbarmenubuttonRef = useRef(null);
@@ -84,6 +85,8 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
 
   const { handleLogout } = useLogout();
 
+  const { isAuthenticated } = useAuthConfig();
+
   const [showProfileList, setShowProfileList] = useState(false);
 
   const profiles = useMemo(
@@ -96,8 +99,8 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
 
   return (
     <Wrapper className="layout-topbar">
-      <Link href="/adminUser">
-        <LogoImg src={Logo.src} alt="logo" />
+      <Link href="/">
+        <LogoImg src="/logo.png" alt="logo" />
       </Link>
       <Button
         ref={menubuttonRef}
@@ -122,21 +125,34 @@ const AppTopbar = forwardRef<AppTopbarRef>((_props, ref) => {
         })}
       >
         <div ref={wrapperRef}>
-          <Button
-            type="button"
-            className="p-link layout-topbar-button"
-            onClick={() => setShowProfileList((show) => !show)}
-            onMouseEnter={() => setMouseenterProfilebutton(true)}
-            onMouseOut={() => setMouseenterProfilebutton(false)}
-          >
-            <Icon
-              className="pi pi-user"
-              mouseenter={mouseenterProfileButton}
+          {isAuthenticated ? (
+            <Button
+              type="button"
+              className="p-link layout-topbar-button"
+              onClick={() => setShowProfileList((show) => !show)}
               onMouseEnter={() => setMouseenterProfilebutton(true)}
               onMouseOut={() => setMouseenterProfilebutton(false)}
-            ></Icon>
-            <span>Profile</span>
-          </Button>
+            >
+              <Icon
+                className="pi pi-user"
+                mouseenter={mouseenterProfileButton}
+                onMouseEnter={() => setMouseenterProfilebutton(true)}
+                onMouseOut={() => setMouseenterProfilebutton(false)}
+              ></Icon>
+              <span>Profile</span>
+            </Button>
+          ) : (
+            <PrimeReactButton
+              type="button"
+              className="p-link layout-menu-button"
+              outlined
+              severity="warning"
+              onClick={() => router.push('/auth/login')}
+            >
+              登入
+            </PrimeReactButton>
+          )}
+
           {showProfileList && (
             <OutsideClickHandler wrapperRef={wrapperRef} onOutsideClick={() => setShowProfileList(false)}>
               <ProfileListWrapper>

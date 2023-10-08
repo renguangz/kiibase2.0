@@ -2,10 +2,10 @@ import { fireEvent, render, renderHook, screen, waitFor } from '@testing-library
 import userEvent from '@testing-library/user-event';
 import { useForm } from 'react-hook-form';
 import { EditorField } from '.';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 

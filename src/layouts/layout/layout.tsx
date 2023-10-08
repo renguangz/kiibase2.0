@@ -1,18 +1,20 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { useEventListener, useMountEffect, useUnmountEffect } from 'primereact/hooks';
 import { classNames } from 'primereact/utils';
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import AppSidebar from './AppSidebar';
 import AppTopbar from './AppTopbar';
-import { LayoutContext } from './context/layoutcontext';
+import { useRwdConfig } from '@/contexts/rwd-config';
 import PrimeReact from 'primereact/api';
-import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/src/types/types';
+import { ChildContainerProps, LayoutState, AppTopbarRef } from '@/types/types';
+import { Toast } from 'primereact/toast';
+import { useCommon } from '/src/hooks';
 
 const Layout = ({ children }: ChildContainerProps) => {
-  const { layoutConfig, layoutState, setLayoutState } = useContext(LayoutContext);
+  const { layoutToast } = useCommon();
+  const { layoutConfig, layoutState, setLayoutState } = useRwdConfig();
   const topbarRef = useRef<AppTopbarRef>(null);
   const sidebarRef = useRef<HTMLDivElement>(null);
 
@@ -126,19 +128,18 @@ const Layout = ({ children }: ChildContainerProps) => {
 
   return (
     <React.Fragment>
-      <Head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="initial-scale=1, width=device-width" />
-        <link rel="icon" href={`/favicon.ico`} type="image/x-icon"></link>
-      </Head>
-
       <div className={containerClass}>
         <AppTopbar ref={topbarRef} />
         <div ref={sidebarRef} className="layout-sidebar">
           <AppSidebar />
         </div>
         <div className="layout-main-container">
-          <div className="layout-main">{children}</div>
+          <div className="layout-main">
+            <React.Fragment>
+              <Toast ref={layoutToast} />
+              {children}
+            </React.Fragment>
+          </div>
         </div>
         <div className="layout-mask"></div>
       </div>

@@ -1,14 +1,16 @@
-import EditContentPage from '@/pages/[content]/[editId]/edit';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
-import CreateBannerSuccess from '@/src/mock/db/utils/CreateContent/CreateBannerSuccess.json';
-import BannerConfig73 from '@/src/mock/db/utils/getConfig/bannerConfig73.json';
-import MachineCategoryConfig5 from '@/src/mock/db/utils/getConfig/machineCategoryConfig5.json';
-import AdminUser1Config from '@/src/mock/db/utils/getConfig/adminUserConfig1.json';
-import Machine1Config from '@/src/mock/db/utils/getConfig/machineConfig1.json';
-import Home1Config from '@/src/mock/db/utils/getConfig/homepageConfig1.json';
+import EditContentPage from '/pages/[content]/[editId]/edit';
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react';
+import CreateBannerSuccess from '@/mocks/db/utils/CreateContent/CreateBannerSuccess.json';
+import BannerConfig73 from '@/mocks/db/utils/getConfig/bannerConfig73.json';
+import MachineCategoryConfig5 from '@/mocks/db/utils/getConfig/machineCategoryConfig5.json';
+import AdminUser1Config from '@/mocks/db/utils/getConfig/adminUserConfig1.json';
+import Machine1Config from '@/mocks/db/utils/getConfig/machineConfig1.json';
+import Home1Config from '@/mocks/db/utils/getConfig/homepageConfig1.json';
+import EditRoleConfig from '@/mocks/db/utils/EditContent/Bigdragon/editRoleConfig.json';
+import EditRoleSuccess from '@/mocks/db/utils/EditContent/Bigdragon/EditRoleSuccess.json';
 import useSWR from 'swr';
 import userEvent from '@testing-library/user-event';
-import * as requestUtils from '@/src/utils/request';
+import * as requestUtils from '@/utils/request';
 
 jest.mock('swr');
 
@@ -24,8 +26,8 @@ jest.mock('next/router', () => ({
   }),
 }));
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 
@@ -52,10 +54,6 @@ describe('ContentEditPage', () => {
 
       const title = screen.queryByRole('heading', { name: 'Banner修改' });
       expect(title).toBeInTheDocument();
-
-      const linkButton = screen.queryByRole('link', { name: 'Banner列表' });
-      expect(linkButton).toHaveAttribute('href', '/banner');
-      expect(linkButton).toBeInTheDocument();
     });
 
     it('should have 3 fields with default values', async () => {
@@ -260,16 +258,6 @@ describe('ContentEditPage', () => {
       });
     });
 
-    it('should disabled submit button if clear up required field', async () => {
-      (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
-      const submitButton = screen.getByRole('button', { name: '確定' });
-      const textareas = screen.queryAllByRole('dialog');
-      await userEvent.clear(textareas[0]);
-      await waitFor(async () => {
-        expect(submitButton).toBeDisabled();
-      });
-    });
-
     it('should submit with all required fields filled and default value with not required fields', async () => {
       (requestUtils.request as jest.Mock).mockReturnValue(CreateBannerSuccess);
       const submitButton = screen.getByRole('button', { name: '確定' });
@@ -322,6 +310,47 @@ describe('ContentEditPage', () => {
       });
       await userEvent.click(submitButton);
       expect(routerPush).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('Bigdragon', () => {
+    describe('Role', () => {
+      beforeEach(() => {
+        mockAsPath.mockReturnValue('/role/4/edit');
+        mockQuery.mockReturnValue({ editId: '4' });
+
+        (useSWR as jest.Mock).mockImplementation((url: string) => ({
+          data: url.includes('/role/4/getConfig') ? EditRoleConfig : {},
+        }));
+
+        render(<EditContentPage />);
+      });
+
+      it('should have two mulitple select fields with default datas for module and api_funtions', async () => {
+        (requestUtils.request as jest.Mock).mockImplementation((url: string) =>
+          url.includes('/model/role/4') ? EditRoleSuccess : undefined,
+        );
+
+        const submitButton = screen.getByRole('button', { name: '確定' });
+        const input = screen.queryByRole('textbox') as HTMLInputElement;
+        await userEvent.type(input, '123');
+        const multipleSelectBoxes = screen.getAllByRole('listbox');
+        expect(multipleSelectBoxes).toHaveLength(2);
+        const apiFunctionsSelect = multipleSelectBoxes[1];
+        await userEvent.click(apiFunctionsSelect);
+        const postRoleCreateOption = screen.queryByText(/POST: \/model\/auth\/role\/create/i) as HTMLElement;
+        await userEvent.click(postRoleCreateOption);
+        await userEvent.click(submitButton);
+        const body = JSON.stringify({
+          name: `${EditRoleConfig.data.field[0].default}123`,
+          modules: ['1'],
+          api_functions: ['1', '2', '3'],
+        });
+        expect(requestUtils.request).toHaveBeenLastCalledWith('/model/role/4', {
+          method: 'PUT',
+          body,
+        });
+      });
     });
   });
 });

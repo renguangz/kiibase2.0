@@ -1,12 +1,12 @@
 import { act, fireEvent, render, screen } from '@testing-library/react';
 import { Loginform } from '.';
-import authAccounts from '@/src/mock/db/utils/auth/accounts.json';
-import successfullLogin from '@/src/mock/db/utils/auth/successLogin.json';
-import failLogin from '@/src/mock/db/utils/auth/failLogin.json';
-import * as requestUtils from '@/src/utils/request';
+import authAccounts from '@/mocks/db/utils/auth/accounts.json';
+import successfullLogin from '@/mocks/db/utils/auth/successLogin.json';
+import failLogin from '@/mocks/db/utils/auth/failLogin.json';
+import * as requestUtils from '@/utils/request';
 
-jest.mock('@/src/utils/request', () => ({
-  ...jest.requireActual('@/src/utils/request'),
+jest.mock('@/utils/request', () => ({
+  ...jest.requireActual('@/utils/request'),
   request: jest.fn(),
 }));
 
@@ -54,28 +54,24 @@ describe('LoginForm', () => {
 
     act(() => {
       expect(mockRouterPush).toHaveBeenCalledTimes(1);
-      expect(mockRouterPush).toHaveBeenCalledWith('/adminUser');
+      expect(mockRouterPush).toHaveBeenCalledWith('/demo');
       expect(account.value).toBe('');
       expect(password.value).toBe('');
     });
   });
 
   it('should not clean up account if failed login', async () => {
-    (requestUtils.request as jest.Mock).mockResolvedValue({ ...failLogin });
+    (requestUtils.request as jest.Mock).mockRejectedValue({ ...failLogin });
 
     const { account, password, submitButton } = setup();
 
     fireEvent.change(account, { target: { value: 'unregistereduser' } });
     fireEvent.change(password, { target: { value: 'unregistereduser' } });
+    fireEvent.click(submitButton);
+    await act(async () => {});
 
-    await act(async () => {
-      fireEvent.click(submitButton);
-    });
-
-    act(() => {
-      expect(account.value).toBe('unregistereduser');
-      expect(password.value).toBe('');
-    });
+    expect(account.value).toBe('unregistereduser');
+    expect(password.value).toBe('');
   });
 
   it('should disable submitButton after failing login', async () => {

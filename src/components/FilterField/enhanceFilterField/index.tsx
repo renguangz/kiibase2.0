@@ -1,4 +1,4 @@
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import React from 'react';
 import styled from 'styled-components';
 import { AutoCompleteField } from './AutoCompleteField';
@@ -7,6 +7,7 @@ import { DropdownField } from './DropDownField';
 import { EditorField } from './EditorField';
 import { ImageUploadField } from './ImageUploadField';
 import { InputTextField } from './InputTextField';
+import { MultipleSelectField } from './MulitpleSelectField';
 import { NotFoundField } from './NotFoundField';
 import { TextareaField } from './TextareaField';
 
@@ -19,6 +20,7 @@ const mapping = [
   { name: 'TextareaComponent', component: TextareaField },
   { name: 'CalendarComponent', component: CalendarField },
   { name: 'SingleSelectComponent', component: DropdownField },
+  { name: 'MultipleSelectComponent', component: MultipleSelectField },
   { name: 'ImageUploadComponent', component: ImageUploadField },
   { name: 'EditorComponent', component: EditorField },
 ];
@@ -54,7 +56,7 @@ export type EnhanceFilterFieldProps = Record<'label' | 'required' | string, any>
 export function enhanceFilterField(component: string) {
   const Component = mapStringToComponent(component);
 
-  return function (props: EnhanceFilterFieldProps) {
+  return function EnhanceFilterField(props: EnhanceFilterFieldProps) {
     return (
       <Wrapper>
         {props.label && (

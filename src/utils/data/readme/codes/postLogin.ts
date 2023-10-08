@@ -1,0 +1,50 @@
+import { CodeTextType } from '/src/components/Markdowns';
+
+export const postLogin: CodeTextType[] = [
+  { type: 'text', color: 'comment', text: '// Body' },
+  { type: 'wrap', text: '' },
+  { type: 'text', text: '{' },
+  { type: 'wrap', text: '' },
+  { type: 'text', tabs: 1, text: '"account"', color: 'blue' },
+  { type: 'text', text: ': ' },
+  { type: 'text', text: '"user"', color: 'orange' },
+  { type: 'text', text: ',' },
+  { type: 'wrap', text: '' },
+  { type: 'text', tabs: 1, text: '"password"', color: 'blue' },
+  { type: 'text', text: ': ' },
+  { type: 'text', text: '"password"', color: 'orange' },
+  { type: 'wrap', text: '' },
+  { type: 'text', text: '}' },
+
+  { type: 'wrap', text: '' },
+  { type: 'wrap', text: '' },
+
+  { type: 'text', color: 'comment', text: '// Response' },
+  { type: 'wrap', text: '' },
+  { type: 'text', text: '{' },
+  { type: 'wrap', text: '' },
+  { type: 'text', tabs: 1, text: '"status"', color: 'blue' },
+  { type: 'text', text: ': ' },
+  { type: 'text', text: '200', color: 'orange' },
+  { type: 'text', text: ',' },
+  { type: 'wrap', text: '' },
+  { type: 'text', tabs: 1, text: '"message"', color: 'blue' },
+  { type: 'text', text: ': ' },
+  { type: 'text', text: '"success"', color: 'orange' },
+  { type: 'text', text: ',' },
+  { type: 'wrap', text: '' },
+  { type: 'text', tabs: 1, text: '"data"', color: 'blue' },
+  { type: 'text', text: ': ' },
+  { type: 'text', text: '{', color: 'white' },
+  { type: 'wrap', text: '' },
+
+  { type: 'text', tabs: 2, text: '"token"', color: 'blue' },
+  { type: 'text', text: ': ' },
+  { type: 'text', text: '"jwt_token"', color: 'orange' },
+
+  { type: 'wrap', text: '' },
+  { type: 'text', text: '}', tabs: 1 },
+
+  { type: 'wrap', text: '' },
+  { type: 'text', text: '}' },
+];

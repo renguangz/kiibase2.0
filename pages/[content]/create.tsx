@@ -1,13 +1,14 @@
-import { ContentUpdateField } from '@/src/components';
-import { StyledButton } from '@/src/components/common';
-import { ContentHeader } from '@/src/components/Content';
-import { PageLayout } from '@/src/layouts';
-import { COLORS } from '@/src/utils';
-import { useCreateContent } from '@/src/utils/hooks/useCreateContent';
-import Link from 'next/link';
+import type { ReactElement } from 'react';
+import { ContentUpdateField } from '@/components';
+import { StyledButton } from '@/components/common';
+import { ContentHeader } from '@/components/Content';
+import { PageLayout } from '@/layouts';
+import { COLORS } from '@/utils';
+import { useCreateContent } from '@/hooks/useCreateContent';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { Message } from 'primereact/message';
+import DashboardLayout from '@/layouts/DashboardLayout';
 
 export const ConfirmButtonWrapper = styled.div`
   margin-top: 16px;
@@ -30,7 +31,7 @@ export const MessageWrapper = styled.div<MessageWrapperProps>`
   justify-content: center;
 `;
 
-export const StyledLink = styled(Link)`
+export const StyledLink = styled.span`
   color: ${COLORS.primary};
 `;
 
@@ -58,8 +59,8 @@ export default function CreateContentPage() {
       <ContentHeader
         text={`${createConfigData?.topic ?? ''}建立`}
         button={
-          <StyledButton type="button" variant="outline">
-            <StyledLink href={`/${listPageUrl}`}>{createConfigData?.topic}列表</StyledLink>
+          <StyledButton type="button" variant="outline" onClick={() => router.push(`/${listPageUrl}`)}>
+            <StyledLink>{createConfigData?.topic}列表</StyledLink>
           </StyledButton>
         }
       />
@@ -77,3 +78,7 @@ export default function CreateContentPage() {
     </PageLayout>
   );
 }
+
+CreateContentPage.getLayout = function (page: ReactElement) {
+  return <DashboardLayout>{page}</DashboardLayout>;
+};

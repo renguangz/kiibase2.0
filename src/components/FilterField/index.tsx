@@ -3,9 +3,9 @@ import { UseFormReturn } from 'react-hook-form';
 import styled from 'styled-components';
 import { enhanceFilterField, EnhanceFilterFieldProps } from './enhanceFilterField';
 import { StyledButton } from '../common';
-import { COLORS } from '@/src/utils';
+import { COLORS } from '@/utils';
 import Image from 'next/image';
-import ChevronUp from '@/public/ChevronUp.svg';
+import ChevronUp from '/public/ChevronUp.svg';
 
 const Wrapper = styled.div`
   background: #fff;
@@ -81,18 +81,26 @@ export function FilterField({ onSubmit, form, filters, deleteButton, updateButto
       </TitleWrapper>
       {showFilters && (
         <ContentWrapper>
-          <div>
-            {filtersAddForm.map((filter) => (
-              <div key={`enhanceFilter_${Math.random()}`}>{enhanceFilterField(filter.component)(filter.props)}</div>
-            ))}
-          </div>
-          <ButtonsWrapper>
-            {updateButton()}
-            {deleteButton()}
-            <StyledButton type="button" onClick={onSubmit}>
-              送出
-            </StyledButton>
-          </ButtonsWrapper>
+          <form style={{ display: 'contents' }}>
+            <div>
+              {filtersAddForm.map((filter) => (
+                <div key={`enhanceFilter_${Math.random()}`}>{enhanceFilterField(filter.component)(filter.props)}</div>
+              ))}
+            </div>
+            <ButtonsWrapper>
+              {updateButton()}
+              {deleteButton()}
+              <StyledButton
+                type="submit"
+                onClick={(e) => {
+                  e.preventDefault();
+                  onSubmit();
+                }}
+              >
+                送出
+              </StyledButton>
+            </ButtonsWrapper>
+          </form>
         </ContentWrapper>
       )}
     </Wrapper>
